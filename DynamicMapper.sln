@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicMapper", "DynamicMapper\DynamicMapper.csproj", "{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicMapper.Test", "DynamicMapper.Test\DynamicMapper.Test.csproj", "{3C578E64-B0A8-4EF2-B11A-1368B9AEF357}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{062739F9-558D-450D-BA78-E083275195CC}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C578E64-B0A8-4EF2-B11A-1368B9AEF357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C578E64-B0A8-4EF2-B11A-1368B9AEF357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C578E64-B0A8-4EF2-B11A-1368B9AEF357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C578E64-B0A8-4EF2-B11A-1368B9AEF357}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
