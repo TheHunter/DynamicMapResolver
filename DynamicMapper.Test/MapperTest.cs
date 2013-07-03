@@ -4,14 +4,22 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
+using NUnit.Framework;
 
 namespace DynamicMapper.Test
 {
+    [TestFixture]
     public class MapperTest
     {
+        [Test]
         public void Test1()
         {
-            
+            Type t = typeof (Person);
+            var properties = t.GetProperties();
+
+
+
+
         }
     }
 

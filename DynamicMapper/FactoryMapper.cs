@@ -5,13 +5,35 @@ using System.Text;
 
 namespace DynamicMapper
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class FactoryMapper
     {
-        public static ISourceMapper<TSource, TDestination> MakeSourceMapper<TSource, TDestination>()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
+        public static ISourceMapper<TSource, TDestination> CreateMapper<TSource, TDestination>()
             where TSource: class
             where TDestination: class, new()
         {
-            return null;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
+        public static ISourceMerger<TSource, TDestination> CreateMerger<TSource, TDestination>()
+            where TSource : class
+            where TDestination : class
+        {
+            throw new NotImplementedException();
         }
     }
 }
