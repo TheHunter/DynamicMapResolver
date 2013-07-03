@@ -10,16 +10,16 @@ namespace DynamicMapper
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    interface ISourceMapper<TSource, TDestination>
+    public interface ISourceMapper<TSource, TDestination>
         : ISourceParser<TSource, TDestination>
         where TSource : class
-        where TDestination : class
+        where TDestination : class, new()
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        TDestination Execute(TSource source);
+        TDestination Map(TSource source);
     }
 }

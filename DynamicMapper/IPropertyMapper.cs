@@ -10,7 +10,7 @@ namespace DynamicMapper
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    interface IPropertyMapper<TSource, TDestination>
+    public interface IPropertyMapper<TSource, TDestination>
         where TSource : class
         where TDestination : class
     {

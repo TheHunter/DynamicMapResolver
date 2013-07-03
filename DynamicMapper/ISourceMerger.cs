@@ -10,7 +10,7 @@ namespace DynamicMapper
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    interface ISourceMerger<TSource, TDestination>
+    public interface ISourceMerger<TSource, TDestination>
         : ISourceParser<TSource, TDestination>
         where TSource : class
         where TDestination : class
@@ -20,6 +20,6 @@ namespace DynamicMapper
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="source"></param>
-        void Execute(TSource instance, TDestination source);
+        void Merge(TSource instance, TDestination source);
     }
 }

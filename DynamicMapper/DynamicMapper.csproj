@@ -38,15 +38,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\LambdaSetterException.cs" />
+    <Compile Include="FactoryMapper.cs" />
+    <Compile Include="Impl\PropertyMapper.cs" />
+    <Compile Include="Impl\SourceMapper.cs" />
     <Compile Include="ISourceMapper.cs" />
     <Compile Include="IPropertyMapper.cs" />
     <Compile Include="ISourceMerger.cs" />
     <Compile Include="ISourceParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Impl\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
