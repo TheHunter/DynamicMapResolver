@@ -15,50 +15,50 @@ namespace DynamicMapper
 
         static FactoryMapper()
         {
-            //Dictionary<Type, HashSet<Type>> primiteTypes = new Dictionary<Type, HashSet<Type>>();
+            Dictionary<Type, HashSet<Type>> primiteTypes = new Dictionary<Type, HashSet<Type>>();
 
-            //Type currentKey;
-            //HashSet<Type> col;
+            Type currentKey;
+            HashSet<Type> col;
 
-            //currentKey = typeof (byte);
-            //col = new HashSet<Type>();
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
+            currentKey = typeof(byte);
+            col = new HashSet<Type>();
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
 
-            //currentKey = typeof(byte?);
-            //col = new HashSet<Type>(col);
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
-
-
-
-            //currentKey = typeof(short);
-            //col = new HashSet<Type>();
-            //col.Add(typeof (byte));
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
-
-            //currentKey = typeof(short?);
-            //col = new HashSet<Type>(col);
-            //col.Add(typeof(byte?));
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
+            currentKey = typeof(byte?);
+            col = new HashSet<Type>(col);
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
 
 
 
-            //currentKey = typeof(int);
-            //col = new HashSet<Type>();
-            //col.Add(typeof(byte));
-            //col.Add(typeof (short));
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
+            currentKey = typeof(short);
+            col = new HashSet<Type>();
+            col.Add(typeof(byte));
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
 
-            //currentKey = typeof(int?);
-            //col = new HashSet<Type>(col);
-            //col.Add(typeof(byte?));
-            //col.Add(typeof(short?));
-            //col.Add(currentKey);
-            //primiteTypes.Add(currentKey, col);
+            currentKey = typeof(short?);
+            col = new HashSet<Type>(col);
+            col.Add(typeof(byte?));
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
+
+
+
+            currentKey = typeof(int);
+            col = new HashSet<Type>();
+            col.Add(typeof(byte));
+            col.Add(typeof(short));
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
+
+            currentKey = typeof(int?);
+            col = new HashSet<Type>(col);
+            col.Add(typeof(byte?));
+            col.Add(typeof(short?));
+            col.Add(currentKey);
+            primiteTypes.Add(currentKey, col);
 
 
 
