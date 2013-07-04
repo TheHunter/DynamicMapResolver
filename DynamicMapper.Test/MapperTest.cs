@@ -11,55 +11,96 @@ namespace DynamicMapper.Test
     [TestFixture]
     public class MapperTest
     {
-        private Dictionary<Type, HashSet<Type>> primiteTypes;
+        private Dictionary<Type, HashSet<Type>> primitiveTypes;
 
         [TestFixtureSetUp]
         public void TestOnSetUp()
         {
-            primiteTypes = new Dictionary<Type, HashSet<Type>>();
+            primitiveTypes = new Dictionary<Type, HashSet<Type>>();
 
-            Type currentKey;
-            HashSet<Type> col;
+            primitiveTypes.Add
+                (
+                    typeof(byte?),
+                    new HashSet<Type> {typeof (byte)}
+                );
 
-            currentKey = typeof(byte);
-            col = new HashSet<Type>();
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(short),
+                    new HashSet<Type> { typeof(byte) }
+                );
 
-            currentKey = typeof(byte?);
-            col = new HashSet<Type>(col);
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(short?),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(byte?) }
+                );
 
+            primitiveTypes.Add
+                (
+                    typeof(int),
+                    new HashSet<Type> { typeof(byte), typeof(short) }
+                );
 
+            primitiveTypes.Add
+                (
+                    typeof(int?),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(byte?), typeof(short?) }
+                );
 
-            currentKey = typeof(short);
-            col = new HashSet<Type>();
-            col.Add(typeof(byte));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(long),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int) }
+                );
 
-            currentKey = typeof(short?);
-            col = new HashSet<Type>(col);
-            col.Add(typeof(byte?));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(long?),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long), typeof(byte?), typeof(short?), typeof(int?) }
+                );
 
+            //primitiveTypes.Add
+            //    (
+            //        typeof(decimal),
+            //        new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long) }
+            //    );
 
+            //primitiveTypes.Add
+            //    (
+            //        typeof(decimal?),
+            //        new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long), typeof(decimal), typeof(byte?), typeof(short?), typeof(int?), typeof(long?) }
+            //    );
 
-            currentKey = typeof(int);
-            col = new HashSet<Type>();
-            col.Add(typeof(byte));
-            col.Add(typeof(short));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(decimal?),
+                    new HashSet<Type> { typeof(decimal) }
+                );
 
-            currentKey = typeof(int?);
-            col = new HashSet<Type>(col);
-            col.Add(typeof(byte?));
-            col.Add(typeof(short?));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
+            primitiveTypes.Add
+                (
+                    typeof(float),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long) }
+                );
+
+            primitiveTypes.Add
+                (
+                    typeof(float?),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long), typeof(float), typeof(byte?), typeof(short?), typeof(int?), typeof(long?) }
+                );
+
+            primitiveTypes.Add
+                (
+                    typeof(double),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long), typeof(float) }
+                );
+
+            primitiveTypes.Add
+                (
+                    typeof(double?),
+                    new HashSet<Type> { typeof(byte), typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(byte?), typeof(short?), typeof(int?), typeof(long?), typeof(float?) }
+                );
         }
 
         [Test]
@@ -96,52 +137,89 @@ namespace DynamicMapper.Test
         [Test]
         public void Test2()
         {
-            Type funcType = typeof (Func<,>);
-            Type ActType = typeof (Action<,>);
-
-            Type TSource = typeof (Student);
-            Type TDest = typeof (Person);
-
             var studente = new Student();
             studente.Name = "ciccio";
-            studente.AnnoNascita = 1980;
+            studente.AnnoNascita = 1;
 
             var persona = new Person();
 
-            string nameProperty = "Name";
-            nameProperty = "AnnoNascita";
+            //Assert.AreNotEqual(studente.Name, persona.Name);
+            Assert.AreNotEqual(studente.AnnoNascita, persona.AnnoNascita);
+            var azione = PropertyMap<Student, Person>("AnnoNascita");
+            azione.Invoke(studente, persona);
+            Assert.AreEqual(studente.AnnoNascita, persona.AnnoNascita);
+        }
 
-            PropertyInfo propSource = TSource.GetProperty(nameProperty);
-            PropertyInfo propDest = TDest.GetProperty(nameProperty);
+        public Action<TSource, TDest> PropertyMap<TSource, TDest>(string propertyName)
 
-            funcType = funcType.MakeGenericType(TSource, propSource.PropertyType);
-            ActType = ActType.MakeGenericType(TDest, propDest.PropertyType);
+        {
+            Type funcType = typeof(Func<,>);
+            Type ActType = typeof(Action<,>);
+
+            Type Ts = typeof(TSource);
+            Type Td = typeof(TDest);
+
+            PropertyInfo propSource = Ts.GetProperty(propertyName);
+            PropertyInfo propDest = Td.GetProperty(propertyName);
+
+            if (propSource.PropertyType != propDest.PropertyType)
+            {
+                if (this.primitiveTypes.ContainsKey(propDest.PropertyType))
+                {
+                    if (!this.primitiveTypes[propDest.PropertyType].Contains(propSource.PropertyType))
+                        throw new Exception("property getter is no compatible with property setter.");
+                }
+                else if (!propDest.PropertyType.IsAssignableFrom(propSource.PropertyType))
+                {
+                    throw new Exception("references property getter and setter are imcopatibles.");
+                }
+            }
+
+            funcType = funcType.MakeGenericType(Ts, propSource.PropertyType);
+            ActType = ActType.MakeGenericType(Td, propDest.PropertyType);
 
             Delegate getter = Delegate.CreateDelegate(funcType, null, propSource.GetGetMethod());
             Delegate setter = Delegate.CreateDelegate(ActType, null, propDest.GetSetMethod());
 
             // questa espression compila.. ma non garantisce che funzioni quando viene eseguita...
-            Action<Student, Person> azione =
+            Action<TSource, TDest> azione =
                 (student, person) => setter.DynamicInvoke(person, getter.DynamicInvoke(student));
 
-            //Assert.AreNotEqual(studente.Name, persona.Name);
-            Assert.AreNotEqual(studente.AnnoNascita, persona.AnnoNascita);
 
-            azione.Invoke(studente, persona);
+            //Expression.Lambda()
+            var aa = Expression.Convert(null, null, propSource.GetGetMethod());
 
-            //Assert.AreEqual(studente.Name, persona.Name);
-            Assert.AreEqual(studente.AnnoNascita, persona.AnnoNascita);
+            return azione;
 
-            Console.WriteLine("ciao");
+            
+            
 
         }
 
         [Test]
-        public void Test3()
+        public void TestTypes()
         {
-            
-        }
+            // impazzito il compilatore???
 
+            long a = 19801514514;
+            decimal b = a;
+
+            Assert.AreEqual(a, b);
+
+            //Action<Student, Person> act = (student, person) => person.AnnoNascita = student.AnnoNascita;
+            Action<Student, Person> act = delegate(Student student, Person person)
+                {
+                    person.AnnoNascita = student.AnnoNascita;
+                };
+
+            Student st = new Student();
+            st.AnnoNascita = 10;
+
+            Person pr = new Person();
+
+            act.Invoke(st, pr);
+
+        }
     }
 
     /// <summary>
@@ -155,12 +233,6 @@ namespace DynamicMapper.Test
         public int AnnoNascita { get; set; }
     }
 
-    public class PersonaGiuridica
-        : Person
-    {
-        public string Code { get; set; }
-    }
-
     /// <summary>
     /// classe sorgente.
     /// </summary>
@@ -169,6 +241,12 @@ namespace DynamicMapper.Test
         public string Name { get; set; }
         public string Surname { get; set; }
         //public int AnnoNascita { get; set; }
-        public long AnnoNascita { get; set; }
+        public byte AnnoNascita { get; set; }
+    }
+
+    public class PersonaGiuridica
+        : Person
+    {
+        public string Code { get; set; }
     }
 }
