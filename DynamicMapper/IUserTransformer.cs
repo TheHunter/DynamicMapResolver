@@ -10,8 +10,7 @@ namespace DynamicMapper
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    public interface ISourceMerger<TSource, TDestination>
-        : ISourceTransformer<TSource, TDestination>
+    public interface IUserTransformer<TSource, TDestination>
         where TSource : class
         where TDestination : class
     {
@@ -21,15 +20,6 @@ namespace DynamicMapper
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        TDestination Merge(TSource source, TDestination destination);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filter);
+        void Transform(TSource source, TDestination destination);
     }
 }

@@ -27,7 +27,7 @@
   <Class Name="DynamicMapper.Impl.SourceTransformer&lt;TSource, TDestination&gt;" Collapsed="true">
     <Position X="9.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAIAAAEBAAAAAQQAAAAEAAEAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAABAAAAIAAAEBAAAAAwQAAAAEAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\SourceTransformer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -67,6 +67,13 @@
       <FileName>Exceptions\NonUniqueSetterException.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="DynamicMapper.FactoryMapper" Collapsed="true">
+    <Position X="9" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAGAAAAAAAgCBgAAQAQAAAQAAACAAAAAAAA=</HashCode>
+      <FileName>FactoryMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="DynamicMapper.IPropertyMapper&lt;TSource, TDestination&gt;" Collapsed="true">
     <Position X="13.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
@@ -93,6 +100,13 @@
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAEBAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ISourceTransformer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapper.IUserTransformer&lt;TSource, TDestination&gt;" Collapsed="true">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IUserTransformer.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Tahoma" Size="8.25" />

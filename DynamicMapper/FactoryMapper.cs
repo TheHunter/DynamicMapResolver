@@ -160,7 +160,7 @@ namespace DynamicMapper
                         try
                         {
                             Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value);
-                            mappers.Add(new PropertyMapper<TSource, TDestination>(action));
+                            mappers.Add(new PropertyMapper<TSource, TDestination>(action, current.Key.Name, current.Value.Name));
                         }
                         catch
                         {                        

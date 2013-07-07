@@ -45,13 +45,13 @@ namespace DynamicMapper.Impl
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        /// <param name="filters"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        public TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filters)
+        public TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filter)
         {
             IEnumerable<IPropertyMapper<TSource, TDestination>> mappers
-                = filters != null
-                    ? PropertyMappers.Where(n => filters.Contains(n.PropertySource))
+                = filter != null
+                    ? PropertyMappers.Where(n => filter.Contains(n.PropertySource))
                     : PropertyMappers;
 
             this.OnMapping(source, destination, mappers);

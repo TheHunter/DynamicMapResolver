@@ -9,6 +9,6 @@ namespace DynamicMapper.Test.Domain
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public int? AnnoNascita { get; set; }
+        public int AnnoNascita { get; set; }
     }
 }
