@@ -49,7 +49,7 @@ namespace DynamicMapper.Test
         {
             IList<IPropertyMapper<Student, Person>> propMappers = new BindingList<IPropertyMapper<Student, Person>>
                 {
-                    new PropertyMapper<Student, Person>((student, person) => person.Name = student.Name.ToUpper(), "Name", "Name")
+                    new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name.ToUpper(), "Name", "Name")
                     , new PropertyMapper<Student, Person>( (student, person) => person.Surname = student.Surname.ToUpper() )
                     , new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
                 };

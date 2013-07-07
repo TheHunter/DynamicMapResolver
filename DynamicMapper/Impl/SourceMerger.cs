@@ -39,5 +39,23 @@ namespace DynamicMapper.Impl
             this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        public TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filters)
+        {
+            IEnumerable<IPropertyMapper<TSource, TDestination>> mappers
+                = filters != null
+                    ? PropertyMappers.Where(n => filters.Contains(n.PropertySource))
+                    : PropertyMappers;
+
+            this.OnMapping(source, destination, mappers);
+            return destination;
+        }
     }
 }

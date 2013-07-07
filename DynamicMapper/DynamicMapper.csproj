@@ -44,10 +44,14 @@
     <Compile Include="Exceptions\MappingFailedActionException.cs" />
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
+    <Compile Include="Impl\PropertyFilter.cs" />
     <Compile Include="Impl\PropertyMapper.cs" />
+    <Compile Include="Impl\SourceFilter.cs" />
     <Compile Include="Impl\SourceMapper.cs" />
     <Compile Include="Impl\SourceMerger.cs" />
     <Compile Include="Impl\SourceTransformer.cs" />
+    <Compile Include="IPropertyFilter.cs" />
+    <Compile Include="ISourceFilter.cs" />
     <Compile Include="ISourceMapper.cs" />
     <Compile Include="IPropertyMapper.cs" />
     <Compile Include="ISourceMerger.cs" />

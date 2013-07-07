@@ -22,5 +22,14 @@ namespace DynamicMapper
         /// <param name="destination"></param>
         /// <returns></returns>
         TDestination Merge(TSource source, TDestination destination);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filters);
     }
 }
