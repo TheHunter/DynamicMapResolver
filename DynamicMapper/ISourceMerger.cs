@@ -18,8 +18,9 @@ namespace DynamicMapper
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="instance"></param>
         /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
         TDestination Merge(TSource source, TDestination destination);
     }
 }

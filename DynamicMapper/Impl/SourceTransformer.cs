@@ -29,7 +29,7 @@ namespace DynamicMapper.Impl
         protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
             if (propertyMappers == null)
-                throw new MapperParameterException("propertyMappers", "Collection of property mappers cannot be null.");
+                throw new MapperParameterException("propertiesToMap", "Collection of property mappers cannot be null.");
             
             this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
 
@@ -45,7 +45,8 @@ namespace DynamicMapper.Impl
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        protected void OnMapping(TSource source, TDestination destination)
+        /// <param name="propertiesToMap"></param>
+        protected void OnMapping(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
         {
             #region Executing BeforeMappingAction
             try
@@ -61,7 +62,7 @@ namespace DynamicMapper.Impl
 
             try
             {
-                propertyMappers.All
+                propertiesToMap.All
                     (
                         mapper =>
                         {

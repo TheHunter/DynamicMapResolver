@@ -17,6 +17,16 @@ namespace DynamicMapper
         /// <summary>
         /// 
         /// </summary>
+        string PropertySource { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string PropertyDestination { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         Action<TSource, TDestination> Setter { get; }
     }
 }

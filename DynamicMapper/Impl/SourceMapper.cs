@@ -23,7 +23,7 @@ namespace DynamicMapper.Impl
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
         public SourceMapper(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            :base(propertyMappers, beforeMapping, afterMapping)
+            : base(propertyMappers, beforeMapping, afterMapping)
         {
         }
 
@@ -35,9 +35,7 @@ namespace DynamicMapper.Impl
         public TDestination Map(TSource source)
         {
             TDestination destination = new TDestination();
-
-            this.OnMapping(source, destination);
-
+            this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
         }
 

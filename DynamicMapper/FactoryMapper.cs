@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using DynamicMapper.Impl;
 
 namespace DynamicMapper
 {
@@ -11,57 +12,94 @@ namespace DynamicMapper
     /// </summary>
     public class FactoryMapper
     {
-        private IDictionary<Type, HashSet<Type>> primiteTypes;
+        private static readonly IDictionary<Type, HashSet<Type>> PrimitiveTypes;
+        private static readonly Type FunctionGetter;
+        private static readonly Type ActionSetter;
 
         static FactoryMapper()
         {
-            Dictionary<Type, HashSet<Type>> primiteTypes = new Dictionary<Type, HashSet<Type>>();
+            FunctionGetter = typeof (Func<,>);
+            ActionSetter = typeof (Action<,>);
 
-            Type currentKey;
-            HashSet<Type> col;
-
-            currentKey = typeof(byte);
-            col = new HashSet<Type>();
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-            currentKey = typeof(byte?);
-            col = new HashSet<Type>(col);
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-
-
-            currentKey = typeof(short);
-            col = new HashSet<Type>();
-            col.Add(typeof(byte));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-            currentKey = typeof(short?);
-            col = new HashSet<Type>(col);
-            col.Add(typeof(byte?));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-
-
-            currentKey = typeof(int);
-            col = new HashSet<Type>();
-            col.Add(typeof(byte));
-            col.Add(typeof(short));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-            currentKey = typeof(int?);
-            col = new HashSet<Type>(col);
-            col.Add(typeof(byte?));
-            col.Add(typeof(short?));
-            col.Add(currentKey);
-            primiteTypes.Add(currentKey, col);
-
-
-
+            PrimitiveTypes = new Dictionary<Type, HashSet<Type>>
+                {
+                    {typeof (byte?), new HashSet<Type> {typeof (byte)}},
+                    {typeof (short), new HashSet<Type> {typeof (byte)}},
+                    {typeof (short?), new HashSet<Type> {typeof (byte), typeof (short), typeof (byte?)}},
+                    {typeof (int), new HashSet<Type> {typeof (byte), typeof (short)}},
+                    {
+                        typeof (int?),
+                        new HashSet<Type> {typeof (byte), typeof (short), typeof (int), typeof (byte?), typeof (short?)}
+                    },
+                    {typeof (long), new HashSet<Type> {typeof (byte), typeof (short), typeof (int)}},
+                    {
+                        typeof (long?),
+                        new HashSet<Type>
+                            {
+                                typeof (byte),
+                                typeof (short),
+                                typeof (int),
+                                typeof (long),
+                                typeof (byte?),
+                                typeof (short?),
+                                typeof (int?)
+                            }
+                    },
+                    {typeof (decimal), new HashSet<Type> {typeof (byte), typeof (short), typeof (int), typeof (long)}},
+                    {
+                        typeof (decimal?),
+                        new HashSet<Type>
+                            {
+                                typeof (byte),
+                                typeof (short),
+                                typeof (int),
+                                typeof (long),
+                                typeof (decimal),
+                                typeof (byte?),
+                                typeof (short?),
+                                typeof (int?),
+                                typeof (long?)
+                            }
+                    },
+                    {typeof (float), new HashSet<Type> {typeof (byte), typeof (short), typeof (int), typeof (long)}},
+                    {
+                        typeof (float?),
+                        new HashSet<Type>
+                            {
+                                typeof (byte),
+                                typeof (short),
+                                typeof (int),
+                                typeof (long),
+                                typeof (float),
+                                typeof (byte?),
+                                typeof (short?),
+                                typeof (int?),
+                                typeof (long?)
+                            }
+                    },
+                    {
+                        typeof (double),
+                        new HashSet<Type> {typeof (byte), typeof (short), typeof (int), typeof (long), typeof (float)}
+                    },
+                    {
+                        typeof (double?),
+                        new HashSet<Type>
+                            {
+                                typeof (byte),
+                                typeof (short),
+                                typeof (int),
+                                typeof (long),
+                                typeof (float),
+                                typeof (double),
+                                typeof (byte?),
+                                typeof (short?),
+                                typeof (int?),
+                                typeof (long?),
+                                typeof (float?)
+                            }
+                    }
+                };
+            
         }
 
         /// <summary>
@@ -74,7 +112,7 @@ namespace DynamicMapper
             where TSource: class
             where TDestination: class, new()
         {
-            throw new NotImplementedException();
+            return new SourceMapper<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>(), null, null);
         }
 
         /// <summary>
@@ -87,7 +125,7 @@ namespace DynamicMapper
             where TSource : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            return new SourceMerger<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>(), null, null);
         }
 
         /// <summary>
@@ -100,12 +138,143 @@ namespace DynamicMapper
             return typeof (TCurrent).GetProperties();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<IPropertyMapper<TSource, TDestination>> GetDefaultPropertyMappers
+            <TSource, TDestination>()
+            where TSource : class
+            where TDestination : class
+        {
+            IDictionary<PropertyInfo, PropertyInfo> matchedProperties = FactoryMapper.GetSuitedPropertiesOf<TSource, TDestination>();
+
+            HashSet<IPropertyMapper<TSource, TDestination>> mappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
+
+            matchedProperties.All
+                (
+                    current =>
+                    {
+                        try
+                        {
+                            Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value);
+                            mappers.Add(new PropertyMapper<TSource, TDestination>(action));
+                        }
+                        catch
+                        {                        
+                            // exceptions must be ignore..
+                            // so in this case, the properties are not compatibles..
+                        }
+                        return true;
+                    }
+                );
+
+            return mappers;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
         public static IDictionary<PropertyInfo, PropertyInfo> GetSuitedPropertiesOf<TSource, TDestination>()
         {
             PropertyInfo[] source = GetPropertiesOf<TSource>();
+            PropertyInfo[] destination = GetPropertiesOf<TDestination>();
 
+            Dictionary<PropertyInfo, PropertyInfo> matches = new Dictionary<PropertyInfo, PropertyInfo>();
 
-            return null;
+            destination.All
+                (
+                    currentProperty =>
+                        {
+                            PropertyInfo info = source.FirstOrDefault(n => n.Name == currentProperty.Name);
+                            if (info != null)
+                                matches.Add(info, currentProperty);
+                            return true;
+                        }
+                );
+
+            return matches;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="srcProperty"></param>
+        /// <param name="destProperty"></param>
+        /// <returns></returns>
+        public static Action<TSource, TDestination> DynamicPropertyMap<TSource, TDestination>
+            (PropertyInfo srcProperty, PropertyInfo destProperty)
+        {
+            Type srcPropType = srcProperty.PropertyType;
+            Type dstPropType = destProperty.PropertyType;
+
+            CheckProperties(srcProperty, destProperty);
+
+            Type funcType = FunctionGetter.MakeGenericType(srcProperty.DeclaringType, srcPropType);
+            Type ActType = ActionSetter.MakeGenericType(destProperty.DeclaringType, dstPropType);
+
+            Delegate getter = Delegate.CreateDelegate(funcType, null, srcProperty.GetGetMethod());
+            Delegate setter = Delegate.CreateDelegate(ActType, null, destProperty.GetSetMethod());
+
+            Action<TSource, TDestination> action 
+                = (source, destination) => setter.DynamicInvoke(destination, GetGetterValue(getter.DynamicInvoke(source), destProperty.PropertyType));
+
+            return action;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="srcProperty"></param>
+        /// <param name="destProperty"></param>
+        private static void CheckProperties(PropertyInfo srcProperty, PropertyInfo destProperty)
+        {
+            if (srcProperty.PropertyType != destProperty.PropertyType)
+            {
+                if (PrimitiveTypes.ContainsKey(destProperty.PropertyType))
+                {
+                    if (!PrimitiveTypes[destProperty.PropertyType].Contains(srcProperty.PropertyType))
+                        throw new Exception("Property getter is no compatible with property setter.");
+                }
+                else if (!destProperty.PropertyType.IsAssignableFrom(srcProperty.PropertyType))
+                {
+                    throw new Exception("References property getter and setter are incompatibles.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="propSetter"></param>
+        /// <returns></returns>
+        private static object GetGetterValue(object res, Type propSetter)
+        {
+            if (res == null)
+                return null;
+
+            if (res.GetType() == propSetter)
+                return res;
+
+            if (PrimitiveTypes.ContainsKey(propSetter))
+            {
+                if (propSetter.Name.StartsWith("Nullable`"))
+                {
+                    Type typeToConvert = propSetter.GetGenericArguments()[0];
+                    res = Convert.ChangeType(res, typeToConvert);
+                }
+            }
+                
+            return res;
+        }
+
     }
 }

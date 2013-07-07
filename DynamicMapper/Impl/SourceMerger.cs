@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DynamicMapper.Exceptions;
 
 namespace DynamicMapper.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TDestination"></typeparam>
     public class SourceMerger<TSource, TDestination>
         : SourceTransformer<TSource, TDestination>, ISourceMerger<TSource, TDestination>
         where TSource : class
@@ -22,10 +28,15 @@ namespace DynamicMapper.Impl
             
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
         public TDestination Merge(TSource source, TDestination destination)
         {
-            this.OnMapping(source, destination);
+            this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
         }
     }

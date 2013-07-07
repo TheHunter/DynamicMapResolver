@@ -4,7 +4,7 @@
         <name>AutoMapper</name>
     </assembly>
     <members>
-        <member name="T:AutoMapper.MappingEngine.ConversionVisitor">
+        <member name="T:AutoMapper.QueryableExtensions.Extensions.ConversionVisitor">
             <summary>
             This expression visitor will replace an input parameter by another one
             
