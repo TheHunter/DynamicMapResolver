@@ -118,17 +118,5 @@ namespace DynamicMapper.Impl
         {
             get { return this.propertyMappers; }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="transformer"></param>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        public static void TransformUsing
-            (IUserTransformer<TSource, TDestination> transformer, TSource source, TDestination destination)
-        {
-            transformer.Transform(source, destination);
-        }
     }
 }

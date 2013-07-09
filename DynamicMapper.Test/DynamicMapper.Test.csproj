@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperTest.cs" />
+    <Compile Include="CustomTransformer.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Domain\PersonaGiuridica.cs" />
     <Compile Include="Domain\Student.cs" />

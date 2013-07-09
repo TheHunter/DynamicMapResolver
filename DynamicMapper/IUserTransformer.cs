@@ -10,7 +10,7 @@ namespace DynamicMapper
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    public interface IUserTransformer<TSource, TDestination>
+    public interface IUserTransformer<in TSource, in TDestination>
         where TSource : class
         where TDestination : class
     {

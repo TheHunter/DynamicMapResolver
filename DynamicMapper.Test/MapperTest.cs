@@ -92,12 +92,37 @@ namespace DynamicMapper.Test
             Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1990 };
             Person pr = new Person();
 
-            merger.Merge(st, pr, new List<string>{ "Name" });
+            merger.Merge(st, pr, new List<string>{ "Name", "Surname" });
+
+            Assert.AreEqual(st.Name, pr.Name);
+            Assert.AreEqual(st.Surname, pr.Surname);
+            Assert.AreNotEqual(st.AnnoNascita, pr.AnnoNascita);
+        }
+
+        [Test]
+        public void TestReferenceProperty()
+        {
+            IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
+                {
+                    new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name, "Name", "Name")
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.Parent = student.Father )
+                };
+
+            ISourceMapper<Student, Person> mapper = new SourceMapper<Student, Person>(propMappers, null, null);
+
+            Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1990, Father = new PersonaGiuridica { Name = "father", Surname = "father_surname", AnnoNascita = 1970, Code = "nick"} };
+            Person pr = mapper.Map(st);
 
             Assert.AreEqual(st.Name, pr.Name);
             Assert.AreNotEqual(st.Surname, pr.Surname);
-            Assert.AreNotEqual(st.AnnoNascita, pr.AnnoNascita);
+            Assert.AreEqual(st.AnnoNascita, pr.AnnoNascita);
+            Assert.AreEqual(st.Father, pr.Parent);
+            Assert.AreSame(st.Father, pr.Parent);
+            Assert.AreEqual(st.Father.GetType(), pr.Parent.GetType());
         }
+
+        
     }
     
 }

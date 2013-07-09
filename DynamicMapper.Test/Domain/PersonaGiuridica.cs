@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DynamicMapper.Test.Domain
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PersonaGiuridica
         : Person
     {
