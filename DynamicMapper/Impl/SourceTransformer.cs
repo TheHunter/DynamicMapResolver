@@ -48,6 +48,18 @@ namespace DynamicMapper.Impl
         /// <param name="propertiesToMap"></param>
         protected void OnMapping(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
         {
+            this.OnMapping(source, destination, false, propertiesToMap);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="ignoreExceptionOnMapping"></param>
+        /// <param name="propertiesToMap"></param>
+        protected void OnMapping(TSource source, TDestination destination, bool ignoreExceptionOnMapping, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
+        {
             #region Executing BeforeMappingAction
             try
             {
@@ -73,7 +85,7 @@ namespace DynamicMapper.Impl
             }
             catch (Exception ex)
             {
-                if (!this.IgnoreExceptionOnMapping)
+                if (!ignoreExceptionOnMapping)
                     throw new FailedSetPropertyException("Exception on execution lambda setter action.", ex);
             }
 
@@ -105,11 +117,6 @@ namespace DynamicMapper.Impl
         {
             get { return this.afterMapping; }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IgnoreExceptionOnMapping { get; set; }
 
         /// <summary>
         /// 

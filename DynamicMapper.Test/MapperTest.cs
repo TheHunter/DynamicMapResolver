@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using DynamicMapper.Exceptions;
 using DynamicMapper.Impl;
 using DynamicMapper.Test.Domain;
 using NUnit.Framework;
@@ -25,6 +26,7 @@ namespace DynamicMapper.Test
             Assert.AreEqual(st.Name, pr.Name);
             Assert.AreEqual(st.Surname, pr.Surname);
             Assert.AreEqual(st.AnnoNascita, pr.AnnoNascita);
+
         }
 
         [Test]
@@ -47,7 +49,7 @@ namespace DynamicMapper.Test
         [Test]
         public void TestCustomMapper()
         {
-            IList<IPropertyMapper<Student, Person>> propMappers = new BindingList<IPropertyMapper<Student, Person>>
+            IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
                 {
                     new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name.ToUpper(), "Name", "Name")
                     , new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
@@ -66,7 +68,7 @@ namespace DynamicMapper.Test
         [Test]
         public void TestCustomMerger()
         {
-            IList<IPropertyMapper<Student, Person>> propMappers = new BindingList<IPropertyMapper<Student, Person>>
+            IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
                 {
                     new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name.ToUpper(), "Name", "Name")
                     , new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
@@ -122,7 +124,26 @@ namespace DynamicMapper.Test
             Assert.AreEqual(st.Father.GetType(), pr.Parent.GetType());
         }
 
-        
+        [Test]
+        public void TestUserTransformer()
+        {
+            CustomTransformer transformer = new CustomTransformer();
+            Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1980 };
+            Person pr = new Person();
+
+            transformer.Transform(st, pr);
+
+            Assert.AreEqual(st.Name, pr.Name);
+            Assert.AreEqual(st.Surname, pr.Surname);
+            Assert.AreEqual(st.AnnoNascita, pr.AnnoNascita);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperParameterException))]
+        public void TestFailedInstanceMapper()
+        {
+            new SourceMapper<Student, Person>(null, null, null);
+        }
     }
     
 }

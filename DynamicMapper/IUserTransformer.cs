@@ -6,7 +6,7 @@ using System.Text;
 namespace DynamicMapper
 {
     /// <summary>
-    /// 
+    /// A custom definition for user transformers.
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>

@@ -6,7 +6,7 @@ using System.Text;
 namespace DynamicMapper
 {
     /// <summary>
-    /// 
+    /// A simple definition for mapping object data source into object data destination.
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>

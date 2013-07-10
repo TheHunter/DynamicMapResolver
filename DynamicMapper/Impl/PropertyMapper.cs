@@ -101,5 +101,13 @@ namespace DynamicMapper.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("Property setter: {0}, Property getter: {1}, Action: {2}", this.PropertyDestination, this.PropertyDestination, this.Setter);
+        }
     }
 }

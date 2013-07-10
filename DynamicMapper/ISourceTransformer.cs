@@ -25,11 +25,6 @@ namespace DynamicMapper
         Action<TDestination> AfterMapping { get; }
 
         /// <summary>
-        /// A bool value for indicating if mapper must ignore exceptions when properties are mapped at runtime.
-        /// </summary>
-        bool IgnoreExceptionOnMapping { get; set; }
-
-        /// <summary>
         /// A set of properties mappers for mapping destination object properties.
         /// </summary>
         IEnumerable<IPropertyMapper<TSource, TDestination>> PropertyMappers { get; }

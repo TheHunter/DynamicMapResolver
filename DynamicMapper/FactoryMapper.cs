@@ -8,7 +8,7 @@ using DynamicMapper.Impl;
 namespace DynamicMapper
 {
     /// <summary>
-    /// 
+    /// A factory class used for making default mappers.
     /// </summary>
     public class FactoryMapper
     {
@@ -116,7 +116,7 @@ namespace DynamicMapper
         }
 
         /// <summary>
-        /// 
+        /// Get a default ISourceMerger gor the given types.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
@@ -129,7 +129,7 @@ namespace DynamicMapper
         }
 
         /// <summary>
-        /// 
+        /// Gets all public properties for the given type.
         /// </summary>
         /// <typeparam name="TCurrent"></typeparam>
         /// <returns></returns>
@@ -139,7 +139,35 @@ namespace DynamicMapper
         }
 
         /// <summary>
-        /// 
+        /// Get a dictionary which every couple corrispond to a property from TSurce type (as Key) and a property from second given type (as value)
+        /// with the same name.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
+        public static IDictionary<PropertyInfo, PropertyInfo> GetSuitedPropertiesOf<TSource, TDestination>()
+        {
+            PropertyInfo[] source = GetPropertiesOf<TSource>();
+            PropertyInfo[] destination = GetPropertiesOf<TDestination>();
+
+            Dictionary<PropertyInfo, PropertyInfo> matches = new Dictionary<PropertyInfo, PropertyInfo>();
+
+            destination.All
+                (
+                    currentProperty =>
+                    {
+                        PropertyInfo info = source.FirstOrDefault(n => n.Name == currentProperty.Name);
+                        if (info != null)
+                            matches.Add(info, currentProperty);
+                        return true;
+                    }
+                );
+
+            return matches;
+        }
+
+        /// <summary>
+        /// Get all default property mappers for the given types.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
@@ -175,39 +203,12 @@ namespace DynamicMapper
         }
 
         /// <summary>
-        /// 
+        /// Makes an action which corrispond to set a destination property with the current TSource property value.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
-        /// <returns></returns>
-        public static IDictionary<PropertyInfo, PropertyInfo> GetSuitedPropertiesOf<TSource, TDestination>()
-        {
-            PropertyInfo[] source = GetPropertiesOf<TSource>();
-            PropertyInfo[] destination = GetPropertiesOf<TDestination>();
-
-            Dictionary<PropertyInfo, PropertyInfo> matches = new Dictionary<PropertyInfo, PropertyInfo>();
-
-            destination.All
-                (
-                    currentProperty =>
-                        {
-                            PropertyInfo info = source.FirstOrDefault(n => n.Name == currentProperty.Name);
-                            if (info != null)
-                                matches.Add(info, currentProperty);
-                            return true;
-                        }
-                );
-
-            return matches;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
+        /// <param name="srcProperty">The PropertyInfo which serves to get the Getter method.</param>
+        /// <param name="destProperty">The PropertyInfo which serves to get the Setter method.</param>
         /// <returns></returns>
         public static Action<TSource, TDestination> DynamicPropertyMap<TSource, TDestination>
             (PropertyInfo srcProperty, PropertyInfo destProperty)
