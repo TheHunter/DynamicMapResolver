@@ -16,10 +16,10 @@ namespace DynamicMapper
         where TDestination : class, new()
     {
         /// <summary>
-        /// 
+        /// Maps the source object transforming into destionation object type.
         /// </summary>
         /// <param name="source"></param>
-        /// <returns></returns>
+        /// <returns>returns the source object transformed as destionation type.</returns>
         TDestination Map(TSource source);
     }
 }
