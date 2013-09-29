@@ -10,12 +10,10 @@ namespace DynamicMapResolver.Impl
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
     public class PropertyMapper<TSource, TDestination>
-        : IPropertyMapper<TSource, TDestination>
+        : PropertyMapInfo, IPropertyMapper<TSource, TDestination>
         where TSource : class
         where TDestination : class
     {
-        private readonly string propertySource;
-        private readonly string propertyDestination;
         private readonly Action<TSource, TDestination> setter;
 
         /// <summary>
@@ -23,13 +21,8 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="setter"></param>
         public PropertyMapper(Action<TSource, TDestination> setter)
+            : this(setter, "anonymous", "anonymous")
         {
-            if (setter == null)
-                throw new LambdaSetterException("The setter action for property mapper cannot be null.");
-
-            this.setter = setter;
-            this.propertySource = "anonymous";
-            this.propertyDestination = "anonymous";
         }
 
         /// <summary>
@@ -39,19 +32,12 @@ namespace DynamicMapResolver.Impl
         /// <param name="propertySrc"></param>
         /// <param name="propertyDest"></param>
         public PropertyMapper(Action<TSource, TDestination> setter, string propertySrc, string propertyDest)
+            : base(propertySrc, propertyDest)
         {
             if (setter == null)
                 throw new LambdaSetterException("The setter action for property mapper cannot be null.");
 
-            if (propertySrc == null || propertySrc.Trim().Equals(string.Empty))
-                throw new MapperParameterException("propertySrc", "The getter property name cannot be null or empty, you have to use the suitable constructor without property names parameters.");
-
-            if (propertyDest == null || propertyDest.Trim().Equals(string.Empty))
-                throw new MapperParameterException("propertyDest", "The setter property name cannot be null or empty, you have to use the suitable constructor without property names parameters.");
-
             this.setter = setter;
-            this.propertySource = propertySrc.Trim();
-            this.propertyDestination = propertyDest.Trim();
         }
 
         /// <summary>
@@ -60,30 +46,13 @@ namespace DynamicMapResolver.Impl
         /// <param name="srcProperty"></param>
         /// <param name="destProperty"></param>
         public PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty)
+            : base(srcProperty.Name, destProperty.Name)
         {
             Action<TSource, TDestination> action = FactoryMapper.DynamicPropertyMap<TSource, TDestination>(srcProperty, destProperty);
             if (action == null)
                 throw new LambdaSetterException("The setter action for property mapper cannot be null.");
 
             this.setter = action;
-            this.propertySource = srcProperty.Name;
-            this.propertyDestination = destProperty.Name;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string PropertySource
-        {
-            get { return this.propertySource; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string PropertyDestination
-        {
-            get { return this.propertyDestination; }
         }
 
         /// <summary>
@@ -91,11 +60,9 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         public Action<TSource, TDestination> Setter
         {
-            get
-            {
-                return setter;
-            }
+            get { return setter; }
         }
+
 
         /// <summary>
         /// 
@@ -106,4 +73,35 @@ namespace DynamicMapResolver.Impl
             return string.Format("Property setter: {0}, Property getter: {1}, Action: {2}", this.PropertyDestination, this.PropertyDestination, this.Setter);
         }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class PropertyMapper
+        : PropertyMapper<object, object>, IPropertyMapper
+    {
+        private readonly PropertyInfo srcProperty;
+        private readonly PropertyInfo destProperty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="srcProperty"></param>
+        /// <param name="destProperty"></param>
+        internal PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty)
+            : base(srcProperty, destProperty)
+        {
+            this.srcProperty = srcProperty;
+            this.destProperty = destProperty;
+        }
+
+
+        public PropertyInfo SrcPropertyInfo { get { return this.srcProperty; } }
+
+        
+        public PropertyInfo destPropertyInfo { get { return this.destProperty; } }
+
+    }
+
 }

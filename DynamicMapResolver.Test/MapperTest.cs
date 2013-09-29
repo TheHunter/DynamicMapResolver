@@ -222,6 +222,93 @@ namespace DynamicMapResolver.Test
 
             merger.Merge(st, pr);
         }
+
+        [Test]
+        public void TestMapperNonPublicMembers()
+        {
+            ISourceMapper<PersonaGiuridica, PersonDetails> mapper = FactoryMapper.DynamicResolutionMapper<PersonaGiuridica, PersonDetails>();
+            PersonaGiuridica person = new PersonaGiuridica
+                {
+                    Code = "150",
+                    Name = "Sergio",
+                    Surname = "Hill",
+                    AnnoNascita = 1980,
+                    Parent = new Person {Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950}
+                };
+
+            var result = mapper.Map(person);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestMapperMembersFromInputTypes()
+        {
+            ISourceMapper mapper = FactoryMapper.DynamicResolutionMapper(typeof(PersonaGiuridica), typeof(PersonDetails));
+            PersonaGiuridica person = new PersonaGiuridica
+                {
+                    Code = "150",
+                    Name = "Sergio",
+                    Surname = "Hill",
+                    AnnoNascita = 1980,
+                    Parent = new Person { Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950 }
+                };
+
+            var result = mapper.Map(person);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestNonGenericMapper1()
+        {
+            ISourceMapper mapper = FactoryMapper.DynamicResolutionMapper(typeof(PersonaGiuridica), typeof(PersonDetails));
+            PersonaGiuridica person = new PersonaGiuridica
+                {
+                    Code = "150",
+                    Name = "Sergio",
+                    Surname = "Hill",
+                    AnnoNascita = 1980,
+                    Parent = new Person { Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950 }
+                };
+
+            var result = mapper.Map(person);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperParameterException))]
+        public void FailedTestDestinationInterfaceType1()
+        {
+            FactoryMapper.DynamicResolutionMapper(typeof(PersonaGiuridica), typeof(IPersonHeader));
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperParameterException))]
+        public void FailedTestDestinationInterfaceType2()
+        {
+            FactoryMapper.DynamicResolutionMapper<PersonaGiuridica, IPersonHeader>();
+        }
+
+        [Test]
+        public void TestInterfaceToClass1()
+        {
+            var mapper = FactoryMapper.DynamicResolutionMapper<IPersonHeader, PersonDetails>();
+            Assert.IsNotNull(mapper);
+
+            IPersonHeader ps = new Person{ Name = "name", Surname = "surname", AnnoNascita = 1980, Parent = null };
+            PersonDetails res = mapper.Map(ps);
+            Assert.IsNotNull(res);
+        }
+
+        [Test]
+        public void TestInterfaceToClass2()
+        {
+            var mapper = FactoryMapper.DynamicResolutionMapper(typeof(IPersonHeader), typeof(PersonDetails));
+            Assert.IsNotNull(mapper);
+
+            IPersonHeader ps = new Person { Name = "name", Surname = "surname", AnnoNascita = 1980, Parent = null };
+            object res = mapper.Map(ps);
+            Assert.IsNotNull(res);
+        }
     }
     
 }

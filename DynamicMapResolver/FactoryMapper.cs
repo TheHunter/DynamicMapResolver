@@ -104,12 +104,21 @@ namespace DynamicMapResolver
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public static ISourceMapper DynamicResolutionMapper(Type tSource, Type tDestination)
+        {
+            return new SourceMapper(tSource, tDestination, GetDefaultPropertyMappers(tSource, tDestination));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>()
             where TSource: class
-            where TDestination: class, new()
+            where TDestination: class//, new()
         {
             return FactoryMapper.DynamicResolutionMapper<TSource, TDestination>(null, null);
         }
@@ -124,7 +133,7 @@ namespace DynamicMapResolver
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
-            where TDestination : class, new()
+            where TDestination : class//, new()
         {
             return new SourceMapper<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>(), beforeMapping, afterMapping);
         }
@@ -160,24 +169,21 @@ namespace DynamicMapResolver
         /// <summary>
         /// Gets all public properties for the given type.
         /// </summary>
-        /// <typeparam name="TCurrent"></typeparam>
         /// <returns></returns>
-        public static PropertyInfo[] GetPropertiesOf<TCurrent>()
+        public static PropertyInfo[] GetPropertiesOf(Type current)
         {
-            return typeof (TCurrent).GetProperties();
+            return current.GetProperties();
         }
 
         /// <summary>
         /// Get a dictionary which every couple corrispond to a property from TSurce type (as Key) and a property from second given type (as value)
         /// with the same name.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
         /// <returns></returns>
-        public static IDictionary<PropertyInfo, PropertyInfo> GetSuitedPropertiesOf<TSource, TDestination>()
+        public static IDictionary<PropertyInfo, PropertyInfo> GetSuitedPropertiesOf(Type tSource, Type tDestination)
         {
-            PropertyInfo[] source = GetPropertiesOf<TSource>();
-            PropertyInfo[] destination = GetPropertiesOf<TDestination>();
+            PropertyInfo[] source = GetPropertiesOf(tSource);
+            PropertyInfo[] destination = GetPropertiesOf(tDestination);
 
             Dictionary<PropertyInfo, PropertyInfo> matches = new Dictionary<PropertyInfo, PropertyInfo>();
 
@@ -206,7 +212,7 @@ namespace DynamicMapResolver
             where TSource : class
             where TDestination : class
         {
-            IDictionary<PropertyInfo, PropertyInfo> matchedProperties = FactoryMapper.GetSuitedPropertiesOf<TSource, TDestination>();
+            IDictionary<PropertyInfo, PropertyInfo> matchedProperties = FactoryMapper.GetSuitedPropertiesOf(typeof(TSource), typeof(TDestination));
 
             HashSet<IPropertyMapper<TSource, TDestination>> mappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
 
@@ -223,6 +229,37 @@ namespace DynamicMapResolver
                         {                        
                             // exceptions must be ignore..
                             // so in this case, the properties are not compatibles..
+                        }
+                        return true;
+                    }
+                );
+
+            return mappers;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tSource"></param>
+        /// <param name="tDestination"></param>
+        /// <returns></returns>
+        public static IEnumerable<IPropertyMapper> GetDefaultPropertyMappers(Type tSource, Type tDestination)
+        {
+            IDictionary<PropertyInfo, PropertyInfo> matchedProperties = FactoryMapper.GetSuitedPropertiesOf(tSource, tDestination);
+
+            HashSet<IPropertyMapper> mappers = new HashSet<IPropertyMapper>();
+
+            matchedProperties.All
+                (
+                    current =>
+                    {
+                        try
+                        {
+                            mappers.Add(new PropertyMapper(current.Key, current.Value));
+                        }
+                        catch
+                        {
+                            //
                         }
                         return true;
                     }
@@ -250,8 +287,11 @@ namespace DynamicMapResolver
             Type funcType = FunctionGetter.MakeGenericType(srcProperty.DeclaringType, srcPropType);
             Type ActType = ActionSetter.MakeGenericType(destProperty.DeclaringType, dstPropType);
 
-            Delegate getter = Delegate.CreateDelegate(funcType, null, srcProperty.GetGetMethod());
-            Delegate setter = Delegate.CreateDelegate(ActType, null, destProperty.GetSetMethod());
+            MethodInfo getterMethod = srcProperty.GetGetMethod() ?? srcProperty.GetGetMethod(true);
+            MethodInfo setterMethod = destProperty.GetSetMethod() ?? destProperty.GetSetMethod(true);
+
+            Delegate getter = Delegate.CreateDelegate(funcType, null, getterMethod);
+            Delegate setter = Delegate.CreateDelegate(ActType, null, setterMethod);
 
             Action<TSource, TDestination> action 
                 = (source, destination) => setter.DynamicInvoke(destination, GetGetterValue(getter.DynamicInvoke(source), destProperty.PropertyType));

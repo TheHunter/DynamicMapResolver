@@ -51,6 +51,8 @@
     <Compile Include="CustomTransformer.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Domain\PersonaGiuridica.cs" />
+    <Compile Include="Domain\PersonDetails.cs" />
+    <Compile Include="Domain\IPersonHeader.cs" />
     <Compile Include="Domain\Student.cs" />
     <Compile Include="MapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

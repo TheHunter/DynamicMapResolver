@@ -1,30 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="DynamicMapResolver.Impl.PropertyMapper&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="13.5" Y="2.25" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.SourceMapper&lt;TSource, TDestination&gt;">
+    <Position X="11" Y="5.25" Width="1.5" />
+    <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="10.25" Y="3.316" />
+        <Point X="10.25" Y="4.37" />
+        <Point X="11.75" Y="4.37" />
+        <Point X="11.75" Y="5.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAABEAAAAAAQAAAAAAAAAAAAACAAAABg=</HashCode>
-      <FileName>Impl\PropertyMapper.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="DynamicMapResolver.Impl.SourceMapper&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="11" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\SourceMapper.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Impl.SourceMerger&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="8" Y="2.25" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.SourceMerger&lt;TSource, TDestination&gt;">
+    <Position X="8" Y="5.25" Width="1.5" />
+    <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="10.25" Y="3.316" />
+        <Point X="10.25" Y="4.405" />
+        <Point X="8.75" Y="4.405" />
+        <Point X="8.75" Y="5.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\SourceMerger.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" Collapsed="true">
+  <Class Name="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;">
     <Position X="9.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAEBAAAAAQQAAAAEAAEAAAAAAAAAAAAAA=</HashCode>
@@ -32,81 +40,127 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Exceptions.MapperParameterException" Collapsed="true">
-    <Position X="12.5" Y="6" Width="1.5" />
+  <Class Name="DynamicMapResolver.Exceptions.MapperParameterException">
+    <Position X="18.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions\MapperParameterException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.FactoryMapper" Collapsed="true">
-    <Position X="9" Y="5" Width="1.5" />
+  <Class Name="DynamicMapResolver.FactoryMapper">
+    <Position X="8" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAGAAAAAAAgCBgAAQAQAAAQAAACAAAAAAAA=</HashCode>
       <FileName>FactoryMapper.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Exceptions.FailedSetPropertyException" Collapsed="true">
-    <Position X="9" Y="6" Width="1.5" />
+  <Class Name="DynamicMapResolver.Exceptions.FailedSetPropertyException">
+    <Position X="11" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions\FailedSetPropertyException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Exceptions.LambdaSetterException" Collapsed="true">
-    <Position X="10.75" Y="6" Width="1.5" />
+  <Class Name="DynamicMapResolver.Exceptions.LambdaSetterException">
+    <Position X="16.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions\LambdaSetterException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Exceptions.MappingFailedActionException" Collapsed="true">
-    <Position X="9" Y="7" Width="1.5" />
+  <Class Name="DynamicMapResolver.Exceptions.MappingFailedActionException">
+    <Position X="12.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions\MappingFailedActionException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Exceptions.NonUniqueSetterException" Collapsed="true">
-    <Position X="10.75" Y="7" Width="1.5" />
+  <Class Name="DynamicMapResolver.Exceptions.NonUniqueSetterException">
+    <Position X="14.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions\NonUniqueSetterException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="DynamicMapResolver.IPropertyMapper&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="13.5" Y="0.75" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.PropertyMapInfo">
+    <Position X="22.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAACAAAABA=</HashCode>
-      <FileName>IPropertyMapper.cs</FileName>
+      <HashCode>AAAAEAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Impl\PropertyMapInfo.cs</FileName>
     </TypeIdentifier>
-  </Interface>
-  <Interface Name="DynamicMapResolver.ISourceMapper&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="5.75" Y="2.25" Width="1.5" />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicMapResolver.Impl.PropertyMapper&lt;TSource, TDestination&gt;">
+    <Position X="20.75" Y="3.75" Width="1.5" />
+    <InheritanceLine Type="DynamicMapResolver.Impl.PropertyMapInfo" ManuallyRouted="true">
+      <Path>
+        <Point X="23" Y="2.573" />
+        <Point X="23" Y="3.26" />
+        <Point X="21.5" Y="3.26" />
+        <Point X="21.5" Y="3.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAAAg=</HashCode>
+      <FileName>Impl\PropertyMapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicMapResolver.Impl.PropertyMapper">
+    <Position X="23.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAQAAAAAAAAAAgAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Impl\PropertyMapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="DynamicMapResolver.ISourceMapper&lt;TSource, TDestination&gt;">
+    <Position X="3.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ISourceMapper.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="DynamicMapResolver.ISourceMerger&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="2.75" Y="2.25" Width="1.5" />
+  <Interface Name="DynamicMapResolver.ISourceMerger&lt;TSource, TDestination&gt;">
+    <Position X="0.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>ISourceMerger.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="DynamicMapResolver.ISourceTransformer&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="4.25" Y="0.75" Width="1.5" />
+  <Interface Name="DynamicMapResolver.ISourceTransformer&lt;TSource, TDestination&gt;">
+    <Position X="2.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEBAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ISourceTransformer.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="DynamicMapResolver.IUserTransformer&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="2.75" Y="4" Width="1.5" />
+  <Interface Name="DynamicMapResolver.IUserTransformer&lt;TSource, TDestination&gt;">
+    <Position X="0.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IUserTransformer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapResolver.IPropertyMapper">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IPropertyMapper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapResolver.IPropertyMapInfo">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>IPropertyMapInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapResolver.IPropertyMapper&lt;TSource, TDestination&gt;">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>IPropertyMapper.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Tahoma" Size="8.25" />

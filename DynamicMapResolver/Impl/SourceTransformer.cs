@@ -27,8 +27,8 @@ namespace DynamicMapResolver.Impl
         /// <param name="afterMapping"></param>
         protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
-            if (propertyMappers == null)
-                throw new MapperParameterException("propertiesToMap", "Collection of property mappers cannot be null.");
+            if (propertyMappers == null || !propertyMappers.Any())
+                throw new MapperParameterException("propertyMappers", "Collection of property mappers cannot be empty or null.");
             
             this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
 

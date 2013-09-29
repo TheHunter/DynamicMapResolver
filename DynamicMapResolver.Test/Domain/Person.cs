@@ -4,6 +4,7 @@
     /// 
     /// </summary>
     public class Person
+        : IPersonHeader
     {
         public string Name { get; set; }
         public string Surname { get; set; }

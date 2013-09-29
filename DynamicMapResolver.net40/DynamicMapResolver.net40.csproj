@@ -59,6 +59,9 @@
     <Compile Include="..\DynamicMapResolver\FactoryMapper.cs">
       <Link>FactoryMapper.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\PropertyMapInfo.cs">
+      <Link>Impl\PropertyMapInfo.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\PropertyMapper.cs">
       <Link>Impl\PropertyMapper.cs</Link>
     </Compile>
@@ -70,6 +73,9 @@
     </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\SourceTransformer.cs">
       <Link>Impl\SourceTransformer.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\IPropertyMapInfo.cs">
+      <Link>IPropertyMapInfo.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\IPropertyMapper.cs">
       <Link>IPropertyMapper.cs</Link>

@@ -6,9 +6,9 @@
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
     public interface ISourceMapper<TSource, TDestination>
-        : ISourceTransformer<TSource, TDestination>
+        : ISourceMapper, ISourceTransformer<TSource, TDestination>
         where TSource : class
-        where TDestination : class, new()
+        where TDestination : class
     {
         /// <summary>
         /// Maps the source object transforming into destionation object type.
@@ -16,5 +16,18 @@
         /// <param name="source"></param>
         /// <returns>returns the source object transformed as destionation type.</returns>
         TDestination Map(TSource source);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ISourceMapper
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        object Map(object source);
     }
 }
