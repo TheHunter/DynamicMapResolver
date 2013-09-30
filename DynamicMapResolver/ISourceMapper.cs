@@ -1,4 +1,6 @@
-﻿namespace DynamicMapResolver
+﻿using System;
+
+namespace DynamicMapResolver
 {
     /// <summary>
     /// A simple definition for mapping object data source into object data destination.
@@ -29,5 +31,16 @@
         /// <param name="source"></param>
         /// <returns></returns>
         object Map(object source);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Type SourceType { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Type DestinationType { get; }
+
     }
 }

@@ -15,6 +15,9 @@ namespace DynamicMapResolver.Impl
         where TSource : class
         where TDestination : class
     {
+        private readonly Type sourceType;
+        private readonly Type destinationType;
+
         /// <summary>
         /// 
         /// </summary>
@@ -22,16 +25,43 @@ namespace DynamicMapResolver.Impl
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
         public SourceMapper(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+            : this(propertyMappers, typeof (TSource), typeof (TDestination), beforeMapping, afterMapping)
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyMappers"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="beforeMapping"></param>
+        /// <param name="afterMapping"></param>
+        protected SourceMapper(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
+                                Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             : base(propertyMappers, beforeMapping, afterMapping)
         {
+
+            if (sourceType == null)
+                throw new MapperParameterException("sourceType", "The source type cannot be null.");
+
+            if (destinationType == null)
+                throw new MapperParameterException("destinationType", "The destination type cannot be null.");
+
+            if (sourceType.IsPrimitive)
+                throw new MapperParameterException("sourceType", "The source type cannot be a primitive type.");
+
             try
             {
                 // verify if the destination type is a valid type.
-                Activator.CreateInstance(typeof (TDestination), true);
+                Activator.CreateInstance(destinationType, true);
+
+                this.sourceType = sourceType;
+                this.destinationType = destinationType;
             }
             catch (Exception ex)
             {
-                throw new MapperParameterException("tDestination", "The destination type is not valid, see inner exception for details", ex);
+                throw new MapperParameterException("destinationType", "The destination type is not valid, see inner exception for details", ex);
             }
         }
 
@@ -45,10 +75,27 @@ namespace DynamicMapResolver.Impl
             if (source == null)
                 return null;
 
-            TDestination destination = Activator.CreateInstance(typeof(TDestination), true) as TDestination;
+            TDestination destination = Activator.CreateInstance(destinationType, true) as TDestination;
             this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Type SourceType
+        {
+            get { return this.sourceType; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Type DestinationType
+        {
+            get { return this.destinationType; }
+        }
+
 
         /// <summary>
         /// 
@@ -70,57 +117,18 @@ namespace DynamicMapResolver.Impl
     public class SourceMapper
         : SourceMapper<object, object>
     {
-        private readonly Type tSource;
-        private readonly Type tDestination;
-
+        
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="tSource"></param>
-        /// <param name="tDestination"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
         /// <param name="propertyMappers"></param>
-        internal SourceMapper(Type tSource, Type tDestination, IEnumerable<IPropertyMapper> propertyMappers)
-            : base(propertyMappers.Select<IPropertyMapper, IPropertyMapper<object, object>>(n => n), null, null)
+        internal SourceMapper(Type sourceType, Type destinationType, IEnumerable<IPropertyMapper> propertyMappers)
+            : base(propertyMappers.Select<IPropertyMapper, IPropertyMapper<object, object>>(n => n), sourceType, destinationType, null, null)
         {
-            if (tSource == null)
-                throw new MapperParameterException("tSource", "The source type cannot be null.");
-
-            if (tDestination == null)
-                throw new MapperParameterException("tDestination", "The destination type cannot be null.");
-
-            if (tSource.IsPrimitive)
-                throw new MapperParameterException("tSource", "The source type cannot be a primitive type.");
-
-            try
-            {
-                // verify if the destination type is a valid type.
-                Activator.CreateInstance(tDestination, true);
-            }
-            catch (Exception ex)
-            {
-                throw new MapperParameterException("tDestination", "The destination type is not valid, see inner exception for details", ex);
-            }
-
-            this.tSource = tSource;
-            this.tDestination = tDestination;
+            
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public override object Map(object source)
-        {
-            if (source == null)
-                return null;
-
-            if (!tSource.IsInstanceOfType(source))
-                return null;
-
-            object destination = Activator.CreateInstance(tDestination, true);
-            this.OnMapping(source, destination, this.PropertyMappers);
-            return destination;
-        }
     }
 }
