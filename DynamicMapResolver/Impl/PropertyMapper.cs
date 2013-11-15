@@ -58,6 +58,39 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="propertySrc"></param>
+        /// <param name="propertyDest"></param>
+        public PropertyMapper(string propertySrc, string propertyDest)
+            : base(propertySrc, propertyDest)
+        {
+            PropertyInfo srcProperty = null;
+            PropertyInfo destProperty = null;
+            try
+            {
+                srcProperty = typeof(TSource).GetProperty(propertySrc);
+                destProperty = typeof(TSource).GetProperty(propertyDest);
+            }
+            catch (Exception ex)
+            {
+                throw new MapperParameterException("Unknown", string.Format("An error occurs when property source (name: {0}) or property destination (name: {1}) was used", propertySrc, propertyDest), ex);
+            }
+
+            if (srcProperty == null)
+                throw new MissingMemberException(typeof(TSource).Name, propertySrc);
+
+            if (destProperty == null)
+                throw new MissingMemberException(typeof(TSource).Name, propertyDest);
+
+            Action<TSource, TDestination> action = FactoryMapper.DynamicPropertyMap<TSource, TDestination>(srcProperty, destProperty);
+            if (action == null)
+                throw new LambdaSetterException("The setter action for property mapper cannot be null.");
+
+            this.setter = action;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Action<TSource, TDestination> Setter
         {
             get { return setter; }

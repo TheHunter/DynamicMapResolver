@@ -309,6 +309,29 @@ namespace DynamicMapResolver.Test
             object res = mapper.Map(ps);
             Assert.IsNotNull(res);
         }
+
+        [Test]
+        [ExpectedException(typeof(MissingMemberException))]
+        public void WorngTestOnProperty()
+        {
+            PropertyMapper<PersonaGiuridica, PersonDetails> mapper = new PropertyMapper<PersonaGiuridica, PersonDetails>("ciao", "ciao");
+            Assert.IsNull(mapper);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MissingMemberException))]
+        public void WorngTestOnProperty2()
+        {
+            PropertyMapper<PersonaGiuridica, PersonDetails> mapper = new PropertyMapper<PersonaGiuridica, PersonDetails>("ci ao", "cia o");
+            Assert.IsNull(mapper);
+        }
+
+        [Test]
+        public void TestOnProperty()
+        {
+            PropertyMapper<PersonaGiuridica, PersonDetails> mapper = new PropertyMapper<PersonaGiuridica, PersonDetails>("Code", "Code");
+            Assert.IsNotNull(mapper);
+        }
     }
     
 }
