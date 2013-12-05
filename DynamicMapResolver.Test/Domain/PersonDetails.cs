@@ -25,5 +25,10 @@ namespace DynamicMapResolver.Test.Domain
         public Person Parent { get; protected set; }
 
         public string Code { get; private set; }
+
+        public void UpdateNome(string name)
+        {
+            this.Name = name;
+        }
     }
 }

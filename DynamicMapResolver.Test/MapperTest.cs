@@ -332,6 +332,110 @@ namespace DynamicMapResolver.Test
             PropertyMapper<PersonaGiuridica, PersonDetails> mapper = new PropertyMapper<PersonaGiuridica, PersonDetails>("Code", "Code");
             Assert.IsNotNull(mapper);
         }
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer1()
+        {
+            var container = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>();
+            Assert.IsNotNull(container);
+        }
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer2()
+        {
+            var container = new MapperContainer<PersonaGiuridica, PersonDetails>();
+            Assert.IsNotNull(container);
+        }
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer3()
+        {
+            var container = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+                                         .Exclude("")
+                                         .Exclude((string)null);
+
+            Assert.IsNotNull(container);
+        }
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer4()
+        {
+            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+                                         .Exclude("Code")
+                                         .BuildMapper();
+
+            PersonaGiuridica person = new PersonaGiuridica
+            {
+                Code = "150",
+                Name = "Sergio",
+                Surname = "Hill",
+                AnnoNascita = 1980,
+                Parent = new Person { Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950 }
+            };
+
+            var res = mapper.Map(person);
+
+            Assert.IsNotNull(mapper);
+            Assert.IsNull(res.Code);
+        }
+
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer5()
+        {
+            string naming = "test naming";
+
+            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+                                      .Exclude("Code")
+                                      .Exclude("Name")
+                                      .Include(
+                                          new PropertyMapper<PersonaGiuridica, PersonDetails>(
+                                              (giuridica, details) => details.UpdateNome(naming)))
+                                      .BuildMapper();
+
+            PersonaGiuridica person = new PersonaGiuridica
+            {
+                Code = "150",
+                Name = "Sergio",
+                Surname = "Hill",
+                AnnoNascita = 1980,
+                Parent = new Person { Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950 }
+            };
+
+            var res = mapper.Map(person);
+
+            Assert.IsNotNull(mapper);
+            Assert.IsNull(res.Code);
+            Assert.AreEqual(res.Name, naming);
+        }
+
+        [Test]
+        [Category("Container")]
+        public void TestDefaultContainer6()
+        {
+            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+                                      .Exclude(typeof (PersonDetails).GetProperty("Code"))
+                                      .BuildMapper();
+
+            PersonaGiuridica person = new PersonaGiuridica
+            {
+                Code = "150",
+                Name = "Sergio",
+                Surname = "Hill",
+                AnnoNascita = 1980,
+                Parent = new Person { Name = "fatherName", Surname = "fatherSurname", AnnoNascita = 1950 }
+            };
+
+            var res = mapper.Map(person);
+
+            Assert.IsNotNull(mapper);
+            Assert.IsNull(res.Code);
+        }
     }
     
 }

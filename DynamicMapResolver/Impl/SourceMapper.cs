@@ -96,7 +96,6 @@ namespace DynamicMapResolver.Impl
             get { return this.destinationType; }
         }
 
-
         /// <summary>
         /// 
         /// </summary>

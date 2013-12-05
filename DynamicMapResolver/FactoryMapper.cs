@@ -9,7 +9,7 @@ namespace DynamicMapResolver
     /// <summary>
     /// A factory class used for making default mappers.
     /// </summary>
-    public class FactoryMapper
+    public static class FactoryMapper
     {
         private static readonly IDictionary<Type, HashSet<Type>> PrimitiveTypes;
         private static readonly Type FunctionGetter;
@@ -118,7 +118,7 @@ namespace DynamicMapResolver
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>()
             where TSource: class
-            where TDestination: class//, new()
+            where TDestination: class
         {
             return FactoryMapper.DynamicResolutionMapper<TSource, TDestination>(null, null);
         }
@@ -133,13 +133,26 @@ namespace DynamicMapResolver
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
-            where TDestination : class//, new()
+            where TDestination : class
         {
             return new SourceMapper<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>(), beforeMapping, afterMapping);
         }
 
         /// <summary>
-        /// Get a default ISourceMerger gor the given types.
+        /// Initialize a new container with default property mappers.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
+        public static IMapperContainer<TSource, TDestination> MakeDefaultContainer<TSource, TDestination>()
+            where TSource : class
+            where TDestination : class
+        {
+            return new MapperContainer<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>());
+        }
+
+        /// <summary>
+        /// Get a default ISourceMerger for the given types.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>

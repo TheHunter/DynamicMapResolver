@@ -11,7 +11,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAACAAAAgg=</HashCode>
       <FileName>Impl\SourceMapper.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -92,19 +92,10 @@
   </Class>
   <Class Name="DynamicMapResolver.Impl.PropertyMapper&lt;TSource, TDestination&gt;">
     <Position X="20.75" Y="3.75" Width="1.5" />
-    <InheritanceLine Type="DynamicMapResolver.Impl.PropertyMapInfo" ManuallyRouted="true">
-      <Path>
-        <Point X="23" Y="2.573" />
-        <Point X="23" Y="3.26" />
-        <Point X="21.5" Y="3.26" />
-        <Point X="21.5" Y="3.75" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAAAg=</HashCode>
       <FileName>Impl\PropertyMapper.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.PropertyMapper">
     <Position X="23.75" Y="3.75" Width="1.5" />
@@ -112,7 +103,6 @@
       <HashCode>AAAAAgAAAQAAAAAAAAAAgAAAAAAAABAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\PropertyMapper.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="DynamicMapResolver.ISourceMapper&lt;TSource, TDestination&gt;">
     <Position X="3.75" Y="3.25" Width="1.5" />

@@ -63,8 +63,8 @@ namespace DynamicMapResolver.Impl
         public PropertyMapper(string propertySrc, string propertyDest)
             : base(propertySrc, propertyDest)
         {
-            PropertyInfo srcProperty = null;
-            PropertyInfo destProperty = null;
+            PropertyInfo srcProperty;
+            PropertyInfo destProperty;
             try
             {
                 srcProperty = typeof(TSource).GetProperty(propertySrc);

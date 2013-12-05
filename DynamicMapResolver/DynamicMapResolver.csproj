@@ -46,6 +46,9 @@
     <Compile Include="Exceptions\MappingFailedActionException.cs" />
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
+    <Compile Include="IContainerBuilder.cs" />
+    <Compile Include="IMapperContainer.cs" />
+    <Compile Include="Impl\MapperContainer.cs" />
     <Compile Include="Impl\PropertyMapInfo.cs" />
     <Compile Include="Impl\PropertyMapper.cs" />
     <Compile Include="Impl\SourceMapper.cs" />
