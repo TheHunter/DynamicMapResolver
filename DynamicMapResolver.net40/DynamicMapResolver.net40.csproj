@@ -62,17 +62,17 @@
     <Compile Include="..\DynamicMapResolver\IContainerBuilder.cs">
       <Link>IContainerBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\DynamicMapResolver\IMapperContainer.cs">
-      <Link>IMapperContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\DynamicMapResolver\Impl\MapperContainer.cs">
-      <Link>Impl\MapperContainer.cs</Link>
-    </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\PropertyMapInfo.cs">
       <Link>Impl\PropertyMapInfo.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\PropertyMapper.cs">
       <Link>Impl\PropertyMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\ServiceType.cs">
+      <Link>Impl\ServiceType.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\SimpleMapper.cs">
+      <Link>Impl\SimpleMapper.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\SourceMapper.cs">
       <Link>Impl\SourceMapper.cs</Link>
@@ -83,11 +83,23 @@
     <Compile Include="..\DynamicMapResolver\Impl\SourceTransformer.cs">
       <Link>Impl\SourceTransformer.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\TransformerBuilder.cs">
+      <Link>Impl\TransformerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\TransformerResolver.cs">
+      <Link>Impl\TransformerResolver.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\IPropertyMapInfo.cs">
       <Link>IPropertyMapInfo.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\IPropertyMapper.cs">
       <Link>IPropertyMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\ISimpleMapper.cs">
+      <Link>ISimpleMapper.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\ISimpleMerger.cs">
+      <Link>ISimpleMerger.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\ISourceMapper.cs">
       <Link>ISourceMapper.cs</Link>
@@ -98,11 +110,24 @@
     <Compile Include="..\DynamicMapResolver\ISourceTransformer.cs">
       <Link>ISourceTransformer.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\ITransformerBuilder.cs">
+      <Link>ITransformerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\ITransformerObserver.cs">
+      <Link>ITransformerObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\ITransformerResolver.cs">
+      <Link>ITransformerResolver.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\IUserTransformer.cs">
       <Link>IUserTransformer.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\ServiceResolver.cs">
+      <Link>ServiceResolver.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

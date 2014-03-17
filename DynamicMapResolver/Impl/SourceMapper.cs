@@ -15,9 +15,6 @@ namespace DynamicMapResolver.Impl
         where TSource : class
         where TDestination : class
     {
-        private readonly Type sourceType;
-        private readonly Type destinationType;
-
         /// <summary>
         /// 
         /// </summary>
@@ -39,14 +36,8 @@ namespace DynamicMapResolver.Impl
         /// <param name="afterMapping"></param>
         protected SourceMapper(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
                                 Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            : base(propertyMappers, beforeMapping, afterMapping)
+            : base(propertyMappers, sourceType, destinationType, beforeMapping, afterMapping)
         {
-
-            if (sourceType == null)
-                throw new MapperParameterException("sourceType", "The source type cannot be null.");
-
-            if (destinationType == null)
-                throw new MapperParameterException("destinationType", "The destination type cannot be null.");
 
             if (sourceType.IsPrimitive)
                 throw new MapperParameterException("sourceType", "The source type cannot be a primitive type.");
@@ -55,9 +46,6 @@ namespace DynamicMapResolver.Impl
             {
                 // verify if the destination type is a valid type.
                 Activator.CreateInstance(destinationType, true);
-
-                this.sourceType = sourceType;
-                this.destinationType = destinationType;
             }
             catch (Exception ex)
             {
@@ -75,25 +63,9 @@ namespace DynamicMapResolver.Impl
             if (source == null)
                 return null;
 
-            TDestination destination = Activator.CreateInstance(destinationType, true) as TDestination;
+            TDestination destination = Activator.CreateInstance(this.DestinationType, true) as TDestination;
             this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Type SourceType
-        {
-            get { return this.sourceType; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Type DestinationType
-        {
-            get { return this.destinationType; }
         }
 
         /// <summary>
@@ -126,7 +98,6 @@ namespace DynamicMapResolver.Impl
         internal SourceMapper(Type sourceType, Type destinationType, IEnumerable<IPropertyMapper> propertyMappers)
             : base(propertyMappers.Select<IPropertyMapper, IPropertyMapper<object, object>>(n => n), sourceType, destinationType, null, null)
         {
-            
         }
 
     }

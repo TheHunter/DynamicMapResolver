@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DynamicMapResolver.Exceptions;
 
 namespace DynamicMapResolver.Impl
 {
@@ -21,9 +22,25 @@ namespace DynamicMapResolver.Impl
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
         public SourceMerger(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            : base(propertyMappers, beforeMapping, afterMapping)
+            : this(propertyMappers, typeof(TSource), typeof(TDestination), beforeMapping, afterMapping)
         {
             
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyMappers"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="beforeMapping"></param>
+        /// <param name="afterMapping"></param>
+        protected SourceMerger(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
+            Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+            : base(propertyMappers, sourceType, destinationType, beforeMapping, afterMapping)
+        {
+            if (sourceType.IsPrimitive)
+                throw new MapperParameterException("sourceType", "The source type cannot be a primitive type.");
         }
 
         /// <summary>
@@ -55,5 +72,40 @@ namespace DynamicMapResolver.Impl
             this.OnMapping(source, destination, mappers);
             return destination;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        object ISourceMerger.Merge(object source, object destination)
+        {
+            if (source == null || destination == null)
+                return null;
+
+            return this.Merge(source as TSource, destination as TDestination);
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SourceMerger
+        : SourceMapper<object, object>
+    {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="propertyMappers"></param>
+        internal SourceMerger(Type sourceType, Type destinationType, IEnumerable<IPropertyMapper> propertyMappers)
+            : base(propertyMappers.Select<IPropertyMapper, IPropertyMapper<object, object>>(n => n), sourceType, destinationType, null, null)
+        {
+        }
+
     }
 }

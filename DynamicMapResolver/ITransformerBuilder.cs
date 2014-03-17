@@ -11,7 +11,7 @@ namespace DynamicMapResolver
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    public interface IMapperContainer<TSource, TDestination>
+    public interface ITransformerBuilder<TSource, TDestination>
         : IContainerBuilder<TSource, TDestination>
         where TSource : class
         where TDestination : class
@@ -21,20 +21,28 @@ namespace DynamicMapResolver
         /// </summary>
         /// <param name="propertyMapper"></param>
         /// <returns></returns>
-        IMapperContainer<TSource, TDestination> Include(IPropertyMapper<TSource, TDestination> propertyMapper);
+        ITransformerBuilder<TSource, TDestination> Include(IPropertyMapper<TSource, TDestination> propertyMapper);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyFuncMapper"></param>
+        /// <returns></returns>
+        ITransformerBuilder<TSource, TDestination> Include(
+            Func<ITransformerResolver, IPropertyMapper<TSource, TDestination>> propertyFuncMapper);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        IMapperContainer<TSource, TDestination> Exclude(string propertyName);
+        ITransformerBuilder<TSource, TDestination> Exclude(string propertyName);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        IMapperContainer<TSource, TDestination> Exclude(PropertyInfo property);
+        ITransformerBuilder<TSource, TDestination> Exclude(PropertyInfo property);
     }
 }

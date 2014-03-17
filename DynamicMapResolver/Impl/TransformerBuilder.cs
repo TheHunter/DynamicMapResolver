@@ -12,18 +12,29 @@ namespace DynamicMapResolver.Impl
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    public class MapperContainer<TSource, TDestination>
-        : IMapperContainer<TSource, TDestination>
+    public class TransformerBuilder<TSource, TDestination>
+        : ITransformerBuilder<TSource, TDestination>
         where TSource : class
         where TDestination : class
     {
+        private readonly ITransformerResolver resolver;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
         /// <summary>
-        /// Creates an empty container.
+        /// 
         /// </summary>
-        public MapperContainer()
+        public TransformerBuilder()
+            : this(TransformerResolver.Default)
         {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resolver"></param>
+        internal TransformerBuilder(ITransformerResolver resolver)
+        {
+            this.resolver = resolver;
             this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
         }
 
@@ -31,8 +42,20 @@ namespace DynamicMapResolver.Impl
         /// 
         /// </summary>
         /// <param name="propertyMappers"></param>
-        internal MapperContainer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
+        internal TransformerBuilder(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
+            : this(TransformerResolver.Default, propertyMappers)
         {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resolver"></param>
+        /// <param name="propertyMappers"></param>
+        internal TransformerBuilder(ITransformerResolver resolver, IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
+        {
+            this.resolver = resolver;
+
             if (propertyMappers != null && propertyMappers.Any())
                 this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
             else
@@ -56,7 +79,11 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
-            return new SourceMapper<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
+            var mapper = new SourceMapper<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
+            if (this.resolver != null)
+                this.resolver.ObserveMapper(mapper);
+
+            return mapper;
         }
 
         /// <summary>
@@ -76,7 +103,11 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
-            return new SourceMerger<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
+            var merger = new SourceMerger<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
+            if (this.resolver != null)
+                this.resolver.ObserveMerger(merger);
+
+            return merger;
         }
 
         /// <summary>
@@ -84,20 +115,36 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="propertyMapper"></param>
         /// <returns></returns>
-        public IMapperContainer<TSource, TDestination> Include(IPropertyMapper<TSource, TDestination> propertyMapper)
+        public ITransformerBuilder<TSource, TDestination> Include(IPropertyMapper<TSource, TDestination> propertyMapper)
         {
-            if (propertyMapper != null)
-                this.propertyMappers.Add(propertyMapper);
-            
+            if (propertyMapper == null)
+                throw new MapperParameterException("propertyMapper", "The propertyMapper instance cannot be null.");
+
+            this.propertyMappers.Add(propertyMapper);
             return this;
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="propertyFuncMapper"></param>
+        /// <returns></returns>
+        public ITransformerBuilder<TSource, TDestination> Include(Func<ITransformerResolver, IPropertyMapper<TSource, TDestination>> propertyFuncMapper)
+        {
+            if (propertyFuncMapper == null)
+                throw new MapperParameterException("propertyFuncMapper", "The expression for making mapper property cannot be null.");
+
+            this.propertyMappers.Add(propertyFuncMapper.Invoke(this.resolver));
+            return this;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public IMapperContainer<TSource, TDestination> Exclude(string propertyName)
+        public ITransformerBuilder<TSource, TDestination> Exclude(string propertyName)
         {
             if (!string.IsNullOrEmpty(propertyName))
                 this.propertyMappers.RemoveWhere(n => n.PropertyDestination.Equals(propertyName));
@@ -110,7 +157,7 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        public IMapperContainer<TSource, TDestination> Exclude(PropertyInfo property)
+        public ITransformerBuilder<TSource, TDestination> Exclude(PropertyInfo property)
         {
             if (property == null)
                 return this;

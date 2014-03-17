@@ -15,6 +15,7 @@ namespace DynamicMapResolver.Test
         [Test]
         public void TestDefaultMapper()
         {
+
             var mapper = FactoryMapper.DynamicResolutionMapper<Student, Person>();
 
             Student st = new Student{Name = "mario", Surname = "monti", AnnoNascita = 19};
@@ -337,7 +338,7 @@ namespace DynamicMapResolver.Test
         [Category("Container")]
         public void TestDefaultContainer1()
         {
-            var container = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>();
+            var container = FactoryMapper.MakeDefaultBuilder<PersonaGiuridica, PersonDetails>();
             Assert.IsNotNull(container);
         }
 
@@ -345,7 +346,7 @@ namespace DynamicMapResolver.Test
         [Category("Container")]
         public void TestDefaultContainer2()
         {
-            var container = new MapperContainer<PersonaGiuridica, PersonDetails>();
+            var container = new TransformerBuilder<PersonaGiuridica, PersonDetails>();
             Assert.IsNotNull(container);
         }
 
@@ -353,7 +354,7 @@ namespace DynamicMapResolver.Test
         [Category("Container")]
         public void TestDefaultContainer3()
         {
-            var container = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+            var container = FactoryMapper.MakeDefaultBuilder<PersonaGiuridica, PersonDetails>()
                                          .Exclude("")
                                          .Exclude((string)null);
 
@@ -364,7 +365,7 @@ namespace DynamicMapResolver.Test
         [Category("Container")]
         public void TestDefaultContainer4()
         {
-            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+            var mapper = FactoryMapper.MakeDefaultBuilder<PersonaGiuridica, PersonDetails>()
                                          .Exclude("Code")
                                          .BuildMapper();
 
@@ -390,7 +391,7 @@ namespace DynamicMapResolver.Test
         {
             string naming = "test naming";
 
-            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+            var mapper = FactoryMapper.MakeDefaultBuilder<PersonaGiuridica, PersonDetails>()
                                       .Exclude("Code")
                                       .Exclude("Name")
                                       .Include(
@@ -418,7 +419,7 @@ namespace DynamicMapResolver.Test
         [Category("Container")]
         public void TestDefaultContainer6()
         {
-            var mapper = FactoryMapper.MakeDefaultContainer<PersonaGiuridica, PersonDetails>()
+            var mapper = FactoryMapper.MakeDefaultBuilder<PersonaGiuridica, PersonDetails>()
                                       .Exclude(typeof (PersonDetails).GetProperty("Code"))
                                       .BuildMapper();
 

@@ -47,20 +47,28 @@
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
     <Compile Include="IContainerBuilder.cs" />
-    <Compile Include="IMapperContainer.cs" />
-    <Compile Include="Impl\MapperContainer.cs" />
+    <Compile Include="Impl\ServiceType.cs" />
+    <Compile Include="Impl\TransformerResolver.cs" />
+    <Compile Include="ITransformerObserver.cs" />
+    <Compile Include="ITransformerResolver.cs" />
+    <Compile Include="Impl\SimpleMapper.cs" />
+    <Compile Include="ISimpleMerger.cs" />
+    <Compile Include="ITransformerBuilder.cs" />
+    <Compile Include="Impl\TransformerBuilder.cs" />
     <Compile Include="Impl\PropertyMapInfo.cs" />
     <Compile Include="Impl\PropertyMapper.cs" />
     <Compile Include="Impl\SourceMapper.cs" />
     <Compile Include="Impl\SourceMerger.cs" />
     <Compile Include="Impl\SourceTransformer.cs" />
     <Compile Include="IPropertyMapInfo.cs" />
+    <Compile Include="ISimpleMapper.cs" />
     <Compile Include="ISourceMapper.cs" />
     <Compile Include="IPropertyMapper.cs" />
     <Compile Include="ISourceMerger.cs" />
     <Compile Include="ISourceTransformer.cs" />
     <Compile Include="IUserTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComponentDiagram.cd" />

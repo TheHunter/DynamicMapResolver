@@ -15,6 +15,8 @@ namespace DynamicMapResolver.Impl
         where TSource : class
         where TDestination : class
     {
+        private readonly Type sourceType;
+        private readonly Type destinationType;
         private readonly Action<TDestination> beforeMapping;
         private readonly Action<TDestination> afterMapping;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
@@ -23,9 +25,12 @@ namespace DynamicMapResolver.Impl
         /// 
         /// </summary>
         /// <param name="propertyMappers"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
-        protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+        protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
+            Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
             if (propertyMappers == null || !propertyMappers.Any())
                 throw new MapperParameterException("propertyMappers", "Collection of property mappers cannot be empty or null.");
@@ -35,6 +40,14 @@ namespace DynamicMapResolver.Impl
             if (this.propertyMappers.Count != propertyMappers.Count())
                 throw new NonUniqueSetterException("Property mappers must be unique, so verify the lambda setter expressions.");
 
+            if (sourceType == null)
+                throw new MapperParameterException("sourceType", "The source type cannot be null.");
+
+            if (destinationType == null)
+                throw new MapperParameterException("destinationType", "The destination type cannot be null.");
+
+            this.sourceType = sourceType;
+            this.destinationType = destinationType;
             this.beforeMapping = beforeMapping;
             this.afterMapping = afterMapping;
         }
@@ -62,8 +75,8 @@ namespace DynamicMapResolver.Impl
             #region Executing BeforeMappingAction
             try
             {
-                if (this.BeforeMapping != null)
-                    this.BeforeMapping.Invoke(destination);
+                if (this.beforeMapping != null)
+                    this.beforeMapping.Invoke(destination);
             }
             catch (Exception ex)
             {
@@ -91,8 +104,8 @@ namespace DynamicMapResolver.Impl
             #region Executing AfterMapping Action.
             try
             {
-                if (this.AfterMapping != null)
-                    this.AfterMapping.Invoke(destination);
+                if (this.afterMapping != null)
+                    this.afterMapping.Invoke(destination);
             }
             catch (Exception ex)
             {
@@ -104,17 +117,17 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
-        public Action<TDestination> BeforeMapping
+        public Type SourceType
         {
-            get { return this.beforeMapping; }
+            get { return this.sourceType; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Action<TDestination> AfterMapping
+        public Type DestinationType
         {
-            get { return this.afterMapping; }
+            get { return this.destinationType; }
         }
 
         /// <summary>

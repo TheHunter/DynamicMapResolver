@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using AutoMapper;
 using DynamicMapResolver.Test.Domain;
@@ -41,24 +42,24 @@ namespace DynamicMapResolver.Test
             Assert.IsNotNull(giu);
         }
 
-        [Test]
+        //[Test]
         public void VerifyElapsedTime()
         {
             int count = 1000000;
+            List<Person> lista = GetPersons(count);
 
-            var timeSpanMapResolver = GetElapsedFromMapResolver(count);
-            var timeSpanAutomapper = GetElapsedTimeFromAutoMapper(count);
+            var timeSpanMapResolver = GetElapsedFromMapResolver(lista);
+            var timeSpanAutomapper = GetElapsedTimeFromAutoMapper(lista);
 
             Assert.IsTrue(timeSpanMapResolver.TotalMilliseconds < timeSpanAutomapper.TotalMilliseconds);
         }
 
 
-        public TimeSpan GetElapsedTimeFromAutoMapper(int count)
+        public TimeSpan GetElapsedTimeFromAutoMapper(List<Person> lista)
         {
             Mapper.CreateMap<Person, PersonaGiuridica>();
 
             Stopwatch meter = new Stopwatch();
-            List<Person> lista = GetPersons(count);
 
             meter.Start();
             foreach (var person in lista)
@@ -70,12 +71,11 @@ namespace DynamicMapResolver.Test
         }
 
 
-        public TimeSpan GetElapsedFromMapResolver(int count)
+        public TimeSpan GetElapsedFromMapResolver(List<Person> lista)
         {
             var mapper = FactoryMapper.DynamicResolutionMapper<Person, PersonaGiuridica>();
 
             Stopwatch meter = new Stopwatch();       
-            List<Person> lista = GetPersons(count);
 
             meter.Start();
             foreach (var person in lista)
@@ -111,6 +111,45 @@ namespace DynamicMapResolver.Test
                 lista.Add(p);
             }
             return lista;
+        }
+
+
+        //[Test]
+        public void TestReflection()
+        {
+
+            
+            object obj1 = new Person();
+            object obj2 = new Person();
+
+            Type t1 = typeof(IPersonHeader);
+            Type t2 = typeof(Person);
+
+            try
+            {
+                object instance = 5.5;
+                //int i = (int) instance;
+
+                byte bb = Convert.ToByte(instance);
+
+                byte b = (byte)instance;
+                double d = (double) instance;
+            }
+            catch (Exception ex)
+            {
+                Assert.IsFalse(true, "Cast invalid");
+            }
+
+            Compare<IPersonHeader>(obj1, obj2);
+            //Compare<long>(1, 10);
+        }
+
+        
+        public void Compare<TObj>(object obj1, object obj2)
+        {
+            Assert.IsTrue(obj1 is TObj);
+
+            Assert.IsTrue(obj2 is TObj);
         }
     }
 }

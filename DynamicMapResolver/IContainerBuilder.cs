@@ -23,7 +23,25 @@ namespace DynamicMapResolver
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="beforeMapping"></param>
+        /// <param name="afterMapping"></param>
+        /// <returns></returns>
+        ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping,
+                                                         Action<TDestination> afterMapping);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         ISourceMerger<TSource, TDestination> BuildMerger();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="beforeMapping"></param>
+        /// <param name="afterMapping"></param>
+        /// <returns></returns>
+        ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping,
+                                                         Action<TDestination> afterMapping);
     }
 }

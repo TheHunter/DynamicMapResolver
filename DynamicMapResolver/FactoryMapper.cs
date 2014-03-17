@@ -144,11 +144,11 @@ namespace DynamicMapResolver
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
         /// <returns></returns>
-        public static IMapperContainer<TSource, TDestination> MakeDefaultContainer<TSource, TDestination>()
+        public static ITransformerBuilder<TSource, TDestination> MakeDefaultBuilder<TSource, TDestination>()
             where TSource : class
             where TDestination : class
         {
-            return new MapperContainer<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>());
+            return new TransformerBuilder<TSource, TDestination>(GetDefaultPropertyMappers<TSource, TDestination>());
         }
 
         /// <summary>
