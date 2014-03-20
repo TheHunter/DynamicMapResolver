@@ -68,8 +68,8 @@
     <Compile Include="..\DynamicMapResolver\Impl\PropertyMapper.cs">
       <Link>Impl\PropertyMapper.cs</Link>
     </Compile>
-    <Compile Include="..\DynamicMapResolver\Impl\ServiceType.cs">
-      <Link>Impl\ServiceType.cs</Link>
+    <Compile Include="..\DynamicMapResolver\Impl\ServiceTransformer.cs">
+      <Link>Impl\ServiceTransformer.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\SimpleMapper.cs">
       <Link>Impl\SimpleMapper.cs</Link>

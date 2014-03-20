@@ -18,6 +18,7 @@ namespace DynamicMapResolver.Impl
         where TDestination : class
     {
         private readonly ITransformerResolver resolver;
+        private readonly bool canBeUsedResolver = true;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
         /// <summary>
@@ -26,6 +27,7 @@ namespace DynamicMapResolver.Impl
         public TransformerBuilder()
             : this(TransformerResolver.Default)
         {
+            this.canBeUsedResolver = false;
         }
 
         /// <summary>
@@ -80,8 +82,8 @@ namespace DynamicMapResolver.Impl
         public ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
             var mapper = new SourceMapper<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
-            if (this.resolver != null)
-                this.resolver.ObserveMapper(mapper);
+            if (this.canBeUsedResolver)
+                this.resolver.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper);
 
             return mapper;
         }
@@ -104,8 +106,8 @@ namespace DynamicMapResolver.Impl
         public ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
             var merger = new SourceMerger<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
-            if (this.resolver != null)
-                this.resolver.ObserveMerger(merger);
+            if (this.canBeUsedResolver)
+                this.resolver.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger);
 
             return merger;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using AutoMapper;
+using DynamicMapResolver.Impl;
 using DynamicMapResolver.Test.Domain;
 using NUnit.Framework;
 
@@ -117,8 +118,15 @@ namespace DynamicMapResolver.Test
         //[Test]
         public void TestReflection()
         {
+            TransformerResolver a = new TransformerResolver();
+            ITransformerResolver aa = a;
 
+            ISourceMapper<Person, PersonaGiuridica> mapper0 = FactoryMapper.DynamicResolutionMapper<Person, PersonaGiuridica>();
+            SourceMapper<Person, PersonaGiuridica> mapper = new SourceMapper<Person, PersonaGiuridica>(new List<IPropertyMapper<Person, PersonaGiuridica>>(), null, null);
+            //aa.Register<ISourceMapper<Person, PersonaGiuridica>>(mapper);
+            //aa.Register(mapper0);
             
+
             object obj1 = new Person();
             object obj2 = new Person();
 

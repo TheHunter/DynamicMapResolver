@@ -11,37 +11,34 @@ namespace DynamicMapResolver
     public interface ITransformerResolver
         : ITransformerObserver
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMapper"></typeparam>
-        /// <returns></returns>
-        bool IsMapperObserved<TMapper>() where TMapper : ISourceMapper;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMapper"></typeparam>
-        /// <param name="keyService"></param>
-        /// <returns></returns>
-        bool IsMapperObserved<TMapper>(string keyService) where TMapper : ISourceMapper;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMerger"></typeparam>
-        /// <returns></returns>
-        bool IsMergerObserved<TMerger>() where TMerger : ISourceMerger;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMerger"></typeparam>
-        /// <param name="keyService"></param>
-        /// <returns></returns>
-        bool IsMergerObserved<TMerger>(string keyService) where TMerger : ISourceMerger;
-
+        
         #region using mappers
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
+        object TryToMap(object source, Type destinationType);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        object TryToMap(object source, Type destinationType, string keyService);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        object TryToMap(object source, Type destinationType, object keyService);
 
         /// <summary>
         /// 
@@ -51,14 +48,6 @@ namespace DynamicMapResolver
         /// <param name="source"></param>
         /// <returns></returns>
         TDestination TryToMap<TSource, TDestination>(TSource source);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destinationType"></param>
-        /// <returns></returns>
-        object TryToMap(object source, Type destinationType);
 
         /// <summary>
         /// 
@@ -73,15 +62,42 @@ namespace DynamicMapResolver
         /// <summary>
         /// 
         /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
         /// <param name="source"></param>
-        /// <param name="destinationType"></param>
         /// <param name="keyService"></param>
         /// <returns></returns>
-        object TryToMap(object source, Type destinationType, string keyService);
+        TDestination TryToMap<TSource, TDestination>(TSource source, object keyService);
 
         #endregion
 
         #region using mergers
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        object TryToMerge(object source, object destination);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        object TryToMerge(object source, object destination, string keyService);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        object TryToMerge(object source, object destination, object keyService);
 
         /// <summary>
         /// 
@@ -92,15 +108,7 @@ namespace DynamicMapResolver
         /// <param name="destination"></param>
         /// <returns></returns>
         TDestination TryToMerge<TSource, TDestination>(TSource source, TDestination destination);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <returns></returns>
-        object TryToMerge(object source, object destination);
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -115,11 +123,13 @@ namespace DynamicMapResolver
         /// <summary>
         /// 
         /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <param name="keyService"></param>
         /// <returns></returns>
-        object TryToMerge(object source, object destination, string keyService);
+        TDestination TryToMerge<TSource, TDestination>(TSource source, TDestination destination, object keyService);
 
         #endregion
 

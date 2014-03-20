@@ -16,7 +16,7 @@ namespace DynamicMapResolver
         /// <typeparam name="TMapper"></typeparam>
         /// <param name="mapper"></param>
         /// <returns></returns>
-        bool ObserveMapper<TMapper>(TMapper mapper) where TMapper : ISourceMapper;
+        bool RegisterMapper<TMapper>(TMapper mapper) where TMapper : class, ISourceMapper;
 
         /// <summary>
         /// 
@@ -25,7 +25,16 @@ namespace DynamicMapResolver
         /// <param name="mapper"></param>
         /// <param name="keyService"></param>
         /// <returns></returns>
-        bool ObserveMapper<TMapper>(TMapper mapper, string keyService) where TMapper : ISourceMapper;
+        bool RegisterMapper<TMapper>(TMapper mapper, string keyService) where TMapper : class, ISourceMapper;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TMapper"></typeparam>
+        /// <param name="mapper"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        bool RegisterMapper<TMapper>(TMapper mapper, object keyService) where TMapper : class, ISourceMapper;
 
         /// <summary>
         /// 
@@ -33,7 +42,7 @@ namespace DynamicMapResolver
         /// <typeparam name="TMerger"></typeparam>
         /// <param name="merger"></param>
         /// <returns></returns>
-        bool ObserveMerger<TMerger>(TMerger merger) where TMerger : ISourceMerger;
+        bool RegisterMerger<TMerger>(TMerger merger) where TMerger : class, ISourceMerger;
 
         /// <summary>
         /// 
@@ -42,7 +51,15 @@ namespace DynamicMapResolver
         /// <param name="merger"></param>
         /// <param name="keyService"></param>
         /// <returns></returns>
-        bool ObserveMerger<TMerger>(TMerger merger, string keyService) where TMerger : ISourceMerger;
+        bool RegisterMerger<TMerger>(TMerger merger, string keyService) where TMerger : class, ISourceMerger;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TMerger"></typeparam>
+        /// <param name="merger"></param>
+        /// <param name="keyService"></param>
+        /// <returns></returns>
+        bool RegisterMerger<TMerger>(TMerger merger, object keyService) where TMerger : class, ISourceMerger;
     }
 }

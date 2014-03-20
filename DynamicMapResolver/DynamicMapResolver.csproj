@@ -47,7 +47,7 @@
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
     <Compile Include="IContainerBuilder.cs" />
-    <Compile Include="Impl\ServiceType.cs" />
+    <Compile Include="Impl\ServiceTransformer.cs" />
     <Compile Include="Impl\TransformerResolver.cs" />
     <Compile Include="ITransformerObserver.cs" />
     <Compile Include="ITransformerResolver.cs" />
