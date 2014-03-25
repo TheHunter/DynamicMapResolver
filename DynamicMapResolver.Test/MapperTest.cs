@@ -225,6 +225,34 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
+        [ExpectedException(typeof(FailedSetPropertyException))]
+        public void TestDefaultMergerIgnoringException()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
+                {
+                    new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name, "Name", "Name")
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.Parent = ((Student)null).Father )
+                };
+
+            var merger = new SourceMerger<Student, Person>(propMappers,
+                    null,
+                    r => buffer.AppendLine(string.Format("ToString after mapping: {0}", r.ToString()))
+                );
+
+            Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1 };
+            Person pr = new Person();
+
+            merger.IgnoreExceptionOnMapping = true;
+            merger.Merge(st, pr);
+
+            merger.IgnoreExceptionOnMapping = false;
+            merger.Merge(st, pr);
+        }
+
+        [Test]
         public void TestMapperNonPublicMembers()
         {
             ISourceMapper<PersonaGiuridica, PersonDetails> mapper = FactoryMapper.DynamicResolutionMapper<PersonaGiuridica, PersonDetails>();

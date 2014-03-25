@@ -17,7 +17,7 @@ namespace DynamicMapResolver.Impl
         where TSource : class
         where TDestination : class
     {
-        private readonly ITransformerResolver resolver;
+        private readonly ITransformerObserver observer;
         private readonly bool canBeUsedResolver = true;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
@@ -25,7 +25,7 @@ namespace DynamicMapResolver.Impl
         /// 
         /// </summary>
         public TransformerBuilder()
-            : this(TransformerResolver.Default)
+            : this(TransformerObserver.Default)
         {
             this.canBeUsedResolver = false;
         }
@@ -33,10 +33,10 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="resolver"></param>
-        internal TransformerBuilder(ITransformerResolver resolver)
+        /// <param name="observer"></param>
+        internal TransformerBuilder(ITransformerObserver observer)
         {
-            this.resolver = resolver;
+            this.observer = observer;
             this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
         }
 
@@ -45,18 +45,19 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="propertyMappers"></param>
         internal TransformerBuilder(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
-            : this(TransformerResolver.Default, propertyMappers)
+            : this(TransformerObserver.Default, propertyMappers)
         {
+            this.canBeUsedResolver = false;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="resolver"></param>
+        /// <param name="observer"></param>
         /// <param name="propertyMappers"></param>
-        internal TransformerBuilder(ITransformerResolver resolver, IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
+        internal TransformerBuilder(ITransformerObserver observer, IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
         {
-            this.resolver = resolver;
+            this.observer = observer;
 
             if (propertyMappers != null && propertyMappers.Any())
                 this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
@@ -83,7 +84,7 @@ namespace DynamicMapResolver.Impl
         {
             var mapper = new SourceMapper<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
             if (this.canBeUsedResolver)
-                this.resolver.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper);
+                this.observer.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper);
 
             return mapper;
         }
@@ -107,7 +108,7 @@ namespace DynamicMapResolver.Impl
         {
             var merger = new SourceMerger<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
             if (this.canBeUsedResolver)
-                this.resolver.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger);
+                this.observer.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger);
 
             return merger;
         }
@@ -136,7 +137,7 @@ namespace DynamicMapResolver.Impl
             if (propertyFuncMapper == null)
                 throw new MapperParameterException("propertyFuncMapper", "The expression for making mapper property cannot be null.");
 
-            this.propertyMappers.Add(propertyFuncMapper.Invoke(this.resolver));
+            this.propertyMappers.Add(propertyFuncMapper.Invoke(this.observer));
             return this;
         }
 

@@ -5,8 +5,9 @@ namespace DynamicMapResolver.Exceptions
     /// <summary>
     /// Indicates an error when BeforeMapping / AfterMapping action is executed.
     /// </summary>
+    [Serializable]
     public class MappingFailedActionException
-        : Exception
+        : MapperException
     {
         /// <summary>
         /// 

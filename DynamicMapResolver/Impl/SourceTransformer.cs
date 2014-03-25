@@ -11,15 +11,24 @@ namespace DynamicMapResolver.Impl
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
     public abstract class SourceTransformer<TSource, TDestination>
-        : ISourceTransformer<TSource, TDestination>
+        : ActionTransformer<TSource, TDestination>, ISourceTransformer<TSource, TDestination>
         where TSource : class
         where TDestination : class
     {
-        private readonly Type sourceType;
-        private readonly Type destinationType;
-        private readonly Action<TDestination> beforeMapping;
-        private readonly Action<TDestination> afterMapping;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
+
+        protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
+            Action<TDestination> beforeMapping, Action<TDestination> afterMapping, Action<TSource, TDestination> onTransforming)
+            : base(sourceType, destinationType, beforeMapping, afterMapping, onTransforming)
+        {
+            if (propertyMappers == null || !propertyMappers.Any())
+                throw new MapperParameterException("propertyMappers", "Collection of property mappers cannot be empty or null.");
+
+            this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
+
+            if (this.propertyMappers.Count != propertyMappers.Count())
+                throw new NonUniqueSetterException("Property mappers must be unique, so verify the lambda setter expressions.");
+        }
 
         /// <summary>
         /// 
@@ -31,6 +40,7 @@ namespace DynamicMapResolver.Impl
         /// <param name="afterMapping"></param>
         protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
             Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+            : base(sourceType, destinationType, beforeMapping, afterMapping)
         {
             if (propertyMappers == null || !propertyMappers.Any())
                 throw new MapperParameterException("propertyMappers", "Collection of property mappers cannot be empty or null.");
@@ -39,17 +49,24 @@ namespace DynamicMapResolver.Impl
 
             if (this.propertyMappers.Count != propertyMappers.Count())
                 throw new NonUniqueSetterException("Property mappers must be unique, so verify the lambda setter expressions.");
+        }
 
-            if (sourceType == null)
-                throw new MapperParameterException("sourceType", "The source type cannot be null.");
-
-            if (destinationType == null)
-                throw new MapperParameterException("destinationType", "The destination type cannot be null.");
-
-            this.sourceType = sourceType;
-            this.destinationType = destinationType;
-            this.beforeMapping = beforeMapping;
-            this.afterMapping = afterMapping;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="propMappers"></param>
+        protected void UsePropertyMappers(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propMappers)
+        {
+            propMappers.All
+                    (
+                        mapper =>
+                        {
+                            mapper.Setter.Invoke(source, destination);
+                            return true;
+                        }
+                    );
         }
 
         /// <summary>
@@ -60,58 +77,44 @@ namespace DynamicMapResolver.Impl
         /// <param name="propertiesToMap"></param>
         protected void OnMapping(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
         {
-            this.OnMapping(source, destination, false, propertiesToMap);
+            this.OnTransforming = (source1, destination1) => UsePropertyMappers(source1, destination1, propertiesToMap);
+            this.Transform(source, destination);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <param name="ignoreExceptionOnMapping"></param>
-        /// <param name="propertiesToMap"></param>
-        protected void OnMapping(TSource source, TDestination destination, bool ignoreExceptionOnMapping, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
+        public IEnumerable<IPropertyMapper<TSource, TDestination>> PropertyMappers
         {
-            #region Executing BeforeMappingAction
-            try
-            {
-                if (this.beforeMapping != null)
-                    this.beforeMapping.Invoke(destination);
-            }
-            catch (Exception ex)
-            {
-                throw new MappingFailedActionException("Error on executing BeforeMapping action.", ex);
-            }
-            #endregion
+            get { return this.propertyMappers; }
+        }
+    }
 
-            try
-            {
-                propertiesToMap.All
-                    (
-                        mapper =>
-                        {
-                            mapper.Setter.Invoke(source, destination);
-                            return true;
-                        }
-                    );
-            }
-            catch (Exception ex)
-            {
-                if (!ignoreExceptionOnMapping)
-                    throw new FailedSetPropertyException("Exception on execution lambda setter action.", ex);
-            }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SourceTransformer
+        : ISourceTransformer
+    {
+        private readonly Type sourceType;
+        private readonly Type destinationType;
+        private bool ignoreExceptionOnMapping;
 
-            #region Executing AfterMapping Action.
-            try
-            {
-                if (this.afterMapping != null)
-                    this.afterMapping.Invoke(destination);
-            }
-            catch (Exception ex)
-            {
-                throw new MappingFailedActionException("Error on executing AfterMapping action.", ex);
-            }
-            #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        public SourceTransformer(Type sourceType, Type destinationType)
+        {
+            if (sourceType == null)
+                throw new MapperParameterException("sourceType", "The source type cannot be null.");
+
+            if (destinationType == null)
+                throw new MapperParameterException("destinationType", "The destination type cannot be null.");
+
+            this.sourceType = sourceType;
+            this.destinationType = destinationType;
         }
 
         /// <summary>
@@ -133,9 +136,46 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<IPropertyMapper<TSource, TDestination>> PropertyMappers
+        public bool IgnoreExceptionOnMapping
         {
-            get { return this.propertyMappers; }
+            get { return this.ignoreExceptionOnMapping; }
+            set { this.ignoreExceptionOnMapping = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is SourceTransformer)
+                return this.GetHashCode() == obj.GetHashCode();
+            
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return 11 * (this.sourceType.GetHashCode() - this.destinationType.GetHashCode());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("sourceType: {0}, destinationType: {1}", this.sourceType.Name,
+                                 this.destinationType.Name);
         }
     }
+
 }

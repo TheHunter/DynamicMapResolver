@@ -5,8 +5,9 @@ namespace DynamicMapResolver.Exceptions
     /// <summary>
     /// Indicates an error when the action setter is null.
     /// </summary>
+    [Serializable]
     public class LambdaSetterException
-        : Exception
+        : MapperException
     {
         /// <summary>
         /// 

@@ -80,6 +80,31 @@ namespace DynamicMapResolver.Impl
 
             return this.Map(source as TSource);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is SourceMapper<TSource, TDestination>)
+                return this.GetHashCode() == obj.GetHashCode();
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return typeof(SourceMapper<TSource, TDestination>).GetHashCode() + base.GetHashCode();
+        }
     }
 
     /// <summary>

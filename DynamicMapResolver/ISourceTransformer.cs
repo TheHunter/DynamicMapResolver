@@ -17,6 +17,7 @@ namespace DynamicMapResolver
         /// A set of properties mappers for mapping destination object properties.
         /// </summary>
         IEnumerable<IPropertyMapper<TSource, TDestination>> PropertyMappers { get; }
+
     }
 
     /// <summary>
@@ -34,6 +35,11 @@ namespace DynamicMapResolver
         /// 
         /// </summary>
         Type DestinationType { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IgnoreExceptionOnMapping { get; set; }
 
     }
 }

@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuilderType.cs" />
+    <Compile Include="Exceptions\MapperException.cs" />
     <Compile Include="Exceptions\MapperParameterException.cs" />
     <Compile Include="Exceptions\FailedSetPropertyException.cs" />
     <Compile Include="Exceptions\LambdaSetterException.cs" />
@@ -47,9 +49,12 @@
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
     <Compile Include="IContainerBuilder.cs" />
+    <Compile Include="Impl\ActionTransformer.cs" />
     <Compile Include="Impl\ServiceTransformer.cs" />
-    <Compile Include="Impl\TransformerResolver.cs" />
+    <Compile Include="Impl\SimpleMerger.cs" />
+    <Compile Include="Impl\TransformerObserver.cs" />
     <Compile Include="ITransformerObserver.cs" />
+    <Compile Include="ITransformerRegister.cs" />
     <Compile Include="ITransformerResolver.cs" />
     <Compile Include="Impl\SimpleMapper.cs" />
     <Compile Include="ISimpleMerger.cs" />
@@ -68,7 +73,6 @@
     <Compile Include="ISourceTransformer.cs" />
     <Compile Include="IUserTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComponentDiagram.cd" />

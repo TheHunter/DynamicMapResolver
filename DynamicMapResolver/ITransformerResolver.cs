@@ -9,7 +9,6 @@ namespace DynamicMapResolver
     /// 
     /// </summary>
     public interface ITransformerResolver
-        : ITransformerObserver
     {
         
         #region using mappers

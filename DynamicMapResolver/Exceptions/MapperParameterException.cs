@@ -5,8 +5,9 @@ namespace DynamicMapResolver.Exceptions
     /// <summary>
     /// Indicates when a wrong parameter is used.
     /// </summary>
+    [Serializable]
     public class MapperParameterException
-        : Exception
+        : MapperException
     {
         private readonly string parameterName;
 

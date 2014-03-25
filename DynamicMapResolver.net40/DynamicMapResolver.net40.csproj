@@ -41,11 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\DynamicMapResolver\BuilderType.cs">
+      <Link>BuilderType.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\FailedSetPropertyException.cs">
       <Link>Exceptions\FailedSetPropertyException.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\LambdaSetterException.cs">
       <Link>Exceptions\LambdaSetterException.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Exceptions\MapperException.cs">
+      <Link>Exceptions\MapperException.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\MapperParameterException.cs">
       <Link>Exceptions\MapperParameterException.cs</Link>
@@ -61,6 +67,9 @@
     </Compile>
     <Compile Include="..\DynamicMapResolver\IContainerBuilder.cs">
       <Link>IContainerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\ActionTransformer.cs">
+      <Link>Impl\ActionTransformer.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\PropertyMapInfo.cs">
       <Link>Impl\PropertyMapInfo.cs</Link>
@@ -86,8 +95,8 @@
     <Compile Include="..\DynamicMapResolver\Impl\TransformerBuilder.cs">
       <Link>Impl\TransformerBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\DynamicMapResolver\Impl\TransformerResolver.cs">
-      <Link>Impl\TransformerResolver.cs</Link>
+    <Compile Include="..\DynamicMapResolver\Impl\TransformerObserver.cs">
+      <Link>Impl\TransformerObserver.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\IPropertyMapInfo.cs">
       <Link>IPropertyMapInfo.cs</Link>
@@ -116,14 +125,14 @@
     <Compile Include="..\DynamicMapResolver\ITransformerObserver.cs">
       <Link>ITransformerObserver.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\ITransformerRegister.cs">
+      <Link>ITransformerRegister.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\ITransformerResolver.cs">
       <Link>ITransformerResolver.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\IUserTransformer.cs">
       <Link>IUserTransformer.cs</Link>
-    </Compile>
-    <Compile Include="..\DynamicMapResolver\ServiceResolver.cs">
-      <Link>ServiceResolver.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -58,9 +58,12 @@
     <Compile Include="Domain\PersonDetails.cs" />
     <Compile Include="Domain\IPersonHeader.cs" />
     <Compile Include="Domain\Student.cs" />
+    <Compile Include="Domain\User.cs" />
     <Compile Include="MapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceResolverTest.cs" />
+    <Compile Include="ReflectionTest.cs" />
+    <Compile Include="ServiceTransformerTest.cs" />
+    <Compile Include="TransformerObserverTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

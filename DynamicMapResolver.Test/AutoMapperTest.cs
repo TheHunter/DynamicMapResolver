@@ -118,7 +118,7 @@ namespace DynamicMapResolver.Test
         //[Test]
         public void TestReflection()
         {
-            TransformerResolver a = new TransformerResolver();
+            TransformerObserver a = new TransformerObserver();
             ITransformerResolver aa = a;
 
             ISourceMapper<Person, PersonaGiuridica> mapper0 = FactoryMapper.DynamicResolutionMapper<Person, PersonaGiuridica>();

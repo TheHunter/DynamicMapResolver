@@ -11,8 +11,8 @@ namespace DynamicMapResolver.Impl
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
-    public class SimpleMapper<TSource, TDestination>
-       : ActionTransformer<TSource, TDestination>, ISimpleMapper<TSource, TDestination>
+    public class SimpleMerger<TSource, TDestination>
+        : ActionTransformer<TSource, TDestination>, ISimpleMerger<TSource, TDestination>
     {
         private readonly Action<TSource, TDestination> converter;
 
@@ -22,8 +22,8 @@ namespace DynamicMapResolver.Impl
         /// <param name="converter"></param>
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
-        public SimpleMapper(Action<TSource, TDestination> converter, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            :base(typeof(TSource), typeof(TDestination), beforeMapping, afterMapping, converter)
+        public SimpleMerger(Action<TSource, TDestination> converter, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+            : base(typeof(TSource), typeof(TDestination), beforeMapping, afterMapping, converter)
         {
             if (converter == null)
                 throw new MapperParameterException("converter", "The given lambda converter cannot be null.");
@@ -35,25 +35,29 @@ namespace DynamicMapResolver.Impl
         /// 
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="destination"></param>
         /// <returns></returns>
-        public TDestination Map(TSource source)
+        public TDestination Merge(TSource source, TDestination destination)
         {
-            TDestination dest = (TDestination)Activator.CreateInstance(this.DestinationType, true);
-            this.Transform(source, dest);
-            return dest;
+            this.Transform(source, destination);
+            return destination;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="destination"></param>
         /// <returns></returns>
-        object ISourceMapper.Map(object source)
+        object ISourceMerger.Merge(object source, object destination)
         {
-            if (source is TSource)
-                return this.Map((TSource)source);
+            if (!(source is TSource))
+                throw new MapperParameterException("source", string.Format("Error before executing the Map method from ISimpleTransformer instance, caused by incorrect source type (of <{0}>), instead It's expected <{1}>", source.GetType().Name, typeof(TSource).Name));
 
-            throw new MapperParameterException("source", string.Format("Error before executing the Map method from ISimpleTransformer instance, caused by incorrect source type (of <{0}>), instead It's expected <{1}>", source.GetType().Name, typeof(TSource).Name));
+            if (!(destination is TDestination))
+                throw new MapperParameterException("destination", string.Format("Error before executing the Map method from ISimpleTransformer instance, caused by incorrect destination type (of <{0}>), instead It's expected <{1}>", source.GetType().Name, typeof(TDestination).Name));
+            
+            return this.Merge((TSource)source, (TDestination)destination);
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace DynamicMapResolver.Impl
             if (obj == null)
                 return false;
 
-            if (obj is SimpleMapper<TSource, TDestination>)
+            if (obj is SimpleMerger<TSource, TDestination>)
                 return this.GetHashCode() == obj.GetHashCode();
 
             return false;
@@ -78,7 +82,7 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return typeof(SimpleMapper<TSource, TDestination>).GetHashCode() + base.GetHashCode();
+            return typeof(SimpleMerger<TSource, TDestination>).GetHashCode() + base.GetHashCode();
         }
     }
 }

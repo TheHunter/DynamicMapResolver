@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace DynamicMapResolver.Exceptions
 {
@@ -6,16 +9,17 @@ namespace DynamicMapResolver.Exceptions
     /// 
     /// </summary>
     [Serializable]
-    public class NonUniqueSetterException
-        : MapperException
+    public class MapperException
+        : Exception 
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
-        public NonUniqueSetterException(string message)
-            : base(message)
+        public MapperException(string message)
+            :base(message)
         {
+            
         }
 
         /// <summary>
@@ -23,7 +27,7 @@ namespace DynamicMapResolver.Exceptions
         /// </summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
-        public NonUniqueSetterException(string message, Exception innerException)
+        public MapperException(string message, Exception innerException)
             :base(message, innerException)
         {
             

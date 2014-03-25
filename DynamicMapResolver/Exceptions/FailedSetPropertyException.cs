@@ -5,8 +5,9 @@ namespace DynamicMapResolver.Exceptions
     /// <summary>
     /// Indicates an error when set operations failed.
     /// </summary>
+    [Serializable]
     public class FailedSetPropertyException
-        : Exception
+        : MapperException
     {
         /// <summary>
         /// 

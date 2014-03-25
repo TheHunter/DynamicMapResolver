@@ -8,10 +8,10 @@ namespace DynamicMapResolver.Impl
     /// <summary>
     /// 
     /// </summary>
-    public class TransformerResolver
-        : ITransformerResolver
+    public class TransformerObserver
+        : ITransformerObserver
     {
-        private static readonly ITransformerResolver instance;
+        private static readonly ITransformerObserver instance;
         private static readonly string defaultKey;
         private readonly HashSet<ServiceTransformer> mapperResolver;
         private readonly HashSet<ServiceTransformer> mergerResolver; 
@@ -19,16 +19,16 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
-        static TransformerResolver()
+        static TransformerObserver()
         {
-            instance = new TransformerResolver();
+            instance = new TransformerObserver();
             defaultKey = "default";
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public TransformerResolver()
+        public TransformerObserver()
         {
             this.mapperResolver = new HashSet<ServiceTransformer>();
             this.mergerResolver = new HashSet<ServiceTransformer>();
@@ -37,7 +37,7 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
-        internal static ITransformerResolver Default { get { return instance; } }
+        internal static ITransformerObserver Default { get { return instance; } }
 
         /// <summary>
         /// 
@@ -307,6 +307,46 @@ namespace DynamicMapResolver.Impl
             return this.mergerResolver.Add(new ServiceTransformer<TMerger>(keyService, merger));
         }
 
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public ITransformerBuilder<TSource, TDestination> MakeTransformerBuilder<TSource, TDestination>(BuilderType type)
+            where TSource: class
+            where TDestination: class
+        {
+            switch (type)
+            {
+                case BuilderType.DefaultMappers:
+                    return new TransformerBuilder<TSource, TDestination>(this, FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>());
+                case BuilderType.Empty:
+                    return new TransformerBuilder<TSource, TDestination>(this);
+                default:
+                    throw new NotImplementedException("Builder type not implemented.");
+            }
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="propertyMappers"></param>
+        /// <returns></returns>
+        public ITransformerBuilder<TSource, TDestination> MakeTransformerBuilder<TSource, TDestination>(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
+            where TSource : class
+            where TDestination : class
+        {
+            return new TransformerBuilder<TSource, TDestination>(this, propertyMappers);
+        }
         #endregion
 
     }

@@ -82,9 +82,34 @@ namespace DynamicMapResolver.Impl
         object ISourceMerger.Merge(object source, object destination)
         {
             if (source == null || destination == null)
-                return null;
+                return destination;
 
             return this.Merge(source as TSource, destination as TDestination);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is SourceMerger<TSource, TDestination>)
+                return this.GetHashCode() == obj.GetHashCode();
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return typeof(SourceMerger<TSource, TDestination>).GetHashCode() + base.GetHashCode();
         }
     }
 
