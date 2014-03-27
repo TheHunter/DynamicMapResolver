@@ -23,7 +23,6 @@ namespace DynamicMapResolver
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TDestination"></typeparam>
     public interface ISourceTransformer
     {
         /// <summary>

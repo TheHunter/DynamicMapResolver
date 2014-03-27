@@ -12,18 +12,16 @@ namespace DynamicMapResolver.Impl
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
     public class SimpleMapper<TSource, TDestination>
-       : ActionTransformer<TSource, TDestination>, ISimpleMapper<TSource, TDestination>
+        : SourceTransformer, ISimpleMapper<TSource, TDestination>
     {
-        private readonly Action<TSource, TDestination> converter;
+        private readonly Func<TSource, TDestination> converter;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="converter"></param>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
-        public SimpleMapper(Action<TSource, TDestination> converter, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            :base(typeof(TSource), typeof(TDestination), beforeMapping, afterMapping, converter)
+        public SimpleMapper(Func<TSource, TDestination> converter)
+            :base(typeof(TSource), typeof(TDestination))
         {
             if (converter == null)
                 throw new MapperParameterException("converter", "The given lambda converter cannot be null.");
@@ -38,9 +36,18 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public TDestination Map(TSource source)
         {
-            TDestination dest = (TDestination)Activator.CreateInstance(this.DestinationType, true);
-            this.Transform(source, dest);
-            return dest;
+            try
+            {
+                return this.converter.Invoke(source);
+            }
+            catch (Exception ex)
+            {
+                if (this.IgnoreExceptionOnMapping)
+                    return default(TDestination);
+
+                throw new MapperException("Error on executing the expression for transforming source instance into destination type.", ex);
+            }
+            
         }
 
         /// <summary>

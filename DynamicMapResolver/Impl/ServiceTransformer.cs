@@ -51,6 +51,11 @@ namespace DynamicMapResolver.Impl
             get { return this.service; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <returns></returns>
         public override TComponent ServiceAs<TComponent>()
         {
             return this.service as TComponent;

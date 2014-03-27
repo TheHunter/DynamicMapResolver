@@ -11,7 +11,6 @@ namespace DynamicMapResolver.Test
     [TestFixture]
     public class TransformerObserverTest
     {
-        
         [Test]
         [Description("Mapping with the same source type saved into resolver.")]
         public void TestMapper()
@@ -60,6 +59,41 @@ namespace DynamicMapResolver.Test
 
             var resDto = observer.TryToMap<User, UserDto>(user1);
             Assert.IsNotNull(resDto);
+
+            var resDto1 = observer.TryToMap(user1, typeof (UserDto));
+            Assert.IsNotNull(resDto1);
+            Assert.IsTrue(resDto1 is UserDto);
+
+            var resDto2 = observer.TryToMap<User, UserDto>(user1, "mykey");
+            Assert.IsNull(resDto2);
+
+            var resDto3 = observer.TryToMap(user1, typeof(UserDto), "mykey");
+            Assert.IsNull(resDto3);
+        }
+
+        [Test]
+        [Description("Da completare... TryToMap non recupera il mapper.")]
+        public void TestTransformerObserver2()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            var mapper = observer.MakeTransformerBuilder<IPersonHeader, PersonDetails>(BuilderType.DefaultMappers);
+
+            Assert.IsNotNull(mapper);
+
+            IPersonHeader ps = new Person { Name = "name", Surname = "surname", AnnoNascita = 1980, Parent = null };
+
+            var resDto = observer.TryToMap<IPersonHeader, PersonDetails>(ps);
+            Assert.IsNotNull(resDto);
+
+            var resDto1 = observer.TryToMap(ps, typeof(PersonDetails));
+            Assert.IsNotNull(resDto1);
+            Assert.IsTrue(resDto1 is PersonDetails);
+
+            var resDto2 = observer.TryToMap<IPersonHeader, PersonDetails>(ps, "mykey");
+            Assert.IsNull(resDto2);
+
+            var resDto3 = observer.TryToMap(ps, typeof(PersonDetails), "mykey");
+            Assert.IsNull(resDto3);
         }
 
         [Test]
@@ -102,9 +136,55 @@ namespace DynamicMapResolver.Test
             Assert.IsTrue(observer.RegisterMapper(mapper1, KeyService.Type2));
             Assert.IsFalse(observer.RegisterMapper(mapper1));
             Assert.IsFalse(observer.RegisterMapper(mapper1, "default"));
+
+            Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 19 };
             
+            var res1 = observer.TryToMap<Student, Person>(st);
+            Assert.IsNotNull(res1);
+
+            var res11 = observer.TryToMap(st, typeof(Person));
+            Assert.IsTrue(res11 is Person);
+            Assert.IsNotNull(res11);
+
+
+            var res2 = observer.TryToMap(st, typeof(Person), KeyService.Type1);
+            Assert.IsNotNull(res2);
+
+            var res22 = observer.TryToMap(st, typeof (Person), KeyService.Type1);
+            Assert.IsNotNull(res22);
+
+
+            var res0 = observer.TryToMap(st, typeof (Person), KeyService.Type3);
+            Assert.IsNull(res0);
+
+            var res00 = observer.TryToMap<Student, Person>(st, KeyService.Type3);
+            Assert.IsNull(res00);
+
+        }
+        
+
+        [Test]
+        public void TestVerifySimpleMappers()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            var mapper = new SimpleMapper<int?, int>(i => i.HasValue ? i.Value : 0);
+
+            Assert.IsTrue(observer.RegisterMapper(mapper));
+            var res = observer.TryToMap<int?, int>(5);
+
+            Assert.AreEqual(res, 5);
+
+            var mapper1 =
+                new SimpleMapper<KeyService, KeyServiceOther>(
+                    service => (KeyServiceOther)Enum.ToObject(typeof(KeyServiceOther), service));
+
+            Assert.IsTrue(observer.RegisterMapper(mapper1));
+            var res1 = observer.TryToMap<KeyService, KeyServiceOther>(KeyService.Type2);
+            Assert.AreEqual(res1, KeyServiceOther.Type2);
+
+            var res2 = observer.TryToMap<KeyService, KeyServiceOther>(KeyService.Type3);
+            Assert.AreEqual(res2, KeyServiceOther.Type3);
         }
 
-        
     }
 }

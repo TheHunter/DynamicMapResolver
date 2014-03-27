@@ -17,6 +17,15 @@ namespace DynamicMapResolver.Impl
     {
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyMappers"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <param name="beforeMapping"></param>
+        /// <param name="afterMapping"></param>
+        /// <param name="onTransforming"></param>
         protected SourceTransformer(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
             Action<TDestination> beforeMapping, Action<TDestination> afterMapping, Action<TSource, TDestination> onTransforming)
             : base(sourceType, destinationType, beforeMapping, afterMapping, onTransforming)
