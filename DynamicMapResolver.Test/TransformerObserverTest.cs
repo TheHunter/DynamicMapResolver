@@ -77,6 +77,7 @@ namespace DynamicMapResolver.Test
         {
             TransformerObserver observer = new TransformerObserver();
             var mapper = observer.MakeTransformerBuilder<IPersonHeader, PersonDetails>(BuilderType.DefaultMappers);
+            mapper.BuildMapper();
 
             Assert.IsNotNull(mapper);
 
