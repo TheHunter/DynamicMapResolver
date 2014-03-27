@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DynamicMapResolver.Exceptions;
 using DynamicMapResolver.Impl;
-using DynamicMapResolver.Test.Domain;
+using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
 
 namespace DynamicMapResolver.Test

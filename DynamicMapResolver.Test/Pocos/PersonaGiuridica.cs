@@ -1,4 +1,4 @@
-﻿namespace DynamicMapResolver.Test.Domain
+﻿namespace DynamicMapResolver.Test.Pocos
 {
     /// <summary>
     /// 

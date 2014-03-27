@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DynamicMapResolver.Impl;
-using DynamicMapResolver.Test.Domain;
+using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
 
 namespace DynamicMapResolver.Test
@@ -24,7 +24,10 @@ namespace DynamicMapResolver.Test
 
             var res = observer.TryToMap<Student, Person>(st);
             Assert.IsNotNull(res);
-
+            Assert.AreEqual(st.Name, res.Name);
+            Assert.AreEqual(st.Surname, res.Surname);
+            Assert.IsNull(st.Father);
+            Assert.IsNull(res.Parent);
         }
 
         [Test]
@@ -94,8 +97,11 @@ namespace DynamicMapResolver.Test
                 };
             SourceMapper<Student, Person> mapper1 = new SourceMapper<Student, Person>(propMappers, null, null);
 
-            observer.RegisterMapper(mapper1);
-
+            Assert.IsTrue(observer.RegisterMapper(mapper1));
+            Assert.IsTrue(observer.RegisterMapper(mapper1, KeyService.Type1));
+            Assert.IsTrue(observer.RegisterMapper(mapper1, KeyService.Type2));
+            Assert.IsFalse(observer.RegisterMapper(mapper1));
+            Assert.IsFalse(observer.RegisterMapper(mapper1, "default"));
             
         }
 

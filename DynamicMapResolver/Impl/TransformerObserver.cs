@@ -328,6 +328,8 @@ namespace DynamicMapResolver.Impl
                     return new TransformerBuilder<TSource, TDestination>(this, FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>());
                 case BuilderType.Empty:
                     return new TransformerBuilder<TSource, TDestination>(this);
+                case BuilderType.DynamicResolver:
+                    throw  new NotImplementedException("Not implemented at the moment");
                 default:
                     throw new NotImplementedException("Builder type not implemented.");
             }

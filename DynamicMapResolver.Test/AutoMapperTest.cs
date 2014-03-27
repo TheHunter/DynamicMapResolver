@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using AutoMapper;
 using DynamicMapResolver.Impl;
-using DynamicMapResolver.Test.Domain;
+using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
 
 namespace DynamicMapResolver.Test

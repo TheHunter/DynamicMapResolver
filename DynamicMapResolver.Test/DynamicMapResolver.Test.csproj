@@ -53,12 +53,13 @@
   <ItemGroup>
     <Compile Include="AutoMapperTest.cs" />
     <Compile Include="CustomTransformer.cs" />
-    <Compile Include="Domain\Person.cs" />
-    <Compile Include="Domain\PersonaGiuridica.cs" />
-    <Compile Include="Domain\PersonDetails.cs" />
-    <Compile Include="Domain\IPersonHeader.cs" />
-    <Compile Include="Domain\Student.cs" />
-    <Compile Include="Domain\User.cs" />
+    <Compile Include="KeyService.cs" />
+    <Compile Include="Pocos\Person.cs" />
+    <Compile Include="Pocos\PersonaGiuridica.cs" />
+    <Compile Include="Pocos\PersonDetails.cs" />
+    <Compile Include="Pocos\IPersonHeader.cs" />
+    <Compile Include="Pocos\Student.cs" />
+    <Compile Include="Pocos\User.cs" />
     <Compile Include="MapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionTest.cs" />

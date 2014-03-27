@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DynamicMapResolver.Test.Domain;
+using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
 
 namespace DynamicMapResolver.Test

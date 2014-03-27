@@ -1,4 +1,4 @@
-﻿using DynamicMapResolver.Test.Domain;
+﻿using DynamicMapResolver.Test.Pocos;
 
 namespace DynamicMapResolver.Test
 {
