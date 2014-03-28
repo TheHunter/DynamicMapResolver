@@ -298,19 +298,45 @@ namespace DynamicMapResolver
             CheckProperties(srcProperty, destProperty);
 
             Type funcType = FunctionGetter.MakeGenericType(srcProperty.DeclaringType, srcPropType);
-            Type ActType = ActionSetter.MakeGenericType(destProperty.DeclaringType, dstPropType);
+            Type actType = ActionSetter.MakeGenericType(destProperty.DeclaringType, dstPropType);
 
             MethodInfo getterMethod = srcProperty.GetGetMethod() ?? srcProperty.GetGetMethod(true);
             MethodInfo setterMethod = destProperty.GetSetMethod() ?? destProperty.GetSetMethod(true);
 
             Delegate getter = Delegate.CreateDelegate(funcType, null, getterMethod);
-            Delegate setter = Delegate.CreateDelegate(ActType, null, setterMethod);
+            Delegate setter = Delegate.CreateDelegate(actType, null, setterMethod);
 
             Action<TSource, TDestination> action 
                 = (source, destination) => setter.DynamicInvoke(destination, GetGetterValue(getter.DynamicInvoke(source), destProperty.PropertyType));
 
             return action;
         }
+
+        // DA COMPLETARE //
+
+        /// <summary>
+        /// Makes an action which corrispond to set a destination property with the current TSource property value.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="srcProperty">The PropertyInfo which serves to get the Getter method.</param>
+        /// <param name="destProperty">The PropertyInfo which serves to get the Setter method.</param>
+        /// <returns></returns>
+        public static Action<TSource, TDestination> DynamicPropertyMap<TSource, TDestination>
+            (PropertyInfo destProperty)
+        {
+            Type dstPropType = destProperty.PropertyType;
+            Type actType = ActionSetter.MakeGenericType(destProperty.DeclaringType, dstPropType);
+            MethodInfo setterMethod = destProperty.GetSetMethod() ?? destProperty.GetSetMethod(true);
+            Delegate setter = Delegate.CreateDelegate(actType, null, setterMethod);
+
+            ITransformerResolver resolver = null;
+            Action<TSource, TDestination> action
+                = (source, destination) => setter.DynamicInvoke(destination, resolver.TryToMap(source, destProperty.PropertyType));
+
+            return action;
+        }
+
 
         /// <summary>
         /// 
