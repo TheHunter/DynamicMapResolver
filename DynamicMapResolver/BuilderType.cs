@@ -11,7 +11,7 @@ namespace DynamicMapResolver
     public enum BuilderType
     {
         /// <summary>
-        /// Indicates an empty transformer builder which can be for adding custom property mapper. 
+        /// Indicates an empty transformer builder which can be used for adding custom property mapper. 
         /// </summary>
         Empty,
 

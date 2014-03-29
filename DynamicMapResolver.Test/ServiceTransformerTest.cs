@@ -45,6 +45,38 @@ namespace DynamicMapResolver.Test
             Assert.IsTrue(res5);
         }
 
+        [Test]
+        public void Test2()
+        {
+            object defaultKey = " ciao ";
 
+            ISourceMerger mapper =
+                new SourceMerger<Student, Person>(
+                    FactoryMapper.GetDefaultPropertyMappers<Student, Person>(), null, null);
+            
+            var service = new ServiceTransformer<ISourceMerger>(defaultKey, mapper);
+
+            Assert.IsNotNull(service);
+            Assert.IsTrue(service.ServiceKey is string);
+            Assert.AreNotEqual(service.ServiceKey, " ciao");
+            Assert.AreNotEqual(service.ServiceKey, "ciao ");
+            Assert.AreEqual(service.ServiceKey, "ciao");
+        }
+
+        [Test]
+        public void Test3()
+        {
+            object defaultKey = KeyService.Type1;
+
+            ISourceMerger mapper =
+                new SourceMerger<Student, Person>(
+                    FactoryMapper.GetDefaultPropertyMappers<Student, Person>(), null, null);
+
+            var service = new ServiceTransformer<ISourceMerger>(defaultKey, mapper);
+
+            Assert.IsNotNull(service);
+            Assert.IsTrue(service.ServiceKey is Enum);
+            Assert.AreEqual(service.ServiceKey, KeyService.Type1);
+        }
     }
 }

@@ -20,20 +20,6 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="key"></param>
         /// <param name="service"></param>
-        public ServiceTransformer(string key, TService service)
-            :base (key, typeof(TService))
-        {
-            if (service == null)
-                throw new ArgumentException("The service to resolve cannot be null.", "service");
-
-            this.service = service;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="service"></param>
         public ServiceTransformer(object key, TService service)
             : base(key, typeof(TService))
         {
@@ -121,28 +107,25 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="key"></param>
         /// <param name="serviceType"></param>
-        protected ServiceTransformer(string key, Type serviceType)
-        {
-            if (key == null || key.Trim().Equals(string.Empty))
-                throw new ArgumentException("The key of any kind of ServiveType cannot be empty or null.", "key");
-
-            this.key = key.Trim();
-            this.keyType = key.GetType();
-            this.serviceType = serviceType;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="serviceType"></param>
         protected ServiceTransformer(object key, Type serviceType)
         {
+            string strKey = key as string;
+            object localKey = key;
+
             if (key == null)
                 throw new ArgumentException("The key of any kind of ServiveType cannot be empty or null.", "key");
 
-            this.key = key;
-            this.keyType = key.GetType();
+            if (strKey != null)
+            {
+                strKey = strKey.Trim();
+                if (strKey.Equals(string.Empty))
+                    throw new ArgumentException("The key of any kind of ServiveType cannot be empty or null.", "key");
+
+                localKey = strKey;
+            }
+
+            this.key = localKey;
+            this.keyType = localKey.GetType();
             this.serviceType = serviceType;
         }
 

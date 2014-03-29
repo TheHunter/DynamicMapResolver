@@ -31,12 +31,16 @@ namespace DynamicMapResolver.Test
 
         [Test]
         [Description("Mapping with the same source type saved into resolver.")]
-        public void TestTransformerObserver()
+        public void MakeTransformerBuilderTest1()
         {
             TransformerObserver observer = new TransformerObserver();
             var builder = observer.MakeTransformerBuilder<User, UserDto>(BuilderType.DefaultMappers);
+            //builder.Include(
+            //    resolver => new PropertyMapper<User, UserDto>((user, dto) => dto.Parent = resolver.TryToMap<User, UserDto>(user.Parent)));
+
             builder.Include(
-                resolver => new PropertyMapper<User, UserDto>((user, dto) => dto.Parent = resolver.TryToMap<User, UserDto>(user.Parent)));
+                resolver => new PropertyMapper<User, UserDto>((user, dto) => dto.Parent = (UserDto)resolver.TryToMap(user.Parent, typeof(UserDto))));
+
 
             builder.BuildMapper();
 
@@ -73,7 +77,7 @@ namespace DynamicMapResolver.Test
 
         [Test]
         [Description("Da completare... TryToMap non recupera il mapper.")]
-        public void TestTransformerObserver2()
+        public void MakeTransformerBuilderTest2()
         {
             TransformerObserver observer = new TransformerObserver();
             var mapper = observer.MakeTransformerBuilder<IPersonHeader, PersonDetails>(BuilderType.DefaultMappers);
@@ -98,8 +102,90 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
+        [Description("Da completare... TryToMap non recupera il mapper.")]
+        public void MakeTransformerBuilderTest3()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            var mapper = observer.MakeTransformerBuilder<Person, Student>(BuilderType.DynamicResolver);
+            /*
+             * here It's possible to add / delete property mappers.
+            */
+            // before using the mapper object, It's needed to build it in order to associate into TransformerObserver
+            mapper.BuildMapper();
+
+            Assert.IsNotNull(mapper);
+
+            Person ps = new Person
+                {
+                    Name = "name",
+                    Surname = "surname",
+                    AnnoNascita = 1980,
+                    Parent = new Person
+                        {
+                            Name = "parent_name",
+                            Surname = "parent_surname"
+                        }
+                };
+
+            var resDto = observer.TryToMap<Person, Student>(ps);
+            Assert.IsNotNull(resDto);
+            Assert.IsNull(resDto.Father);
+
+            var resDto1 = observer.TryToMap(ps, typeof(Student));
+            Assert.IsNotNull(resDto1);
+            Assert.IsNull(resDto1.GetType().GetProperty("Father").GetValue(resDto1, null));
+            Assert.IsTrue(resDto1 is Student);
+
+            var resDto2 = observer.TryToMap<Person, Student>(ps, "mykey");
+            Assert.IsNull(resDto2);
+
+            var resDto3 = observer.TryToMap(ps, typeof(Student), "mykey");
+            Assert.IsNull(resDto3);
+        }
+
+        [Test]
+        [Description("Da completare... TryToMap non recupera il mapper.")]
+        public void MakeTransformerBuilderTest4()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            var mapper = observer.MakeTransformerBuilder<Person, Student>(BuilderType.DynamicResolver);
+            mapper.Include(new PropertyMapper<Person, Student>((person, student) => student.Father = person.Parent, "Father", "Parent"));
+            mapper.BuildMapper();
+
+            Assert.IsNotNull(mapper);
+
+            Person ps = new Person
+            {
+                Name = "name",
+                Surname = "surname",
+                AnnoNascita = 1980,
+                Parent = new Person
+                {
+                    Name = "parent_name",
+                    Surname = "parent_surname"
+                }
+            };
+
+            var resDto = observer.TryToMap<Person, Student>(ps);
+            Assert.IsNotNull(resDto);
+            Assert.IsNotNull(resDto.Father);
+
+            var resDto1 = observer.TryToMap(ps, typeof(Student));
+            Assert.IsNotNull(resDto1);
+            Assert.IsNotNull(resDto1.GetType().GetProperty("Father").GetValue(resDto1, null));
+            Assert.IsTrue(resDto1 is Student);
+
+            var resDto2 = observer.TryToMap<Person, Student>(ps, "mykey");
+            Assert.IsNull(resDto2);
+
+            var resDto3 = observer.TryToMap(ps, typeof(Student), "mykey");
+            Assert.IsNull(resDto3);
+        }
+
+
+        [Test]
         [Description("Mapping with the same source type saved into resolver.")]
-        public void TestConcreteMapper()
+        public void RegisterMapperTest1()
         {
             TransformerObserver observer = new TransformerObserver();
             IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
@@ -121,7 +207,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        public void TestVerifyRegistration()
+        public void RegisterMapperTest2()
         {
             TransformerObserver observer = new TransformerObserver();
             IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
@@ -162,10 +248,9 @@ namespace DynamicMapResolver.Test
             Assert.IsNull(res00);
 
         }
-        
 
         [Test]
-        public void TestVerifySimpleMappers()
+        public void RegisterSimpleMapperTest1()
         {
             TransformerObserver observer = new TransformerObserver();
             var mapper = new SimpleMapper<int?, int>(i => i.HasValue ? i.Value : 0);
@@ -187,5 +272,31 @@ namespace DynamicMapResolver.Test
             Assert.AreEqual(res2, KeyServiceOther.Type3);
         }
 
+        [Test]
+        public void BuildAutoResolverMapperTest1()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            Assert.IsTrue(observer.BuildAutoResolverMapper<User, UserDto>(null, null));
+
+            User user1 = new User
+            {
+                Name = "name1",
+                Surname = "surname1",
+                Parent = new User
+                {
+                    Name = "parteName1",
+                    Surname = "parentSurname1",
+                    Parent = new User
+                    {
+                        Name = "parentParentName1",
+                        Surname = "parentParentSurname1",
+                        Parent = new User()
+                    }
+                }
+            };
+
+            var res = observer.TryToMap<User, UserDto>(user1);
+            Assert.IsNotNull(res);
+        }
     }
 }

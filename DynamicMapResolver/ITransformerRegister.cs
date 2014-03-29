@@ -18,14 +18,8 @@ namespace DynamicMapResolver
         /// <returns></returns>
         bool RegisterMapper<TMapper>(TMapper mapper) where TMapper : class, ISourceMapper;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMapper"></typeparam>
-        /// <param name="mapper"></param>
-        /// <param name="keyService"></param>
-        /// <returns></returns>
-        bool RegisterMapper<TMapper>(TMapper mapper, string keyService) where TMapper : class, ISourceMapper;
+        
+        //bool RegisterMapper<TMapper>(TMapper mapper, string keyService) where TMapper : class, ISourceMapper;
 
         /// <summary>
         /// 
@@ -44,14 +38,8 @@ namespace DynamicMapResolver
         /// <returns></returns>
         bool RegisterMerger<TMerger>(TMerger merger) where TMerger : class, ISourceMerger;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TMerger"></typeparam>
-        /// <param name="merger"></param>
-        /// <param name="keyService"></param>
-        /// <returns></returns>
-        bool RegisterMerger<TMerger>(TMerger merger, string keyService) where TMerger : class, ISourceMerger;
+        
+        //bool RegisterMerger<TMerger>(TMerger merger, string keyService) where TMerger : class, ISourceMerger;
 
         /// <summary>
         /// 
