@@ -49,10 +49,12 @@
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
     <Compile Include="IContainerBuilder.cs" />
+    <Compile Include="IDynamicTransformerBuilder.cs" />
     <Compile Include="Impl\ActionTransformer.cs" />
     <Compile Include="Impl\ServiceTransformer.cs" />
     <Compile Include="Impl\SimpleMerger.cs" />
     <Compile Include="Impl\TransformerObserver.cs" />
+    <Compile Include="ITransformerInitializer.cs" />
     <Compile Include="ITransformerObserver.cs" />
     <Compile Include="ITransformerRegister.cs" />
     <Compile Include="ITransformerResolver.cs" />

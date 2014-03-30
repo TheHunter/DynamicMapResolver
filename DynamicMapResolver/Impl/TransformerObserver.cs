@@ -115,6 +115,32 @@ namespace DynamicMapResolver.Impl
             return (TDestination)mp.Map(source);
         }
 
+
+        //public TDestination TryToMap<TMapper, TDestination>(object source)
+        //    where TMapper : class, ISourceMapper
+        //{
+        //    return this.TryToMap<TMapper, TDestination>(source, defaultKey);
+        //}
+
+
+        //public TDestination TryToMap<TMapper, TDestination>(object source, object keyService)
+        //    where TMapper : class, ISourceMapper
+        //{
+        //    object src = source;
+        //    if (src == null)
+        //        return default(TDestination);
+
+        //    var serviceMapper = this.mapperResolver.FirstOrDefault(transformer => transformer.Match<TMapper>(keyService));
+        //    if (serviceMapper == null)
+        //        return default(TDestination);
+
+        //    TMapper service = serviceMapper.ServiceAs<TMapper>();
+        //    if (service == null)
+        //        return default(TDestination);
+
+        //    return (TDestination)service.Map(source);
+        //}
+
         /// <summary>
         /// 
         /// </summary>
@@ -186,7 +212,9 @@ namespace DynamicMapResolver.Impl
                 return destination;
 
             ISourceMerger merger = serviceMerger.ServiceAs<ISourceMerger>();
-            merger.Merge(source, destination);
+            if (merger != null)
+                merger.Merge(source, destination);
+
             return destination;
         }
 
@@ -341,6 +369,7 @@ namespace DynamicMapResolver.Impl
             ISourceMapper mapper = new SourceMapper(sourceType, destinationType,
                                                     FactoryMapper.GetDefaultPropertyMappers(sourceType, destinationType,
                                                                                             this));
+
             return this.mapperResolver.Add(new ServiceTransformer<ISourceMapper>(keyService, mapper));
         }
 
@@ -376,6 +405,33 @@ namespace DynamicMapResolver.Impl
                 new SourceMerger<TSource, TDestination>(
                     FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>(this), beforeMapping, afterMapping);
             return this.mapperResolver.Add(new ServiceTransformer<ISourceMerger>(keyService, mapper));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
+        public bool BuildAutoResolverMerger(Type sourceType, Type destinationType)
+        {
+            return this.BuildAutoResolverMerger(defaultKey, sourceType, destinationType);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyService"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
+        public bool BuildAutoResolverMerger(object keyService, Type sourceType, Type destinationType)
+        {
+            ISourceMerger merger = new SourceMerger(sourceType, destinationType,
+                                                    FactoryMapper.GetDefaultPropertyMappers(sourceType, destinationType,
+                                                                                            this));
+
+            return this.mergerResolver.Add(new ServiceTransformer<ISourceMerger>(keyService, merger));
         }
 
         #endregion

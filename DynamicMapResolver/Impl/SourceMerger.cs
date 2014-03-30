@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using DynamicMapResolver.Exceptions;
 
 namespace DynamicMapResolver.Impl
@@ -36,7 +36,7 @@ namespace DynamicMapResolver.Impl
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
         protected SourceMerger(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Type sourceType, Type destinationType,
-            Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+                                Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             : base(propertyMappers, sourceType, destinationType, beforeMapping, afterMapping)
         {
             if (sourceType.IsPrimitive)
@@ -49,29 +49,11 @@ namespace DynamicMapResolver.Impl
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public TDestination Merge(TSource source, TDestination destination)
+        public virtual TDestination Merge(TSource source, TDestination destination)
         {
             this.OnMapping(source, destination, this.PropertyMappers);
             return destination;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filter)
-        {
-            IEnumerable<IPropertyMapper<TSource, TDestination>> mappers
-                = filter != null
-                    ? PropertyMappers.Where(n => filter.Contains(n.PropertySource))
-                    : PropertyMappers;
-
-            this.OnMapping(source, destination, mappers);
-            return destination;
-        }
+        }        
 
         /// <summary>
         /// 
@@ -118,7 +100,7 @@ namespace DynamicMapResolver.Impl
     /// 
     /// </summary>
     public class SourceMerger
-        : SourceMapper<object, object>
+        : SourceMerger<object, object>
     {
 
         /// <summary>

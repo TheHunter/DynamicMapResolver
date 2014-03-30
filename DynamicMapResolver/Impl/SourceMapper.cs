@@ -22,7 +22,7 @@ namespace DynamicMapResolver.Impl
         /// <param name="beforeMapping"></param>
         /// <param name="afterMapping"></param>
         public SourceMapper(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
-            : this(propertyMappers, typeof (TSource), typeof (TDestination), beforeMapping, afterMapping)
+            : this(propertyMappers, typeof(TSource), typeof (TDestination), beforeMapping, afterMapping)
         {
         }
 
@@ -106,6 +106,7 @@ namespace DynamicMapResolver.Impl
             return typeof(SourceMapper<TSource, TDestination>).GetHashCode() + base.GetHashCode();
         }
     }
+
 
     /// <summary>
     /// 

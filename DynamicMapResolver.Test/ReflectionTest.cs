@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DynamicMapResolver.Impl;
 using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
 
@@ -10,6 +11,15 @@ namespace DynamicMapResolver.Test
     [TestFixture]
     class ReflectionTest
     {
+        [Test]
+        public void Test1()
+        {
+            Type t1 = typeof(ISourceMapper<Student, Person>);
+            Type t2 = typeof(SourceMapper<Student, Person>);
+
+            Assert.IsTrue(t1.IsAssignableFrom(t2));
+        }
+
         [Test]
         public void Test3()
         {

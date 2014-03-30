@@ -68,6 +68,9 @@
     <Compile Include="..\DynamicMapResolver\IContainerBuilder.cs">
       <Link>IContainerBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\IDynamicTransformerBuilder.cs">
+      <Link>IDynamicTransformerBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\ActionTransformer.cs">
       <Link>Impl\ActionTransformer.cs</Link>
     </Compile>
@@ -121,6 +124,9 @@
     </Compile>
     <Compile Include="..\DynamicMapResolver\ITransformerBuilder.cs">
       <Link>ITransformerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\ITransformerInitializer.cs">
+      <Link>ITransformerInitializer.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\ITransformerObserver.cs">
       <Link>ITransformerObserver.cs</Link>

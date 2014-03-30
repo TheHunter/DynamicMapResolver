@@ -9,7 +9,7 @@ namespace DynamicMapResolver
     /// 
     /// </summary>
     public interface ITransformerObserver
-        : ITransformerResolver, ITransformerRegister
+        : ITransformerResolver, ITransformerRegister, ITransformerInitializer, IDynamicTransformerBuilder
     {
     }
 }
