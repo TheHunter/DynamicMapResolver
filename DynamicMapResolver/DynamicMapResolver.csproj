@@ -71,7 +71,6 @@
     <Compile Include="IPropertyMapper.cs" />
     <Compile Include="ISourceMerger.cs" />
     <Compile Include="ISourceTransformer.cs" />
-    <Compile Include="IUserTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

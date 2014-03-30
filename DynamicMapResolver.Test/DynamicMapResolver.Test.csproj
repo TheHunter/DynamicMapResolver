@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperTest.cs" />
-    <Compile Include="CustomTransformer.cs" />
     <Compile Include="KeyService.cs" />
     <Compile Include="Pocos\CustomComplexType.cs" />
     <Compile Include="Pocos\Person.cs" />

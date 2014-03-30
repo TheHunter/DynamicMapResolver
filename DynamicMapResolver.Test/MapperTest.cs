@@ -82,23 +82,6 @@ namespace DynamicMapResolver.Test
             Assert.AreEqual(st.AnnoNascita, pr.AnnoNascita);
         }
 
-        //[Test]
-        //public void TestDefaultMergerFilter()
-        //{
-        //    var merger = FactoryMapper.DynamicResolutionMerger<Student, Person>();
-
-        //    Assert.IsTrue(merger.PropertyMappers.Count() == 3);
-
-        //    Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1990 };
-        //    Person pr = new Person();
-
-        //    merger.Merge(st, pr, new List<string>{ "Name", "Surname" });
-
-        //    Assert.AreEqual(st.Name, pr.Name);
-        //    Assert.AreEqual(st.Surname, pr.Surname);
-        //    Assert.AreNotEqual(st.AnnoNascita, pr.AnnoNascita);
-        //}
-
         [Test]
         public void TestReferenceProperty()
         {
@@ -122,19 +105,7 @@ namespace DynamicMapResolver.Test
             Assert.AreEqual(st.Father.GetType(), pr.Parent.GetType());
         }
 
-        [Test]
-        public void TestUserTransformer()
-        {
-            CustomTransformer transformer = new CustomTransformer();
-            Student st = new Student { Name = "mario", Surname = "monti", AnnoNascita = 1980 };
-            Person pr = new Person();
-
-            transformer.Transform(st, pr);
-
-            Assert.AreEqual(st.Name, pr.Name);
-            Assert.AreEqual(st.Surname, pr.Surname);
-            Assert.AreEqual(st.AnnoNascita, pr.AnnoNascita);
-        }
+        
 
         [Test]
         [ExpectedException(typeof(MapperParameterException))]

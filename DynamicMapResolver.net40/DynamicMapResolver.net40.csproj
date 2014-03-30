@@ -131,9 +131,6 @@
     <Compile Include="..\DynamicMapResolver\ITransformerResolver.cs">
       <Link>ITransformerResolver.cs</Link>
     </Compile>
-    <Compile Include="..\DynamicMapResolver\IUserTransformer.cs">
-      <Link>IUserTransformer.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
