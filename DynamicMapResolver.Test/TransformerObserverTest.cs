@@ -63,10 +63,12 @@ namespace DynamicMapResolver.Test
 
             var resDto = observer.TryToMap<User, UserDto>(user1);
             Assert.IsNotNull(resDto);
+            Assert.IsNotNull(resDto.Parent);
 
             var resDto1 = observer.TryToMap(user1, typeof (UserDto));
             Assert.IsNotNull(resDto1);
             Assert.IsTrue(resDto1 is UserDto);
+            Assert.IsNotNull(resDto1.GetType().GetProperty("Parent").GetValue(resDto1, null));
 
             var resDto2 = observer.TryToMap<User, UserDto>(user1, "mykey");
             Assert.IsNull(resDto2);
@@ -182,7 +184,6 @@ namespace DynamicMapResolver.Test
             Assert.IsNull(resDto3);
         }
 
-
         [Test]
         [Description("Mapping with the same source type saved into resolver.")]
         public void RegisterMapperTest1()
@@ -297,6 +298,77 @@ namespace DynamicMapResolver.Test
 
             var res = observer.TryToMap<User, UserDto>(user1);
             Assert.IsNotNull(res);
+
+            var res1 = observer.TryToMap(user1, typeof(UserDto));
+            Assert.IsNotNull(res1);
+        }
+
+        [Test]
+        public void BuildAutoResolverMapperTest2()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            Assert.IsTrue(observer.BuildAutoResolverMapper(typeof(User), typeof(UserDto)));
+
+            User user1 = new User
+            {
+                Name = "name1",
+                Surname = "surname1",
+                Parent = new User
+                {
+                    Name = "parteName1",
+                    Surname = "parentSurname1",
+                    Parent = new User
+                    {
+                        Name = "parentParentName1",
+                        Surname = "parentParentSurname1",
+                        Parent = new User()
+                    }
+                }
+            };
+
+            var res = observer.TryToMap<User, UserDto>(user1);
+            Assert.IsNotNull(res);
+
+            var res1 = observer.TryToMap(user1, typeof(UserDto));
+            Assert.IsNotNull(res1);
+        }
+
+        [Test]
+        public void BuildAutoResolverMapperTest3()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            Assert.IsTrue(observer.BuildAutoResolverMapper(typeof(CustomComplexType), typeof(CustomComplexTypeDto)));
+            Assert.IsTrue(observer.BuildAutoResolverMapper<User, UserDto>(null, null));
+            Assert.IsTrue(observer.RegisterMapper(new SimpleMapper<KeyService, KeyServiceOther>(service => (KeyServiceOther)Enum.ToObject(typeof(KeyServiceOther), service))));
+
+
+            CustomComplexType instance = new CustomComplexType
+                {
+                    MyKeyService = KeyService.Type2,
+                    ComplexNaming = "complex_naming",
+                    Owner = new User
+                    {
+                        Name = "name1",
+                        Surname = "surname1",
+                        Parent = new User
+                        {
+                            Name = "parteName1",
+                            Surname = "parentSurname1",
+                            Parent = new User
+                            {
+                                Name = "parentParentName1",
+                                Surname = "parentParentSurname1",
+                                Parent = new User()
+                            }
+                        }
+                    }
+                };
+
+            var res = observer.TryToMap<CustomComplexType, CustomComplexTypeDto>(instance);
+            Assert.IsNotNull(res);
+
+            var res1 = observer.TryToMap(instance, typeof(CustomComplexTypeDto));
+            Assert.IsNotNull(res1);
         }
     }
 }

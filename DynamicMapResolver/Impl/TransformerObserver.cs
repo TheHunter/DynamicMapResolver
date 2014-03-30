@@ -106,7 +106,13 @@ namespace DynamicMapResolver.Impl
                 return default(TDestination);
 
             ISimpleMapper<TSource, TDestination> mapper = serviceMapper.ServiceAs<ISimpleMapper<TSource, TDestination>>();
-            return mapper.Map(source);
+            if (mapper != null)
+                return mapper.Map(source);
+
+            ISourceMapper mp = serviceMapper.ServiceAs<ISourceMapper>();
+            if (mp == null)
+                return default(TDestination);
+            return (TDestination)mp.Map(source);
         }
 
         /// <summary>
@@ -309,6 +315,32 @@ namespace DynamicMapResolver.Impl
             ISourceMapper mapper =
                 new SourceMapper<TSource, TDestination>(
                     FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>(this), beforeMapping, afterMapping);
+            return this.mapperResolver.Add(new ServiceTransformer<ISourceMapper>(keyService, mapper));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
+        public bool BuildAutoResolverMapper(Type sourceType, Type destinationType)
+        {
+            return this.BuildAutoResolverMapper(defaultKey, sourceType, destinationType);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyService"></param>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
+        public bool BuildAutoResolverMapper(object keyService, Type sourceType, Type destinationType)
+        {
+            ISourceMapper mapper = new SourceMapper(sourceType, destinationType,
+                                                    FactoryMapper.GetDefaultPropertyMappers(sourceType, destinationType,
+                                                                                            this));
             return this.mapperResolver.Add(new ServiceTransformer<ISourceMapper>(keyService, mapper));
         }
 

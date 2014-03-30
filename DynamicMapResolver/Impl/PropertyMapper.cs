@@ -58,12 +58,13 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="srcProperty"></param>
         /// <param name="destProperty"></param>
         /// <param name="resolver"></param>
-        public PropertyMapper(PropertyInfo destProperty, ITransformerResolver resolver)
+        public PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty, ITransformerResolver resolver)
             : base("[resolver]", destProperty.Name)
         {
-            Action<TSource, TDestination> action = FactoryMapper.DynamicPropertyMap<TSource, TDestination>(destProperty, resolver);
+            Action<TSource, TDestination> action = FactoryMapper.DynamicPropertyMap<TSource, TDestination>(srcProperty, destProperty, resolver);
             if (action == null)
                 throw new LambdaSetterException("The setter action for property mapper cannot be null.");
 
@@ -147,17 +148,23 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="srcProperty"></param>
         /// <param name="destProperty"></param>
         /// <param name="resolver"></param>
-        internal PropertyMapper(PropertyInfo destProperty, ITransformerResolver resolver)
-            : base(destProperty, resolver)
+        internal PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty, ITransformerResolver resolver)
+            : base(srcProperty, destProperty, resolver)
         {
             this.destProperty = destProperty;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public PropertyInfo SrcPropertyInfo { get { return this.srcProperty; } }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
         public PropertyInfo destPropertyInfo { get { return this.destProperty; } }
 
     }
