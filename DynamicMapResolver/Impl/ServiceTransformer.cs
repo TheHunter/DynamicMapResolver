@@ -24,7 +24,7 @@ namespace DynamicMapResolver.Impl
             : base(key, typeof(TService))
         {
             if (service == null)
-                throw new ArgumentException("The service to resolve cannot be null.", "service");
+                throw new ArgumentException("The service transformer cannot be null.", "service");
 
             this.service = service;
         }
@@ -35,6 +35,24 @@ namespace DynamicMapResolver.Impl
         public TService Service
         {
             get { return this.service; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyService"></param>
+        /// <param name="transformer"></param>
+        /// <returns></returns>
+        public override bool ComparableTo(object keyService, ISourceTransformer transformer)
+        {
+            if (keyService == null || transformer == null)
+                return false;
+
+            Type origServiceType = this.service.GetType();
+            Type parServiceType = transformer.GetType();
+
+            return this.KeyEquals(keyService) &&
+                   (origServiceType.IsAssignableFrom(parServiceType) || parServiceType.IsAssignableFrom(origServiceType));
         }
 
         /// <summary>
@@ -200,6 +218,14 @@ namespace DynamicMapResolver.Impl
         /// <param name="destinationType"></param>
         /// <returns></returns>
         public abstract bool Match(object keyService, Type sourceType, Type destinationType);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyService"></param>
+        /// <param name="transformer"></param>
+        /// <returns></returns>
+        public abstract bool ComparableTo(object keyService, ISourceTransformer transformer);
 
         /// <summary>
         /// 

@@ -47,7 +47,29 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        public void Test2()
+        [ExpectedException(typeof(ArgumentException))]
+        public void NewServiceTransformer()
+        {
+            new ServiceTransformer<ISourceMapper<Student, Person>>("null", null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void NewServiceTransformer1()
+        {
+            IList<IPropertyMapper<Student, Person>> propMappers = new List<IPropertyMapper<Student, Person>>
+                {
+                    new PropertyMapper<Student, Person>( (student, person) => person.Name = student.Name, "Name", "Name")
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.AnnoNascita = student.AnnoNascita )
+                    ,new PropertyMapper<Student, Person>( (student, person) => person.Parent = student.Father )
+                };
+
+            SourceMapper<Student, Person> mapper = new SourceMapper<Student, Person>(propMappers, null, null);
+            new ServiceTransformer<ISourceMapper<Student, Person>>(null, mapper);
+        }
+
+        [Test]
+        public void ServiceTransformerMembersTest()
         {
             object defaultKey = " ciao ";
 
@@ -65,7 +87,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        public void Test3()
+        public void ServiceTransformerMembersTest1()
         {
             object defaultKey = KeyService.Type1;
 

@@ -78,7 +78,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        [Description("Da completare... TryToMap non recupera il mapper.")]
+        [Description("")]
         public void MakeTransformerBuilderTest2()
         {
             TransformerObserver observer = new TransformerObserver();
@@ -104,7 +104,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        [Description("Da completare... TryToMap non recupera il mapper.")]
+        [Description("")]
         public void MakeTransformerBuilderTest3()
         {
             TransformerObserver observer = new TransformerObserver();
@@ -146,7 +146,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        [Description("Da completare... TryToMap non recupera il mapper.")]
+        [Description("")]
         public void MakeTransformerBuilderTest4()
         {
             TransformerObserver observer = new TransformerObserver();
@@ -261,19 +261,21 @@ namespace DynamicMapResolver.Test
                     ,new PropertyMapper<Student, Person>( (student, person) => person.Parent = student.Father )
                 };
 
-            //observer.TryToMap<ISourceMapper<Student, Person>, Person>(null);
-
-            //SourceMapper<Student, Person> mapper1 = new SourceMapper<Student, Person>(propMappers, null, null);
-            //ISourceMapper<Student, Person> mapper1 = new SourceMapper<Student, Person>(propMappers, null, null);
             ISourceMapper mapper1 = new SourceMapper<Student, Person>(propMappers, null, null);
+            ISourceMapper<Student, Person> mapper2 = new SourceMapper<Student, Person>(propMappers, null, null);
 
-            Assert.IsTrue(observer.BuildAutoResolverMapper<User, UserDto>(null, null));
-            Assert.IsTrue(observer.BuildAutoResolverMapper<Student, Person>(null, null));
+            Assert.IsTrue(observer.BuildAutoResolverMapper<User, UserDto>(null, null));     //register a mapper which transfomr User into UserDto (1)
+            Assert.IsTrue(observer.BuildAutoResolverMapper<Student, Person>(null, null));   //register a mapper which transfomr Student into Person (1)
 
-            Assert.IsFalse(observer.RegisterMapper(mapper1));
+            Assert.IsFalse(observer.RegisterMapper(mapper1));           // this mapper cannot be registered 'cause It was registered another similar mapper ( as (1) )
+            Assert.IsFalse(observer.RegisterMapper(mapper2));           // this mapper cannot be registered 'cause It was registered another similar mapper ( as (1) )
 
-            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, null));
-            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, dto => Console.WriteLine(dto)));
+            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, null));    //It's equals to mapper (1), so It cannot be registered.
+            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, dto => Console.WriteLine(dto)));   //It's similar to mapper (2), so It cannot be registered.
+
+            Assert.IsTrue(observer.RegisterMapper(mapper1, KeyService.Type1));           // this mapper can be registered 'cause It was registered with another KeyService nevertheless using a similar mapper ( as (1) )
+            Assert.IsFalse(observer.RegisterMapper(mapper2, KeyService.Type1));           // this mapper cannot be registered 'cause It was registered another similar mapper ( as (1) ), using the same serviceKey like a previous registration.
+
         }
 
         [Test]
@@ -391,22 +393,21 @@ namespace DynamicMapResolver.Test
 
             var res = observer.TryToMap<CustomComplexType, CustomComplexTypeDto>(instance);
             Assert.IsNotNull(res);
+            Assert.AreEqual(res.MyKeyService, KeyServiceOther.Type2);
+            Assert.AreEqual(res.ComplexNaming, instance.ComplexNaming);
+            Assert.IsNotNull(res.Owner);
 
-            var res1 = observer.TryToMap(instance, typeof(CustomComplexTypeDto));
+            var res1 = observer.TryToMap(instance, typeof(CustomComplexTypeDto)) as CustomComplexTypeDto; 
             Assert.IsNotNull(res1);
+            Assert.AreEqual(res1.MyKeyService, KeyServiceOther.Type2);
+            Assert.AreEqual(res1.ComplexNaming, instance.ComplexNaming);
+            Assert.IsNotNull(res1.Owner);
         }
 
-
-        public void Test()
-        {
-            /* TODO
-             * Prima di registrare qualsiasi tipo di Transformatore occorre considerare questa situazione:
-             * .    key: "somekey", type1 <- ISourceMapper<T1, T2>
-             * .    key: "somekey", type2 <- SourceMapper<T1, T2>
-             * Esistono due oggetti mapper associati alla stessa chiave (contesto), di cui occorre capire quale dei due
-             * bisogna utilizzare quando un oggetto di input verrà transformato.
-             * Dall'esempio si può capire che il mapper di tipo type1 è compatibile con il secondo
-            */
-        }
+        /*
+         TODO
+         * try to convert example <int, int?>... by SimpleMapper..
+         */
+        
     }
 }

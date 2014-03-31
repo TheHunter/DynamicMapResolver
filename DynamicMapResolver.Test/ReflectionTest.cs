@@ -29,6 +29,14 @@ namespace DynamicMapResolver.Test
 
             Assert.IsTrue(t1.IsAssignableFrom(t2));
             Assert.IsFalse(t2.IsSubclassOf(t1));
+
+            Person p1 = new Person();
+            PersonaGiuridica p2 = new PersonaGiuridica();
+
+            Type t0 = p1.GetType();
+            Assert.IsTrue(t0.IsInstanceOfType(p1));
+            Assert.IsTrue(t0.IsInstanceOfType(p2));
+
         }
 
         [Test]

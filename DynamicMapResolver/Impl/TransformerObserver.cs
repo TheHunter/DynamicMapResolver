@@ -115,32 +115,6 @@ namespace DynamicMapResolver.Impl
             return (TDestination)mp.Map(source);
         }
 
-
-        //public TDestination TryToMap<TMapper, TDestination>(object source)
-        //    where TMapper : class, ISourceMapper
-        //{
-        //    return this.TryToMap<TMapper, TDestination>(source, defaultKey);
-        //}
-
-
-        //public TDestination TryToMap<TMapper, TDestination>(object source, object keyService)
-        //    where TMapper : class, ISourceMapper
-        //{
-        //    object src = source;
-        //    if (src == null)
-        //        return default(TDestination);
-
-        //    var serviceMapper = this.mapperResolver.FirstOrDefault(transformer => transformer.Match<TMapper>(keyService));
-        //    if (serviceMapper == null)
-        //        return default(TDestination);
-
-        //    TMapper service = serviceMapper.ServiceAs<TMapper>();
-        //    if (service == null)
-        //        return default(TDestination);
-
-        //    return (TDestination)service.Map(source);
-        //}
-
         /// <summary>
         /// 
         /// </summary>
@@ -239,7 +213,19 @@ namespace DynamicMapResolver.Impl
         /// <param name="keyService"></param>
         /// <returns></returns>
         public bool RegisterMapper<TMapper>(TMapper mapper, object keyService) where TMapper : class, ISourceMapper
-        {   
+        {
+            if (mapper == null)
+                return false;
+
+            var service =
+                this.mapperResolver.FirstOrDefault(
+                    transformer =>
+                    transformer.KeyEquals(keyService) && transformer.ComparableTo(keyService, mapper))
+                    ;
+
+            if (service != null)
+                return false;
+
             return this.mapperResolver.Add(new ServiceTransformer<TMapper>(keyService, mapper));
         }
 
@@ -263,6 +249,16 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public bool RegisterMerger<TMerger>(TMerger merger, object keyService) where TMerger : class, ISourceMerger
         {
+            if (merger == null)
+                return false;
+
+            var service = this.mergerResolver.FirstOrDefault(
+                transformer => transformer.KeyEquals(keyService) && transformer.ComparableTo(keyService, merger))
+                ;
+
+            if (service != null)
+                return false;
+
             return this.mergerResolver.Add(new ServiceTransformer<TMerger>(keyService, merger));
         }
 
@@ -343,7 +339,8 @@ namespace DynamicMapResolver.Impl
             ISourceMapper mapper =
                 new SourceMapper<TSource, TDestination>(
                     FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>(this), beforeMapping, afterMapping);
-            return this.mapperResolver.Add(new ServiceTransformer<ISourceMapper>(keyService, mapper));
+            
+            return this.RegisterMapper(mapper, keyService);
         }
 
         /// <summary>
@@ -370,7 +367,7 @@ namespace DynamicMapResolver.Impl
                                                     FactoryMapper.GetDefaultPropertyMappers(sourceType, destinationType,
                                                                                             this));
 
-            return this.mapperResolver.Add(new ServiceTransformer<ISourceMapper>(keyService, mapper));
+            return this.RegisterMapper(mapper, keyService);
         }
 
         /// <summary>
@@ -401,10 +398,11 @@ namespace DynamicMapResolver.Impl
             where TSource : class
             where TDestination : class
         {
-            ISourceMerger mapper =
+            ISourceMerger merger =
                 new SourceMerger<TSource, TDestination>(
                     FactoryMapper.GetDefaultPropertyMappers<TSource, TDestination>(this), beforeMapping, afterMapping);
-            return this.mapperResolver.Add(new ServiceTransformer<ISourceMerger>(keyService, mapper));
+
+            return this.RegisterMerger(merger, keyService);
         }
 
         /// <summary>
@@ -431,7 +429,7 @@ namespace DynamicMapResolver.Impl
                                                     FactoryMapper.GetDefaultPropertyMappers(sourceType, destinationType,
                                                                                             this));
 
-            return this.mergerResolver.Add(new ServiceTransformer<ISourceMerger>(keyService, merger));
+            return this.RegisterMerger(merger, keyService);
         }
 
         #endregion
