@@ -22,4 +22,20 @@ namespace DynamicMapResolver.Test.Pocos
 
         public UserDto Owner { get; set; }
     }
+
+
+    public class CustomSimpleType
+    {
+        public string Naming { get; set; }
+
+        public int Code { get; set; }
+    }
+
+
+    public class CustomSimpleTypeDto
+    {
+        public string Naming { get; set; }
+
+        public int? Code { get; set; }
+    }
 }

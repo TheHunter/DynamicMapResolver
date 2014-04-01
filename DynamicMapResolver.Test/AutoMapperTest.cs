@@ -143,7 +143,7 @@ namespace DynamicMapResolver.Test
                 byte b = (byte)instance;
                 double d = (double) instance;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.IsFalse(true, "Cast invalid");
             }

@@ -406,8 +406,54 @@ namespace DynamicMapResolver.Test
 
         /*
          TODO
-         * try to convert example <int, int?>... by SimpleMapper..
+         * try to convert example <int?, int>... by SimpleMapper..
          */
-        
+
+        [Test]
+        public void BuildAutoResolverMapperTest4()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            Assert.IsTrue(observer.BuildAutoResolverMapper(typeof(CustomSimpleTypeDto), typeof(CustomSimpleType)));
+
+            CustomSimpleTypeDto instance = new CustomSimpleTypeDto
+            {
+                Naming = "naming",
+                Code = 10
+            };
+
+            var res = observer.TryToMap<CustomSimpleTypeDto, CustomSimpleType>(instance);
+            Assert.IsNotNull(res);
+            Assert.AreEqual(res.Naming, instance.Naming);
+            Assert.AreEqual(res.Code, 0);
+
+            var res1 = observer.TryToMap(instance, typeof(CustomSimpleType)) as CustomSimpleType;
+            Assert.IsNotNull(res1);
+            Assert.AreEqual(res1.Naming, instance.Naming);
+            Assert.AreEqual(res1.Code, 0);
+        }
+
+        [Test]
+        public void BuildAutoResolverMapperTest5()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            Assert.IsTrue(observer.BuildAutoResolverMapper(typeof(CustomSimpleTypeDto), typeof(CustomSimpleType)));
+            Assert.IsTrue(observer.RegisterMapper(new SimpleMapper<int?, int>(i => i.GetValueOrDefault() )));
+
+            CustomSimpleTypeDto instance = new CustomSimpleTypeDto
+            {
+                Naming = "naming",
+                Code = 10
+            };
+
+            var res = observer.TryToMap<CustomSimpleTypeDto, CustomSimpleType>(instance);
+            Assert.IsNotNull(res);
+            Assert.AreEqual(res.Naming, instance.Naming);
+            Assert.AreEqual(res.Code, instance.Code);
+
+            var res1 = observer.TryToMap(instance, typeof(CustomSimpleType)) as CustomSimpleType;
+            Assert.IsNotNull(res1);
+            Assert.AreEqual(res1.Naming, instance.Naming);
+            Assert.AreEqual(res1.Code, instance.Code);
+        }
     }
 }
