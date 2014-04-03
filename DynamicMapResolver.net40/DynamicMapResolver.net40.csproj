@@ -86,6 +86,9 @@
     <Compile Include="..\DynamicMapResolver\Impl\SimpleMapper.cs">
       <Link>Impl\SimpleMapper.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\Impl\SimpleMerger.cs">
+      <Link>Impl\SimpleMerger.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\Impl\SourceMapper.cs">
       <Link>Impl\SourceMapper.cs</Link>
     </Compile>
