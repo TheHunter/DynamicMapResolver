@@ -139,7 +139,7 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// Initialize a new container with default property mappers.
+        /// Initialize a new transformer builder with default property mappers.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
