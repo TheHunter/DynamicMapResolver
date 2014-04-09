@@ -47,6 +47,9 @@
     <Compile Include="..\DynamicMapResolver\Exceptions\FailedSetPropertyException.cs">
       <Link>Exceptions\FailedSetPropertyException.cs</Link>
     </Compile>
+    <Compile Include="..\DynamicMapResolver\Exceptions\InconsistentMappingException.cs">
+      <Link>Exceptions\InconsistentMappingException.cs</Link>
+    </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\LambdaSetterException.cs">
       <Link>Exceptions\LambdaSetterException.cs</Link>
     </Compile>
@@ -58,6 +61,9 @@
     </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\MappingFailedActionException.cs">
       <Link>Exceptions\MappingFailedActionException.cs</Link>
+    </Compile>
+    <Compile Include="..\DynamicMapResolver\Exceptions\MissingAccessorException.cs">
+      <Link>Exceptions\MissingAccessorException.cs</Link>
     </Compile>
     <Compile Include="..\DynamicMapResolver\Exceptions\NonUniqueSetterException.cs">
       <Link>Exceptions\NonUniqueSetterException.cs</Link>

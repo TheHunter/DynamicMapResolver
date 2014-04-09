@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DynamicMapResolver.Exceptions;
 using DynamicMapResolver.Impl;
 
 namespace DynamicMapResolver
@@ -242,47 +243,32 @@ namespace DynamicMapResolver
             IEnumerable<KeyValuePair<PropertyInfo, PropertyInfo>> matchedProperties = FactoryMapper.GetSuitedPropertiesOf(typeof(TSource), typeof(TDestination));
             HashSet<IPropertyMapper<TSource, TDestination>> mappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
             
-            #region
-            //matchedProperties.All
-            //    (
-            //        current =>
-            //        {
-            //            try
-            //            {
-            //                Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value);
-            //                mappers.Add(new PropertyMapper<TSource, TDestination>(action, current.Key.Name, current.Value.Name));
-            //            }
-            //            catch
-            //            {
-            //                // exceptions must be ignore..
-            //                // so in this case, the properties are not compatibles..
-            //                if (resolver != null)
-            //                {
-            //                    Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Value, resolver);
-            //                    mappers.Add(new PropertyMapper<TSource, TDestination>(action));
-            //                }
-            //            }
-            //            return true;
-            //        }
-            //    );
-            #endregion
-            
             foreach (var current in matchedProperties)
             {
                 try
                 {
-                    Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value);
+                    Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key,
+                                                                                                     current.Value);
                     mappers.Add(new PropertyMapper<TSource, TDestination>(action, current.Key.Name, current.Value.Name));
                 }
-                catch
+                catch (InconsistentMappingException)
                 {
                     // exceptions must be managed..
                     // so in this means that properties are not compatibles..
-                    if (resolver != null)
+                    try
                     {
-                        Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value, resolver);
-                        mappers.Add(new PropertyMapper<TSource, TDestination>(action));
+                        if (resolver != null)
+                        {
+                            Action<TSource, TDestination> action = DynamicPropertyMap<TSource, TDestination>(current.Key, current.Value, resolver);
+                            mappers.Add(new PropertyMapper<TSource, TDestination>(action));
+                        }
                     }
+                    catch
+                    {
+                    }
+                }
+                catch
+                {
                 }
             }
             return mappers;
@@ -318,37 +304,23 @@ namespace DynamicMapResolver
                 {
                     mappers.Add(new PropertyMapper(current.Key, current.Value));
                 }
-                catch
+                catch (InconsistentMappingException)
                 {
                     // exceptions must be managed..
                     // so in this means that properties are not compatibles..
-                    if (resolver != null)
+                    try
                     {
-                        mappers.Add(new PropertyMapper(current.Key, current.Value, resolver));
+                        if (resolver != null)
+                            mappers.Add(new PropertyMapper(current.Key, current.Value, resolver));
+                    }
+                    catch
+                    {
                     }
                 }
+                catch
+                {
+                }
             }
-
-            #region
-            //matchedProperties.All
-            //    (
-            //        current =>
-            //        {
-            //            try
-            //            {
-            //                mappers.Add(new PropertyMapper(current.Key, current.Value));
-            //            }
-            //            catch
-            //            {
-            //                if (resolver != null)
-            //                {
-            //                    mappers.Add(new PropertyMapper(current.Value, resolver));
-            //                }
-            //            }
-            //            return true;
-            //        }
-            //    );
-            #endregion
 
             return mappers;
         }
@@ -375,6 +347,12 @@ namespace DynamicMapResolver
 
             MethodInfo getterMethod = srcProperty.GetGetMethod() ?? srcProperty.GetGetMethod(true);
             MethodInfo setterMethod = destProperty.GetSetMethod() ?? destProperty.GetSetMethod(true);
+
+            if (getterMethod == null)
+                throw new MissingAccessorException("No getter method available for retrieving value for setting property destination.");
+
+            if (setterMethod == null)
+                throw new MissingAccessorException("No setter method available for setting property destination.");
 
             Delegate getter = Delegate.CreateDelegate(funcType, null, getterMethod);
             Delegate setter = Delegate.CreateDelegate(actType, null, setterMethod);
@@ -407,6 +385,12 @@ namespace DynamicMapResolver
             MethodInfo getterMethod = srcProperty.GetGetMethod() ?? srcProperty.GetGetMethod(true);
             MethodInfo setterMethod = destProperty.GetSetMethod() ?? destProperty.GetSetMethod(true);
 
+            if (getterMethod == null)
+                throw new MissingAccessorException("No getter method available for retrieving value for setting property destination.");
+
+            if (setterMethod == null)
+                throw new MissingAccessorException("No setter method available for setting property destination.");
+
             Delegate getter = Delegate.CreateDelegate(funcType, null, getterMethod);
             Delegate setter = Delegate.CreateDelegate(actType, null, setterMethod);
 
@@ -430,11 +414,11 @@ namespace DynamicMapResolver
                 if (PrimitiveTypes.ContainsKey(destProperty.PropertyType))
                 {
                     if (!PrimitiveTypes[destProperty.PropertyType].Contains(srcProperty.PropertyType))
-                        throw new Exception("Property getter is no compatible with property setter.");
+                        throw new InconsistentMappingException("Property getter is no compatible with property setter.");
                 }
                 else if (!destProperty.PropertyType.IsAssignableFrom(srcProperty.PropertyType))
                 {
-                    throw new Exception("References property getter and setter are incompatibles.");
+                    throw new InconsistentMappingException("References property getter and setter are incompatibles.");
                 }
             }
         }

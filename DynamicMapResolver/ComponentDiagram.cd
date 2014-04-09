@@ -158,6 +158,13 @@
       <FileName>Impl\SourceMerger.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="DynamicMapResolver.Exceptions.MissingAccessorException">
+    <Position X="27.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\MissingAccessorException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="DynamicMapResolver.IPropertyMapper">
     <Position X="20" Y="6" Width="1.5" />
     <TypeIdentifier>

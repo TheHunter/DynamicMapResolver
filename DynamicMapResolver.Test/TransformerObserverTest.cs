@@ -181,7 +181,10 @@ namespace DynamicMapResolver.Test
             Assert.IsNull(resDto2);
 
             var resDto3 = observer.TryToMap(ps, typeof(Student), "mykey");
+            var resDto4 = observer.TryToMap(ps, null, "mykey");
+
             Assert.IsNull(resDto3);
+            Assert.IsNull(resDto4);
         }
 
         [Test]
@@ -402,6 +405,9 @@ namespace DynamicMapResolver.Test
             Assert.AreEqual(res1.MyKeyService, KeyServiceOther.Type2);
             Assert.AreEqual(res1.ComplexNaming, instance.ComplexNaming);
             Assert.IsNotNull(res1.Owner);
+
+            var res2 = observer.TryToMap(KeyService.Type1, null);
+            Assert.IsNull(res2);
         }
 
         /*

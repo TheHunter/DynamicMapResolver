@@ -41,11 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuilderType.cs" />
+    <Compile Include="Exceptions\InconsistentMappingException.cs" />
     <Compile Include="Exceptions\MapperException.cs" />
     <Compile Include="Exceptions\MapperParameterException.cs" />
     <Compile Include="Exceptions\FailedSetPropertyException.cs" />
     <Compile Include="Exceptions\LambdaSetterException.cs" />
     <Compile Include="Exceptions\MappingFailedActionException.cs" />
+    <Compile Include="Exceptions\MissingAccessorException.cs" />
     <Compile Include="Exceptions\NonUniqueSetterException.cs" />
     <Compile Include="FactoryMapper.cs" />
     <Compile Include="IContainerBuilder.cs" />
