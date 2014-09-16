@@ -274,7 +274,7 @@ namespace DynamicMapResolver.Test
             Assert.IsFalse(observer.RegisterMapper(mapper2));           // this mapper cannot be registered 'cause It was registered another similar mapper ( as (1) )
 
             Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, null));    //It's equals to mapper (1), so It cannot be registered.
-            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, dto => Console.WriteLine(dto)));   //It's similar to mapper (2), so It cannot be registered.
+            Assert.IsFalse(observer.BuildAutoResolverMapper<User, UserDto>(null, Console.WriteLine));   //It's similar to mapper (2), so It cannot be registered.
 
             Assert.IsTrue(observer.RegisterMapper(mapper1, KeyService.Type1));           // this mapper can be registered 'cause It was registered with another KeyService nevertheless using a similar mapper ( as (1) )
             Assert.IsFalse(observer.RegisterMapper(mapper2, KeyService.Type1));           // this mapper cannot be registered 'cause It was registered another similar mapper ( as (1) ), using the same serviceKey like a previous registration.

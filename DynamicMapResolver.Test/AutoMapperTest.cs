@@ -43,14 +43,14 @@ namespace DynamicMapResolver.Test
             Assert.IsNotNull(giu);
         }
 
-        //[Test]
+        [Test]
         public void VerifyElapsedTime()
         {
-            int count = 1000000;
+            int count = 100000;
             List<Person> lista = GetPersons(count);
 
-            var timeSpanMapResolver = GetElapsedFromMapResolver(lista);
             var timeSpanAutomapper = GetElapsedTimeFromAutoMapper(lista);
+            var timeSpanMapResolver = GetElapsedFromMapResolver(lista);
 
             Assert.IsTrue(timeSpanMapResolver.TotalMilliseconds < timeSpanAutomapper.TotalMilliseconds);
         }
@@ -114,6 +114,63 @@ namespace DynamicMapResolver.Test
             return lista;
         }
 
+        [Test]
+        public void SimpleTestTransformation()
+        {
+            Mapper.CreateMap<User, UserDto>();
+            
+            User user1 = new User
+            {
+                Name = "name1",
+                Surname = "surname1",
+                Parent = new User
+                {
+                    Name = "parteName1",
+                    Surname = "parentSurname1",
+                    Parent = new User
+                    {
+                        Name = "parentParentName1",
+                        Surname = "parentParentSurname1",
+                        Parent = new User()
+                    }
+                }
+            };
+
+            var result = Mapper.Map<User, UserDto>(user1);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void ComplexTestTransformation()
+        {
+            Mapper.CreateMap<CustomComplexType, CustomComplexTypeDto>();
+            Mapper.CreateMap<User, UserDto>();
+
+            CustomComplexType instance = new CustomComplexType
+            {
+                MyKeyService = KeyService.Type2,
+                ComplexNaming = "complex_naming",
+                Owner = new User
+                {
+                    Name = "name1",
+                    Surname = "surname1",
+                    Parent = new User
+                    {
+                        Name = "parteName1",
+                        Surname = "parentSurname1",
+                        Parent = new User
+                        {
+                            Name = "parentParentName1",
+                            Surname = "parentParentSurname1",
+                            Parent = new User()
+                        }
+                    }
+                }
+            };
+
+            var result = Mapper.Map<CustomComplexType, CustomComplexTypeDto>(instance);
+            Assert.IsNotNull(result);
+        }
 
         //[Test]
         public void TestReflection()
