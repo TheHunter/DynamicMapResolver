@@ -196,7 +196,7 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
-        [ExpectedException(typeof(FailedSetPropertyException))]
+        [ExpectedException(typeof(MapperException))]
         public void TestDefaultMergerIgnoringException()
         {
             StringBuilder buffer = new StringBuilder();

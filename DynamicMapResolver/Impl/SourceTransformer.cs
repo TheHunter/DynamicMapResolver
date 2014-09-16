@@ -16,6 +16,7 @@ namespace DynamicMapResolver.Impl
         where TDestination : class
     {
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
+        private readonly Action<TSource, TDestination> onTransformingDefault;
 
         /// <summary>
         /// 
@@ -37,6 +38,8 @@ namespace DynamicMapResolver.Impl
 
             if (this.propertyMappers.Count != propertyMappers.Count())
                 throw new NonUniqueSetterException("Property mappers must be unique, so verify the lambda setter expressions.");
+
+            this.onTransformingDefault = (src, dest) => UsePropertyMappers(src, dest, this.propertyMappers);
         }
 
         /// <summary>
@@ -58,6 +61,8 @@ namespace DynamicMapResolver.Impl
 
             if (this.propertyMappers.Count != propertyMappers.Count())
                 throw new NonUniqueSetterException("Property mappers must be unique, so verify the lambda setter expressions.");
+
+            this.onTransformingDefault = (src, dest) => UsePropertyMappers(src, dest, this.propertyMappers);
         }
 
         /// <summary>
@@ -68,14 +73,46 @@ namespace DynamicMapResolver.Impl
         /// <param name="propMappers"></param>
         protected void UsePropertyMappers(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propMappers)
         {
-            propMappers.All
-                    (
-                        mapper =>
-                        {
-                            mapper.Setter.Invoke(source, destination);
-                            return true;
-                        }
-                    );
+            //propMappers.All
+            //        (
+            //            mapper =>
+            //            {
+            //                mapper.Setter.Invoke(source, destination);
+            //                return true;
+            //            }
+            //        );
+
+            if (propMappers == null || !propMappers.Any())
+                throw new MapperParameterException("propMappers", "The given parameter cannot be empty or null.");
+
+            var mappers = propMappers.ToArray();
+
+            for (int index = 0; index < mappers.Length; index++ )
+            {
+                var mapper = mappers[index];
+                try
+                {
+                    mapper.Setter(source, destination);   
+                }
+                catch (Exception ex)
+                {
+                    throw new FailedSetPropertyException(
+                        string.Format(
+                            "Error on executing lambda setter expression, property src: {0} - property dest: {1}",
+                            mapper.PropertySource, mapper.PropertyDestination), ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        protected void OnMapping(TSource source, TDestination destination)
+        {
+            this.OnTransforming = this.onTransformingDefault;
+            this.Transform(source, destination);
         }
 
         /// <summary>
@@ -86,7 +123,7 @@ namespace DynamicMapResolver.Impl
         /// <param name="propertiesToMap"></param>
         protected void OnMapping(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propertiesToMap)
         {
-            this.OnTransforming = (source1, destination1) => UsePropertyMappers(source1, destination1, propertiesToMap);
+            this.OnTransforming = (src, dest) => UsePropertyMappers(src, dest, propertiesToMap);
             this.Transform(source, destination);
         }
 

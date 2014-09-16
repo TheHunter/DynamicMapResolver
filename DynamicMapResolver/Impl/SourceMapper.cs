@@ -64,7 +64,8 @@ namespace DynamicMapResolver.Impl
                 return null;
 
             TDestination destination = Activator.CreateInstance(this.DestinationType, true) as TDestination;
-            this.OnMapping(source, destination, this.PropertyMappers);
+            //this.OnMapping(source, destination, this.PropertyMappers);
+            this.OnMapping(source, destination);
             return destination;
         }
 

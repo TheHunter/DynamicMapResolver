@@ -104,7 +104,10 @@ namespace DynamicMapResolver.Impl
             catch (Exception ex)
             {
                 if (!this.IgnoreExceptionOnMapping)
-                    throw new FailedSetPropertyException("Exception on executing lambda setter action.", ex);
+                    throw new MapperException(
+                        string.Format(
+                            "Exception on transforming source instance (type of <{0}>) into destination type (of <{1}>).",
+                            this.SourceType.Name, this.DestinationType.Name), ex);
             }
 
             #region Executing AfterMapping Action.

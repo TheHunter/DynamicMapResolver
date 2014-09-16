@@ -69,7 +69,7 @@
   <Class Name="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;">
     <Position X="12.5" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAIAAAAAAgAAAAQAAAAEAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Impl\SourceTransformer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -116,7 +116,7 @@
     <Position X="14" Y="12.75" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
       <Path>
-        <Point X="13.25" Y="11.194" />
+        <Point X="13.25" Y="11.358" />
         <Point X="13.25" Y="12.12" />
         <Point X="14.75" Y="12.12" />
         <Point X="14.75" Y="12.75" />
@@ -128,7 +128,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Impl.SourceMapper" Collapsed="true">
+  <Class Name="DynamicMapResolver.Impl.SourceMapper">
     <Position X="14" Y="15.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -139,7 +139,7 @@
     <Position X="11" Y="12.75" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
       <Path>
-        <Point X="13.25" Y="11.194" />
+        <Point X="13.25" Y="11.358" />
         <Point X="13.25" Y="12.099" />
         <Point X="11.75" Y="12.099" />
         <Point X="11.75" Y="12.75" />
@@ -151,7 +151,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Impl.SourceMerger" Collapsed="true">
+  <Class Name="DynamicMapResolver.Impl.SourceMerger">
     <Position X="11" Y="15.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>

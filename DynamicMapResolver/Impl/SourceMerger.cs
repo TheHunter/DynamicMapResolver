@@ -51,7 +51,8 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public virtual TDestination Merge(TSource source, TDestination destination)
         {
-            this.OnMapping(source, destination, this.PropertyMappers);
+            //this.OnMapping(source, destination, this.PropertyMappers);
+            this.OnMapping(source, destination);
             return destination;
         }        
 
