@@ -73,15 +73,6 @@ namespace DynamicMapResolver.Impl
         /// <param name="propMappers"></param>
         protected void UsePropertyMappers(TSource source, TDestination destination, IEnumerable<IPropertyMapper<TSource, TDestination>> propMappers)
         {
-            //propMappers.All
-            //        (
-            //            mapper =>
-            //            {
-            //                mapper.Setter.Invoke(source, destination);
-            //                return true;
-            //            }
-            //        );
-
             if (propMappers == null || !propMappers.Any())
                 throw new MapperParameterException("propMappers", "The given parameter cannot be empty or null.");
 
