@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{062739
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicMapResolver.net40", "DynamicMapResolver.net40\DynamicMapResolver.net40.csproj", "{3DAD2AC5-D231-4AE8-AF16-2811D5D1C375}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{87A9D338-2744-498C-B0F1-AA2A6AE2CFE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{99598E3A-13A4-4F51-9250-84CC4304F89D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,5 +39,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3DAD2AC5-D231-4AE8-AF16-2811D5D1C375} = {87A9D338-2744-498C-B0F1-AA2A6AE2CFE2}
+		{A45B0E21-8E43-4F07-9CC0-52E89CFDDD86} = {87A9D338-2744-498C-B0F1-AA2A6AE2CFE2}
+		{3C578E64-B0A8-4EF2-B11A-1368B9AEF357} = {99598E3A-13A4-4F51-9250-84CC4304F89D}
 	EndGlobalSection
 EndGlobal
