@@ -1,9 +1,28 @@
 ﻿namespace DynamicMapResolver.Test.Pocos
 {
+    public interface IUser
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string Surname { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        User Parent { get; }
+    }
+
     /// <summary>
     /// 
     /// </summary>
     public class User
+        : IUser
     {
         /// <summary>
         /// 

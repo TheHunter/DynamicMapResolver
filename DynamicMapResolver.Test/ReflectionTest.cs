@@ -5,6 +5,7 @@ using System.Text;
 using DynamicMapResolver.Impl;
 using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace DynamicMapResolver.Test
 {
@@ -47,6 +48,108 @@ namespace DynamicMapResolver.Test
 
             Assert.IsTrue(t2.IsAssignableFrom(t1));
             Assert.IsFalse(t1.IsAssignableFrom(t2));
+        }
+
+        [Test]
+        public void TestOnBasePropertiesInterface()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            observer.BuildAutoResolverMapper<IClassC, Demo2>(null, null);
+
+            Demo1 demo = new Demo1
+            {
+                MyAProp = "myprop1",
+                MyBProp = "myprop2",
+                MyBBProp = "myprop3",
+                MyCProp = "myprop4"
+            };
+
+            var res = observer.TryToMap<IClassC, Demo2>(demo);
+            Assert.AreEqual(demo.MyAProp, res.MyAProp);
+            Assert.AreEqual(demo.MyBProp, res.MyBProp);
+            Assert.AreEqual(demo.MyBBProp, res.MyBBProp);
+            Assert.AreEqual(demo.MyCProp, res.MyCProp);
+        }
+
+        [Test]
+        public void TestA()
+        {
+            
+            Type t2 = typeof(IClassB);
+            Type t3 = typeof(IClassBB);
+
+            var t2Prop = t2.GetProperty("MyBProp");
+            var t3Prop = t3.GetProperty("MyBProp");
+
+            var demo = new Demo1();
+            demo.MyBProp = "ciao";
+
+            var val1 = t2Prop.GetValue(demo, null);
+            var val2 = t3Prop.GetValue(demo, null);
+
+            Assert.AreNotEqual(t2Prop, t3Prop);
+
+            Assert.AreEqual(val1, val2);
+            Assert.AreEqual(val1, demo.MyBProp);
+            Assert.AreEqual(val2, demo.MyBProp);
+        }
+
+        [Test]
+        public void TestOnAllProperties()
+        {
+            
+            Type c = typeof(IClassC);
+            var res = FactoryMapper.GetPropertiesOf(c);
+            
+            Assert.AreEqual(4, res.Length);
+            
+        }
+
+
+        public interface IClassA
+        {
+            string MyAProp { get; }
+        }
+
+
+        public interface IClassB
+            : IClassA
+        {
+            string MyBProp { get; }
+        }
+
+
+        public interface IClassBB
+            : IClassA
+        {
+            string MyBProp { get; set; }
+            string MyBBProp { get; }
+        }
+
+
+        public interface IClassC
+            : IClassB, IClassBB, IClassA
+        {
+            string MyCProp { get; }
+        }
+
+
+        public class Demo1
+            : IClassC
+        {
+            public string MyCProp { get; set; }
+            public string MyBProp { get; set; }
+            public string MyAProp { get; set; }
+            public string MyBBProp { get; set; }
+        }
+
+
+        public class Demo2
+        {
+            public string MyCProp { get; set; }
+            public string MyBProp { get; set; }
+            public string MyAProp { get; set; }
+            public string MyBBProp { get; set; }
         }
     }
 }

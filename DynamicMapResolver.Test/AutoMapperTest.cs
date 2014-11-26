@@ -43,10 +43,10 @@ namespace DynamicMapResolver.Test
             Assert.IsNotNull(giu);
         }
 
-        [Test]
+        //[Test]
         public void VerifyElapsedTime()
         {
-            int count = 100000;
+            int count = 10000;
             List<Person> lista = GetPersons(count);
 
             var timeSpanAutomapper = GetElapsedTimeFromAutoMapper(lista);
