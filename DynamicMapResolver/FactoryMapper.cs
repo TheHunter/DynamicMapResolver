@@ -184,9 +184,46 @@ namespace DynamicMapResolver
         /// Gets all public properties for the given type.
         /// </summary>
         /// <returns></returns>
-        public static PropertyInfo[] GetPropertiesOf(Type current)
+        public static PropertyInfo[] GetPropertiesOf(Type current, BindingFlags? flags = null)
         {
-            return current.GetProperties();
+            //return current.GetProperties();
+
+            BindingFlags fl = flags.HasValue ? flags.Value
+                                : (BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
+
+            if (current.IsInterface)
+            {
+                var propertyInfos = new List<PropertyInfo>();
+
+                var considered = new List<Type>();
+                var queue = new Queue<Type>();
+                considered.Add(current);
+                queue.Enqueue(current);
+
+                while (queue.Count > 0)
+                {
+                    var subType = queue.Dequeue();
+                    foreach (var subInterface in subType.GetInterfaces())
+                    {
+                        if (considered.Contains(subInterface))
+                            continue;
+
+                        considered.Add(subInterface);
+                        queue.Enqueue(subInterface);
+                    }
+
+                    var typeProperties = subType.GetProperties(fl);
+
+                    var newPropertyInfos = typeProperties
+                        .Where(x => !propertyInfos.Contains(x)
+                                && !propertyInfos.Any(n => n.Name.Equals(x.Name))
+                            );
+
+                    propertyInfos.InsertRange(0, newPropertyInfos);
+                }
+                return propertyInfos.ToArray();
+            }
+            return current.GetProperties(fl);
         }
 
         /// <summary>
