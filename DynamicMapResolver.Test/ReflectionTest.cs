@@ -13,6 +13,50 @@ namespace DynamicMapResolver.Test
     class ReflectionTest
     {
         [Test]
+        public void AllPropertiesFromTree()
+        {
+            Type t0 = typeof(MyDerivedClass);
+            const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.SetProperty | BindingFlags.Instance;
+            var prop = this.GetPropertiesFromDeclaredType(FactoryMapper.GetPropertiesOf(t0, flags), flags).ToArray();
+            Assert.NotNull(prop);
+            Assert.AreEqual(4, prop.Length);
+
+            Assert.AreEqual(4, prop.Count(n => (n.GetSetMethod() ?? n.GetSetMethod(true)) != null));
+        }
+
+        [Test]
+        public void AccessToParentMember()
+        {
+            const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.SetProperty | BindingFlags.Instance;
+            var prop = typeof(BaseClassOne).GetProperty("Counter", flags);
+
+            Assert.NotNull(prop);
+            var instance = new MyDerivedClass(-1, "comment", "comment2", 2.5);
+            prop.SetValue(instance, 5, null);
+
+            Assert.AreEqual(5, instance.Counter);
+        }
+
+        /// <summary>
+        /// Gets all properties from original / basic type.
+        /// </summary>
+        /// <param name="properties">The properties.</param>
+        /// <param name="flags">The flags.</param>
+        /// <returns></returns>
+        private IEnumerable<PropertyInfo> GetPropertiesFromDeclaredType(IEnumerable<PropertyInfo> properties, BindingFlags flags)
+        {
+            return properties.Select(info =>
+            {
+                if (info.DeclaringType == null || info.DeclaringType == info.ReflectedType)
+                    return info;
+
+                return info.DeclaringType.GetProperty(info.Name, flags);
+
+            }
+                );
+        }
+
+        [Test]
         public void Test1()
         {
             Type t1 = typeof(ISourceMapper<Student, Person>);
@@ -101,8 +145,7 @@ namespace DynamicMapResolver.Test
             Type c = typeof(IClassC);
             var res = FactoryMapper.GetPropertiesOf(c);
             
-            Assert.AreEqual(4, res.Length);
-            
+            Assert.AreEqual(4, res.Length);   
         }
 
 

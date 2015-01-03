@@ -212,7 +212,7 @@ namespace DynamicMapResolver
                         queue.Enqueue(subInterface);
                     }
 
-                    var typeProperties = subType.GetProperties(fl);
+                    var typeProperties = subType.GetOriginalProperties(fl);
 
                     var newPropertyInfos = typeProperties
                         .Where(x => !propertyInfos.Contains(x)
@@ -223,7 +223,34 @@ namespace DynamicMapResolver
                 }
                 return propertyInfos.ToArray();
             }
-            return current.GetProperties(fl);
+            //return current.GetProperties(fl);
+            return current.GetOriginalProperties(fl);
+        }
+
+        /// <summary>
+        /// Gets the original properties from declared types whenever they are found by derived types.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="flags">The flags.</param>
+        /// <returns></returns>
+        public static PropertyInfo[] GetOriginalProperties(this Type type, BindingFlags? flags = null)
+        {
+            BindingFlags fl = flags.HasValue ? flags.Value
+                                : (BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
+
+            IEnumerable<PropertyInfo> properties = type.GetProperties(fl);
+
+            return properties.Select(info =>
+            {
+                if (info.DeclaringType == null || info.DeclaringType == info.ReflectedType)
+                    return info;
+
+                return info.DeclaringType.GetProperty(info.Name, fl);
+
+            }
+                )
+                .ToArray()
+                ;
         }
 
         /// <summary>

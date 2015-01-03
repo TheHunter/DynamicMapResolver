@@ -30,6 +30,23 @@ namespace DynamicMapResolver.Test
         }
 
         [Test]
+        public void TestOnComplexDerivedClasses()
+        {
+            var mapper = FactoryMapper.DynamicResolutionMapper<MyDerivedClass, DerivedClassLast>();
+            Assert.NotNull(mapper);
+            Assert.AreEqual(4, mapper.PropertyMappers.Count());
+
+            MyDerivedClass source = new MyDerivedClass(1, "mycomment", "mycomment2", 12.5);
+            var res = mapper.Map(source);
+
+            Assert.NotNull(res);
+            Assert.AreEqual(source.Avarage, res.Avarage);
+            Assert.AreEqual(source.Comment, res.Comment);
+            Assert.AreEqual(source.CommentTwo, res.CommentTwo);
+            Assert.AreEqual(source.Counter, res.Counter);
+        }
+
+        [Test]
         [Description("Mapping with the same source type saved into resolver.")]
         public void MakeTransformerBuilderTest1()
         {

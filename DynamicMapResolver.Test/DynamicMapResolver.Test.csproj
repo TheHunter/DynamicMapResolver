@@ -53,7 +53,9 @@
   <ItemGroup>
     <Compile Include="AutoMapperTest.cs" />
     <Compile Include="KeyService.cs" />
+    <Compile Include="Pocos\BaseClassOne.cs" />
     <Compile Include="Pocos\CustomComplexType.cs" />
+    <Compile Include="Pocos\DerivedClassOne.cs" />
     <Compile Include="Pocos\Person.cs" />
     <Compile Include="Pocos\PersonaGiuridica.cs" />
     <Compile Include="Pocos\PersonDetails.cs" />
