@@ -16,10 +16,15 @@ namespace DynamicMapResolver.Impl
         private readonly string propertyDestination;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapInfo"/> class.
         /// </summary>
-        /// <param name="propertySrc"></param>
-        /// <param name="propertyDest"></param>
+        /// <param name="propertySrc">The property source.</param>
+        /// <param name="propertyDest">The property dest.</param>
+        /// <exception cref="MapperParameterException">
+        /// propertySrc;The getter property name cannot be null or empty, you have to use the suitable constructor without property names parameters.
+        /// or
+        /// propertyDest;The setter property name cannot be null or empty, you have to use the suitable constructor without property names parameters.
+        /// </exception>
         protected PropertyMapInfo(string propertySrc, string propertyDest)
         {
             if (propertySrc == null || propertySrc.Trim().Equals(string.Empty))
@@ -34,7 +39,7 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// The property source which value will set the associated property destination.
         /// </summary>
         public string PropertySource
         {
@@ -42,7 +47,7 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// The property destination which value will be set from property source value.
         /// </summary>
         public string PropertyDestination
         {

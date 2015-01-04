@@ -6,10 +6,10 @@ using System.Text;
 namespace DynamicMapResolver
 {
     /// <summary>
-    /// 
+    /// Rappresents a simple mapper.
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TDestination"></typeparam>
+    /// <typeparam name="TSource">The type of the source.</typeparam>
+    /// <typeparam name="TDestination">The type of the destination.</typeparam>
     public interface ISimpleMapper<in TSource, out TDestination>
         : ISourceMapper
     {

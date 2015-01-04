@@ -9,17 +9,18 @@ namespace DynamicMapResolver.Impl
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TDestination"></typeparam>
+    /// <typeparam name="TSource">The type of the source.</typeparam>
+    /// <typeparam name="TDestination">The type of the destination.</typeparam>
     public class SimpleMapper<TSource, TDestination>
         : SourceTransformer, ISimpleMapper<TSource, TDestination>
     {
         private readonly Func<TSource, TDestination> converter;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SimpleMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="converter"></param>
+        /// <param name="converter">The converter.</param>
+        /// <exception cref="DynamicMapResolver.Exceptions.MapperParameterException">converter;The given lambda converter cannot be null.</exception>
         public SimpleMapper(Func<TSource, TDestination> converter)
             :base(typeof(TSource), typeof(TDestination))
         {
@@ -30,10 +31,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Maps the specified source.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">The source.</param>
         /// <returns></returns>
+        /// <exception cref="DynamicMapResolver.Exceptions.MapperException">Error on executing the expression for transforming source instance into destination type.</exception>
         public TDestination Map(TSource source)
         {
             try
@@ -51,10 +53,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Transform the given instance into destination type.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">the instance to transform.</param>
         /// <returns></returns>
+        /// <exception cref="DynamicMapResolver.Exceptions.MapperParameterException">source</exception>
         object ISourceMapper.Map(object source)
         {
             if (source is TSource)
@@ -64,10 +67,12 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -80,9 +85,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             return typeof(SimpleMapper<TSource, TDestination>).GetHashCode() + base.GetHashCode();

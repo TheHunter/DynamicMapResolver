@@ -26,18 +26,27 @@ namespace DynamicMapResolver
     public interface ISourceTransformer
     {
         /// <summary>
-        /// 
+        /// Gets the type of the source.
         /// </summary>
+        /// <value>
+        /// The type of the source.
+        /// </value>
         Type SourceType { get; }
 
         /// <summary>
-        /// 
+        /// Gets the type of the destination.
         /// </summary>
+        /// <value>
+        /// The type of the destination.
+        /// </value>
         Type DestinationType { get; }
 
         /// <summary>
-        /// 
+        /// Gets or sets a value indicating whether [ignore exception on mapping].
         /// </summary>
+        /// <value>
+        /// <c>true</c> if [ignore exception on mapping]; otherwise, <c>false</c>.
+        /// </value>
         bool IgnoreExceptionOnMapping { get; set; }
 
     }

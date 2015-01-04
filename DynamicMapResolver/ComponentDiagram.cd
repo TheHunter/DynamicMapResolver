@@ -43,7 +43,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="DynamicMapResolver.Impl.PropertyMapInfo">
-    <Position X="26.25" Y="2" Width="1.5" />
+    <Position X="26.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>Impl\PropertyMapInfo.cs</FileName>
@@ -51,7 +51,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.PropertyMapper&lt;TSource, TDestination&gt;">
-    <Position X="24.75" Y="5.25" Width="1.5" />
+    <Position X="24.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAAAg=</HashCode>
       <FileName>Impl\PropertyMapper.cs</FileName>
@@ -59,7 +59,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.PropertyMapper">
-    <Position X="27.75" Y="5.25" Width="1.5" />
+    <Position X="27.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAQAAAAAAAAAAgAAAAAAAABAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\PropertyMapper.cs</FileName>
@@ -67,7 +67,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;">
-    <Position X="12.5" Y="9" Width="1.5" />
+    <Position X="13.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAAgAAAAQAAAAEAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Impl\SourceTransformer.cs</FileName>
@@ -75,7 +75,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceTransformer">
-    <Position X="14.5" Y="0.75" Width="1.5" />
+    <Position X="15.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADAAAAAAAAAAAEgAABAAAAAAAAAIAAAAAACAAAAgg=</HashCode>
       <FileName>Impl\SourceTransformer.cs</FileName>
@@ -83,13 +83,13 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.SimpleMapper&lt;TSource, TDestination&gt;">
-    <Position X="16.25" Y="5" Width="1.5" />
+    <Position X="17" Y="5" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer" ManuallyRouted="true" FixedToPoint="true">
       <Path>
-        <Point X="15.25" Y="3.645" />
-        <Point X="15.25" Y="4.625" />
-        <Point X="17.062" Y="4.625" />
-        <Point X="17.062" Y="5" />
+        <Point X="16" Y="3.645" />
+        <Point X="16" Y="4.625" />
+        <Point X="17.812" Y="4.625" />
+        <Point X="17.812" Y="5" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -99,7 +99,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.ActionTransformer&lt;TSource, TDestination&gt;">
-    <Position X="12.5" Y="5" Width="1.5" />
+    <Position X="13.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAEBAAgAAQAAQAAAAAEIAAAAAAAAAAIAA=</HashCode>
       <FileName>Impl\ActionTransformer.cs</FileName>
@@ -113,13 +113,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceMapper&lt;TSource, TDestination&gt;">
-    <Position X="14" Y="12.75" Width="1.5" />
+    <Position X="14.75" Y="12.75" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
       <Path>
-        <Point X="13.25" Y="11.358" />
-        <Point X="13.25" Y="12.12" />
-        <Point X="14.75" Y="12.12" />
-        <Point X="14.75" Y="12.75" />
+        <Point X="14" Y="11.358" />
+        <Point X="14" Y="12.12" />
+        <Point X="15.5" Y="12.12" />
+        <Point X="15.5" Y="12.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -129,20 +129,20 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceMapper">
-    <Position X="14" Y="15.25" Width="1.5" />
+    <Position X="14.75" Y="15.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\SourceMapper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceMerger&lt;TSource, TDestination&gt;">
-    <Position X="11" Y="12.75" Width="1.5" />
+    <Position X="11.75" Y="12.75" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer&lt;TSource, TDestination&gt;" ManuallyRouted="true">
       <Path>
-        <Point X="13.25" Y="11.358" />
-        <Point X="13.25" Y="12.099" />
-        <Point X="11.75" Y="12.099" />
-        <Point X="11.75" Y="12.75" />
+        <Point X="14" Y="11.358" />
+        <Point X="14" Y="12.099" />
+        <Point X="12.5" Y="12.099" />
+        <Point X="12.5" Y="12.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -152,7 +152,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DynamicMapResolver.Impl.SourceMerger">
-    <Position X="11" Y="15.25" Width="1.5" />
+    <Position X="11.75" Y="15.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\SourceMerger.cs</FileName>
@@ -165,30 +165,30 @@
       <FileName>Exceptions\MissingAccessorException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Impl.TransformerObserver" Collapsed="true">
-    <Position X="4.75" Y="15.75" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.TransformerObserver">
+    <Position X="4.5" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIIAAAAAABAACAABAAIAAAAABAAAQAABAIAAQAgAA=</HashCode>
+      <HashCode>AAAIIAAAAAABAACAAJAAIAAAAABAAAQAABAIAAQAgCA=</HashCode>
       <FileName>Impl\TransformerObserver.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="DynamicMapResolver.Impl.ServiceTransformer&lt;TService&gt;" Collapsed="true">
-    <Position X="1.75" Y="16.75" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.ServiceTransformer&lt;TService&gt;">
+    <Position X="1.75" Y="20.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAIAAEgAAAAAAAAAAIQIAAAEAAAAAAAAA=</HashCode>
       <FileName>Impl\ServiceTransformer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Impl.ServiceTransformer" Collapsed="true">
-    <Position X="1.75" Y="15.5" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.ServiceTransformer">
+    <Position X="1.75" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAgAAAAAgIAAAAAAEAFAAAAAYAAAAAAAAAAAACAA=</HashCode>
       <FileName>Impl\ServiceTransformer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DynamicMapResolver.Impl.TransformerBuilder&lt;TSource, TDestination&gt;" Collapsed="true">
-    <Position X="4.75" Y="17.25" Width="1.5" />
+  <Class Name="DynamicMapResolver.Impl.TransformerBuilder&lt;TSource, TDestination&gt;">
+    <Position X="8.25" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAIAAAAAAAAAAAACIAACAAAAEAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Impl\TransformerBuilder.cs</FileName>
@@ -196,21 +196,21 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="DynamicMapResolver.IPropertyMapper">
-    <Position X="20" Y="6" Width="1.5" />
+    <Position X="20" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IPropertyMapper.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DynamicMapResolver.IPropertyMapInfo">
-    <Position X="20" Y="2" Width="1.5" />
+    <Position X="20" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>IPropertyMapInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DynamicMapResolver.IPropertyMapper&lt;TSource, TDestination&gt;">
-    <Position X="20" Y="4" Width="1.5" />
+    <Position X="20" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>IPropertyMapper.cs</FileName>
@@ -242,20 +242,6 @@
     <TypeIdentifier>
       <HashCode>AAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>ISourceTransformer.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="DynamicMapResolver.ISourceMapper&lt;TSource, TDestination&gt;">
-    <Position X="5.75" Y="8" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ISourceMapper.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="DynamicMapResolver.ISourceMapper">
-    <Position X="5.75" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ISourceMapper.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DynamicMapResolver.ISimpleMapper&lt;TSource, TDestination&gt;">
@@ -312,7 +298,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>ITransformerObserver.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -328,6 +314,20 @@
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IDynamicTransformerBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapResolver.ISourceMapper&lt;TSource, TDestination&gt;">
+    <Position X="5.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISourceMapper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicMapResolver.ISourceMapper">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISourceMapper.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Tahoma" Size="8.25" />

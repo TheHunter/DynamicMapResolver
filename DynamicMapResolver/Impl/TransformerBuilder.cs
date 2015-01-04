@@ -10,8 +10,8 @@ namespace DynamicMapResolver.Impl
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TDestination"></typeparam>
+    /// <typeparam name="TSource">The type of the source.</typeparam>
+    /// <typeparam name="TDestination">The type of the destination.</typeparam>
     public class TransformerBuilder<TSource, TDestination>
         : ITransformerBuilder<TSource, TDestination>
         where TSource : class
@@ -22,7 +22,7 @@ namespace DynamicMapResolver.Impl
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="TransformerBuilder{TSource, TDestination}"/> class.
         /// </summary>
         public TransformerBuilder()
             : this(TransformerObserver.Default)
@@ -31,9 +31,9 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="TransformerBuilder{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="observer"></param>
+        /// <param name="observer">The observer.</param>
         internal TransformerBuilder(ITransformerObserver observer)
         {
             this.observer = observer;
@@ -41,9 +41,9 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="TransformerBuilder{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="propertyMappers"></param>
+        /// <param name="propertyMappers">The property mappers.</param>
         internal TransformerBuilder(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
             : this(TransformerObserver.Default, propertyMappers)
         {
@@ -51,10 +51,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="TransformerBuilder{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="observer"></param>
-        /// <param name="propertyMappers"></param>
+        /// <param name="observer">The observer.</param>
+        /// <param name="propertyMappers">The property mappers.</param>
         internal TransformerBuilder(ITransformerObserver observer, IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
         {
             this.observer = observer;
@@ -66,7 +66,7 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the mapper.
         /// </summary>
         /// <returns></returns>
         public ISourceMapper<TSource, TDestination> BuildMapper()
@@ -75,10 +75,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the mapper.
         /// </summary>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
@@ -90,7 +90,7 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the merger.
         /// </summary>
         /// <returns></returns>
         public ISourceMerger<TSource, TDestination> BuildMerger()
@@ -99,10 +99,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the merger.
         /// </summary>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
         {
@@ -114,10 +114,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Includes the specified property mapper.
         /// </summary>
-        /// <param name="propertyMapper"></param>
+        /// <param name="propertyMapper">The property mapper.</param>
         /// <returns></returns>
+        /// <exception cref="DynamicMapResolver.Exceptions.MapperParameterException">propertyMapper;The propertyMapper instance cannot be null.</exception>
         public ITransformerBuilder<TSource, TDestination> Include(IPropertyMapper<TSource, TDestination> propertyMapper)
         {
             if (propertyMapper == null)
@@ -128,10 +129,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Includes the specified property function mapper.
         /// </summary>
-        /// <param name="propertyFuncMapper"></param>
+        /// <param name="propertyFuncMapper">The property function mapper.</param>
         /// <returns></returns>
+        /// <exception cref="DynamicMapResolver.Exceptions.MapperParameterException">propertyFuncMapper;The expression for making mapper property cannot be null.</exception>
         public ITransformerBuilder<TSource, TDestination> Include(Func<ITransformerResolver, IPropertyMapper<TSource, TDestination>> propertyFuncMapper)
         {
             if (propertyFuncMapper == null)
@@ -141,11 +143,10 @@ namespace DynamicMapResolver.Impl
             return this;
         }
 
-
         /// <summary>
-        /// 
+        /// Excludes the specified property name.
         /// </summary>
-        /// <param name="propertyName"></param>
+        /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
         public ITransformerBuilder<TSource, TDestination> Exclude(string propertyName)
         {
@@ -156,10 +157,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// / Excludes the specified property./
         /// </summary>
-        /// <param name="property"></param>
+        /// <param name="property">The property.</param>
         /// <returns></returns>
+        /// / / /
         public ITransformerBuilder<TSource, TDestination> Exclude(PropertyInfo property)
         {
             if (property == null)

@@ -6,7 +6,7 @@ using System.Text;
 namespace DynamicMapResolver
 {
     /// <summary>
-    /// 
+    /// Indicates the way of building the container for custom mappers / mergers.
     /// </summary>
     public enum BuilderType
     {

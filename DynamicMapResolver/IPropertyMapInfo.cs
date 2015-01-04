@@ -6,7 +6,7 @@ using System.Text;
 namespace DynamicMapResolver
 {
     /// <summary>
-    /// 
+    /// Rappresents basic information about a property mapper indicating the names of involved properties.
     /// </summary>
     public interface IPropertyMapInfo
     {

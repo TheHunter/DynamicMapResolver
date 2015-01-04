@@ -8,7 +8,7 @@ using DynamicMapResolver.Impl;
 namespace DynamicMapResolver
 {
     /// <summary>
-    /// A factory class used for making default mappers.
+    /// A factory class used for making default / advanced mappers.
     /// </summary>
     public static class FactoryMapper
     {
@@ -103,8 +103,10 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Build a dynamic mapper for all compatibles properties between source type with destination type.
         /// </summary>
+        /// <param name="tSource">The t source.</param>
+        /// <param name="tDestination">The t destination.</param>
         /// <returns></returns>
         public static ISourceMapper DynamicResolutionMapper(Type tSource, Type tDestination)
         {
@@ -112,10 +114,10 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Build a dynamic mapper for all compatibles properties between source type with destination type.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>()
             where TSource: class
@@ -125,12 +127,12 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Build a dynamic mapper for all compatibles properties between source type with destination type.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public static ISourceMapper<TSource, TDestination> DynamicResolutionMapper<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -140,10 +142,10 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// Initialize a new transformer builder with default property mappers.
+        /// Makes the default builder.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
         /// <returns></returns>
         public static ITransformerBuilder<TSource, TDestination> MakeDefaultBuilder<TSource, TDestination>()
             where TSource : class
@@ -153,7 +155,7 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// Get a default ISourceMerger for the given types.
+        /// Build a dynamic merger for all compatibles properties between source type with destination type.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
@@ -166,12 +168,12 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Build a dynamic merger for all compatibles properties between source type with destination type.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public static ISourceMerger<TSource, TDestination> DynamicResolutionMerger<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -181,7 +183,7 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// Gets all public properties for the given type.
+        /// Gets all properties for the given type due to the given flags.
         /// </summary>
         /// <returns></returns>
         public static PropertyInfo[] GetPropertiesOf(Type current, BindingFlags? flags = null)
@@ -338,12 +340,11 @@ namespace DynamicMapResolver
             return mappers;
         }
 
-
         /// <summary>
-        /// 
+        /// Gets the default property mappers.
         /// </summary>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public static IEnumerable<IPropertyMapper> GetDefaultPropertyMappers(Type sourceType, Type destinationType)
         {
@@ -351,11 +352,11 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Gets the default property mappers.
         /// </summary>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
-        /// <param name="resolver"></param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
+        /// <param name="resolver">The resolver.</param>
         /// <returns></returns>
         public static IEnumerable<IPropertyMapper> GetDefaultPropertyMappers(Type sourceType, Type destinationType, ITransformerResolver resolver)
         {
@@ -388,7 +389,6 @@ namespace DynamicMapResolver
 
             return mappers;
         }
-
 
         /// <summary>
         /// Makes an action which corrispond to set a destination property with the current TSource property value.
@@ -427,16 +427,20 @@ namespace DynamicMapResolver
             return action;
         }
 
-
         /// <summary>
-        /// 
+        /// Makes a dynamic action in order to associate property source with property destination using a dynamic resolver.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
-        /// <param name="resolver"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
+        /// <param name="resolver">The resolver.</param>
         /// <returns></returns>
+        /// <exception cref="MissingAccessorException">
+        /// No getter method available for retrieving value for setting property destination.
+        /// or
+        /// No setter method available for setting property destination.
+        /// </exception>
         public static Action<TSource, TDestination> DynamicPropertyMap<TSource, TDestination>
             (PropertyInfo srcProperty, PropertyInfo destProperty, ITransformerResolver resolver)
         {
@@ -465,12 +469,16 @@ namespace DynamicMapResolver
 
         }
 
-
         /// <summary>
-        /// 
+        /// Checks the properties.
         /// </summary>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
+        /// <exception cref="InconsistentMappingException">
+        /// Property getter is no compatible with property setter.
+        /// or
+        /// References property getter and setter are incompatibles.
+        /// </exception>
         private static void CheckProperties(PropertyInfo srcProperty, PropertyInfo destProperty)
         {
             if (srcProperty.PropertyType != destProperty.PropertyType)
@@ -488,10 +496,10 @@ namespace DynamicMapResolver
         }
 
         /// <summary>
-        /// 
+        /// Gets the getter value.
         /// </summary>
-        /// <param name="res"></param>
-        /// <param name="propSetter"></param>
+        /// <param name="res">The resource.</param>
+        /// <param name="propSetter">The property setter.</param>
         /// <returns></returns>
         private static object GetGetterValue(object res, Type propSetter)
         {

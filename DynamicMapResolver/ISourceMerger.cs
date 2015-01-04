@@ -9,34 +9,30 @@ namespace DynamicMapResolver
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TDestination"></typeparam>
     public interface ISourceMerger<TSource, TDestination>
-        //: ISourceTransformer<TSource, TDestination>, ISimpleMerger<TSource, TDestination>
         : ISourceTransformer<TSource, TDestination>, ISourceMerger
         where TSource : class
         where TDestination : class
     {
         /// <summary>
-        /// 
+        /// Merges the specified source.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
         /// <returns></returns>
         TDestination Merge(TSource source, TDestination destination);
-
-        
-        //TDestination Merge(TSource source, TDestination destination, IEnumerable<string> filter);
     }
 
     /// <summary>
-    /// 
+    /// An interface for merging object data source into object data destination.
     /// </summary>
     public interface ISourceMerger
         : ISourceTransformer
     {
         /// <summary>
-        /// 
+        /// Merges the specified source.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
         /// <returns></returns>
         object Merge(object source, object destination);
     }

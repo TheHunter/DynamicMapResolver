@@ -35,15 +35,18 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Gets the default observer.
         /// </summary>
+        /// <value>
+        /// The default.
+        /// </value>
         internal static ITransformerObserver Default { get { return instance; } }
 
         /// <summary>
-        /// 
+        /// Tries to map the given instance into destination type.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public object TryToMap(object source, Type destinationType)
         {
@@ -51,11 +54,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to map the given instance into destination type using an specific key service.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destinationType"></param>
-        /// <param name="keyService"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public object TryToMap(object source, Type destinationType, object keyService)
         {
@@ -73,11 +76,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to map the given instance into generic destination type.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="source"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="source">The source.</param>
         /// <returns></returns>
         public TDestination TryToMap<TSource, TDestination>(TSource source)
         {
@@ -85,12 +88,12 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to map the given instance into generic destination type using an specific key service.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="keyService"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public TDestination TryToMap<TSource, TDestination>(TSource source, object keyService)
         {
@@ -116,10 +119,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to merge the given instance with the destination instance.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
         /// <returns></returns>
         public object TryToMerge(object source, object destination)
         {
@@ -127,11 +130,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to merge the given instance with the destination instance using an specific key service.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <param name="keyService"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public object TryToMerge(object source, object destination, object keyService)
         {
@@ -149,12 +152,12 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Tries to merge the given instance with the destination instance.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
         /// <returns></returns>
         public TDestination TryToMerge<TSource, TDestination>(TSource source, TDestination destination)
         {
@@ -162,13 +165,13 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// given instance with the destination instance using an specific key service
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <param name="keyService"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public TDestination TryToMerge<TSource, TDestination>(TSource source, TDestination destination, object keyService)
         {
@@ -195,10 +198,10 @@ namespace DynamicMapResolver.Impl
         #region registration transformers
 
         /// <summary>
-        /// 
+        /// Registers the mapper.
         /// </summary>
-        /// <typeparam name="TMapper"></typeparam>
-        /// <param name="mapper"></param>
+        /// <typeparam name="TMapper">The type of the mapper.</typeparam>
+        /// <param name="mapper">The mapper.</param>
         /// <returns></returns>
         public bool RegisterMapper<TMapper>(TMapper mapper) where TMapper : class, ISourceMapper
         {
@@ -206,11 +209,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Registers the mapper.
         /// </summary>
-        /// <typeparam name="TMapper"></typeparam>
-        /// <param name="mapper"></param>
-        /// <param name="keyService"></param>
+        /// <typeparam name="TMapper">The type of the mapper.</typeparam>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public bool RegisterMapper<TMapper>(TMapper mapper, object keyService) where TMapper : class, ISourceMapper
         {
@@ -230,10 +233,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Registers the merger.
         /// </summary>
-        /// <typeparam name="TMerger"></typeparam>
-        /// <param name="merger"></param>
+        /// <typeparam name="TMerger">The type of the merger.</typeparam>
+        /// <param name="merger">The merger.</param>
         /// <returns></returns>
         public bool RegisterMerger<TMerger>(TMerger merger) where TMerger : class, ISourceMerger
         {
@@ -241,11 +244,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Registers the merger.
         /// </summary>
-        /// <typeparam name="TMerger"></typeparam>
-        /// <param name="merger"></param>
-        /// <param name="keyService"></param>
+        /// <typeparam name="TMerger">The type of the merger.</typeparam>
+        /// <param name="merger">The merger.</param>
+        /// <param name="keyService">The key service.</param>
         /// <returns></returns>
         public bool RegisterMerger<TMerger>(TMerger merger, object keyService) where TMerger : class, ISourceMerger
         {
@@ -264,15 +267,16 @@ namespace DynamicMapResolver.Impl
 
         #endregion
 
-        #region Transformer builders
+        #region ITransfomerInitializer
 
         /// <summary>
-        /// 
+        /// Makes the transformer builder following the specified builder type.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="type"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="type">The builder type to use.</param>
         /// <returns></returns>
+        /// <exception cref="System.NotImplementedException">Builder type not implemented by now.</exception>
         public ITransformerBuilder<TSource, TDestination> MakeTransformerBuilder<TSource, TDestination>(BuilderType type)
             where TSource: class
             where TDestination: class
@@ -291,11 +295,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Makes the transformer builder with the given property mappers.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="propertyMappers"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="propertyMappers">The property mappers.</param>
         /// <returns></returns>
         public ITransformerBuilder<TSource, TDestination> MakeTransformerBuilder<TSource, TDestination>(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
             where TSource : class
@@ -306,15 +310,15 @@ namespace DynamicMapResolver.Impl
         
         #endregion
 
-        #region
+        #region IDynamicTransfomerBuilder
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver mapper for compatibles properties.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMapper<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -324,13 +328,13 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver mapper for compatibles properties using the given key service for dedicated context and actions.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="keyService"></param>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="keyService">The key service.</param>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMapper<TSource, TDestination>(object keyService, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -344,10 +348,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver mapper for compatibles properties.
         /// </summary>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMapper(Type sourceType, Type destinationType)
         {
@@ -355,11 +359,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver mapper for compatibles properties using a service key for dedicated context.
         /// </summary>
-        /// <param name="keyService"></param>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="keyService">The key service.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMapper(object keyService, Type sourceType, Type destinationType)
         {
@@ -371,12 +375,12 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver merger for compatibles properties.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMerger<TSource, TDestination>(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -386,13 +390,13 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver merger for compatibles properties using the given key service for dedicated context and actions.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="keyService"></param>
-        /// <param name="beforeMapping"></param>
-        /// <param name="afterMapping"></param>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TDestination">The type of the destination.</typeparam>
+        /// <param name="keyService">The key service.</param>
+        /// <param name="beforeMapping">The before mapping.</param>
+        /// <param name="afterMapping">The after mapping.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMerger<TSource, TDestination>(object keyService, Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
             where TSource : class
@@ -406,10 +410,10 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver merger for compatibles properties using a default key service context.
         /// </summary>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMerger(Type sourceType, Type destinationType)
         {
@@ -417,11 +421,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Builds the automatic resolver merger for compatibles properties using the given key service for dedicated context.
         /// </summary>
-        /// <param name="keyService"></param>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
+        /// <param name="keyService">The key service.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="destinationType">Type of the destination.</param>
         /// <returns></returns>
         public bool BuildAutoResolverMerger(object keyService, Type sourceType, Type destinationType)
         {
@@ -433,5 +437,36 @@ namespace DynamicMapResolver.Impl
         }
 
         #endregion
+
+        #region ITransformerObserver
+
+        /// <summary>
+        /// Retrieves the mapper.
+        /// </summary>
+        /// <typeparam name="TMapper">The type of the mapper.</typeparam>
+        /// <param name="keyService">The key service.</param>
+        /// <returns></returns>
+        public TMapper RetrieveMapper<TMapper>(object keyService = null)
+            where TMapper : class, ISourceMapper
+        {
+            var mapper = this.mapperResolver.FirstOrDefault(transformer => transformer.Match<TMapper>(keyService ?? defaultKey));
+            return mapper == null ? null : mapper.ServiceAs<TMapper>();
+        }
+
+        /// <summary>
+        /// Retrieves the merger.
+        /// </summary>
+        /// <typeparam name="TMerger">The type of the merger.</typeparam>
+        /// <param name="keyService">The key service.</param>
+        /// <returns></returns>
+        public TMerger RetrieveMerger<TMerger>(object keyService = null)
+            where TMerger : class, ISourceMerger
+        {
+            var merger = this.mergerResolver.FirstOrDefault(transformer => transformer.Match<TMerger>(keyService ?? defaultKey));
+            return merger == null ? null : merger.ServiceAs<TMerger>();
+        }
+        
+        #endregion
+        
     }
 }

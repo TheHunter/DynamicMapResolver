@@ -119,9 +119,6 @@
     <Compile Include="..\DynamicMapResolver\ISimpleMapper.cs">
       <Link>ISimpleMapper.cs</Link>
     </Compile>
-    <Compile Include="..\DynamicMapResolver\ISimpleMerger.cs">
-      <Link>ISimpleMerger.cs</Link>
-    </Compile>
     <Compile Include="..\DynamicMapResolver\ISourceMapper.cs">
       <Link>ISourceMapper.cs</Link>
     </Compile>

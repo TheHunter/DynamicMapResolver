@@ -61,7 +61,6 @@
     <Compile Include="ITransformerRegister.cs" />
     <Compile Include="ITransformerResolver.cs" />
     <Compile Include="Impl\SimpleMapper.cs" />
-    <Compile Include="ISimpleMerger.cs" />
     <Compile Include="ITransformerBuilder.cs" />
     <Compile Include="Impl\TransformerBuilder.cs" />
     <Compile Include="Impl\PropertyMapInfo.cs" />

@@ -7,8 +7,8 @@ namespace DynamicMapResolver.Impl
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TDestination"></typeparam>
+    /// <typeparam name="TSource">The type of the source.</typeparam>
+    /// <typeparam name="TDestination">The type of the destination.</typeparam>
     public class PropertyMapper<TSource, TDestination>
         : PropertyMapInfo, IPropertyMapper<TSource, TDestination>
         where TSource : class
@@ -17,20 +17,21 @@ namespace DynamicMapResolver.Impl
         private readonly Action<TSource, TDestination> setter;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="setter"></param>
+        /// <param name="setter">The setter.</param>
         public PropertyMapper(Action<TSource, TDestination> setter)
             : this(setter, "anonymous", "anonymous")
         {
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="setter"></param>
-        /// <param name="propertySrc"></param>
-        /// <param name="propertyDest"></param>
+        /// <param name="setter">The setter.</param>
+        /// <param name="propertySrc">The property source.</param>
+        /// <param name="propertyDest">The property dest.</param>
+        /// <exception cref="LambdaSetterException">The setter action for property mapper cannot be null.</exception>
         public PropertyMapper(Action<TSource, TDestination> setter, string propertySrc, string propertyDest)
             : base(propertySrc, propertyDest)
         {
@@ -41,10 +42,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
+        /// <exception cref="LambdaSetterException">The setter action for property mapper cannot be null.</exception>
         public PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty)
             : base(srcProperty.Name, destProperty.Name)
         {
@@ -56,11 +58,12 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
-        /// <param name="resolver"></param>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
+        /// <param name="resolver">The resolver.</param>
+        /// <exception cref="LambdaSetterException">The setter action for property mapper cannot be null.</exception>
         public PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty, ITransformerResolver resolver)
             : base("[resolver]", destProperty.Name)
         {
@@ -72,10 +75,14 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper{TSource, TDestination}"/> class.
         /// </summary>
-        /// <param name="propertySrc"></param>
-        /// <param name="propertyDest"></param>
+        /// <param name="propertySrc">The property source.</param>
+        /// <param name="propertyDest">The property dest.</param>
+        /// <exception cref="MapperParameterException">Unknown</exception>
+        /// <exception cref="System.MissingMemberException">
+        /// </exception>
+        /// <exception cref="LambdaSetterException">The setter action for property mapper cannot be null.</exception>
         public PropertyMapper(string propertySrc, string propertyDest)
             : base(propertySrc, propertyDest)
         {
@@ -105,18 +112,19 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// The action to execute for setting the destionation property value.
         /// </summary>
         public Action<TSource, TDestination> Setter
         {
             get { return setter; }
         }
 
-
         /// <summary>
-        /// 
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return string.Format("Property setter: {0}, Property getter: {1}, Action: {2}", this.PropertyDestination, this.PropertyDestination, this.Setter);
@@ -134,10 +142,10 @@ namespace DynamicMapResolver.Impl
         private readonly PropertyInfo destProperty;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper"/> class.
         /// </summary>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
         internal PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty)
             : base(srcProperty, destProperty)
         {
@@ -146,11 +154,11 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PropertyMapper"/> class.
         /// </summary>
-        /// <param name="srcProperty"></param>
-        /// <param name="destProperty"></param>
-        /// <param name="resolver"></param>
+        /// <param name="srcProperty">The source property.</param>
+        /// <param name="destProperty">The dest property.</param>
+        /// <param name="resolver">The resolver.</param>
         internal PropertyMapper(PropertyInfo srcProperty, PropertyInfo destProperty, ITransformerResolver resolver)
             : base(srcProperty, destProperty, resolver)
         {
@@ -158,13 +166,19 @@ namespace DynamicMapResolver.Impl
         }
 
         /// <summary>
-        /// 
+        /// Gets the source property information.
         /// </summary>
+        /// <value>
+        /// The source property information.
+        /// </value>
         public PropertyInfo SrcPropertyInfo { get { return this.srcProperty; } }
 
         /// <summary>
-        /// 
+        /// Gets the dest property information.
         /// </summary>
+        /// <value>
+        /// The dest property information.
+        /// </value>
         public PropertyInfo destPropertyInfo { get { return this.destProperty; } }
 
     }

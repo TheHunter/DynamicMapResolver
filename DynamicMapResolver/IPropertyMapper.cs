@@ -13,7 +13,6 @@ namespace DynamicMapResolver
         where TSource : class
         where TDestination : class
     {
-
         /// <summary>
         /// The action to execute for setting the destionation property value.
         /// </summary>
@@ -21,19 +20,25 @@ namespace DynamicMapResolver
     }
 
     /// <summary>
-    /// 
+    /// Rappresents a property mapper for the given property info about setter and getter.
     /// </summary>
     public interface IPropertyMapper
         : IPropertyMapper<object, object>
     {
         /// <summary>
-        /// 
+        /// Gets the source property information.
         /// </summary>
+        /// <value>
+        /// The source property information.
+        /// </value>
         PropertyInfo SrcPropertyInfo { get; }
 
         /// <summary>
-        /// 
+        /// Gets the dest property information.
         /// </summary>
+        /// <value>
+        /// The dest property information.
+        /// </value>
         PropertyInfo destPropertyInfo { get; }
 
     }
