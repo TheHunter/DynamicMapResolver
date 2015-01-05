@@ -17,31 +17,39 @@ namespace DynamicMapResolver
         /// <summary>
         /// Builds the internal mapper.
         /// </summary>
+        /// <param name="serviceKey">The default key.</param>
         /// <returns></returns>
-        ISourceMapper<TSource, TDestination> BuildMapper();
+        ISourceMapper<TSource, TDestination> BuildMapper(string serviceKey = null);
 
         /// <summary>
-        /// Builds the internal mapper with the given actions.
+        /// Builds the internal mapper with the given actions and possible service key.
         /// </summary>
         /// <param name="beforeMapping">The before mapping.</param>
         /// <param name="afterMapping">The after mapping.</param>
+        /// <param name="defaultKey">The default key.</param>
         /// <returns></returns>
         ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping,
-                                                         Action<TDestination> afterMapping);
+            Action<TDestination> afterMapping,
+            string defaultKey = null
+            );
 
         /// <summary>
         /// Builds the internal merger.
         /// </summary>
+        /// <param name="serviceKey">The default key.</param>
         /// <returns></returns>
-        ISourceMerger<TSource, TDestination> BuildMerger();
+        ISourceMerger<TSource, TDestination> BuildMerger(string serviceKey = null);
 
         /// <summary>
         /// Builds the internal merger.
         /// </summary>
         /// <param name="beforeMapping">The before mapping.</param>
         /// <param name="afterMapping">The after mapping.</param>
+        /// <param name="defaultKey">The default key.</param>
         /// <returns></returns>
         ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping,
-                                                         Action<TDestination> afterMapping);
+            Action<TDestination> afterMapping,
+            string defaultKey = null
+            );
     }
 }

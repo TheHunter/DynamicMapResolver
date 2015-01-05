@@ -18,7 +18,7 @@ namespace DynamicMapResolver.Impl
         where TDestination : class
     {
         private readonly ITransformerObserver observer;
-        private readonly bool canBeUsedResolver = true;
+        private readonly bool isObservable = true;
         private readonly HashSet<IPropertyMapper<TSource, TDestination>> propertyMappers;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace DynamicMapResolver.Impl
         public TransformerBuilder()
             : this(TransformerObserver.Default)
         {
-            this.canBeUsedResolver = false;
+            this.isObservable = false;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DynamicMapResolver.Impl
         internal TransformerBuilder(IEnumerable<IPropertyMapper<TSource, TDestination>> propertyMappers)
             : this(TransformerObserver.Default, propertyMappers)
         {
-            this.canBeUsedResolver = false;
+            this.isObservable = false;
         }
 
         /// <summary>
@@ -59,19 +59,19 @@ namespace DynamicMapResolver.Impl
         {
             this.observer = observer;
 
-            if (propertyMappers != null && propertyMappers.Any())
-                this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers);
-            else
-                this.propertyMappers = new HashSet<IPropertyMapper<TSource, TDestination>>();
+            this.propertyMappers = propertyMappers != null
+                ? new HashSet<IPropertyMapper<TSource, TDestination>>(propertyMappers)
+                : new HashSet<IPropertyMapper<TSource, TDestination>>();
         }
 
         /// <summary>
         /// Builds the mapper.
         /// </summary>
+        /// <param name="serviceKey">The default key.</param>
         /// <returns></returns>
-        public ISourceMapper<TSource, TDestination> BuildMapper()
+        public ISourceMapper<TSource, TDestination> BuildMapper(string serviceKey = null)
         {
-            return this.BuildMapper(null, null);
+            return this.BuildMapper(null, null, serviceKey);
         }
 
         /// <summary>
@@ -79,23 +79,29 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="beforeMapping">The before mapping.</param>
         /// <param name="afterMapping">The after mapping.</param>
+        /// <param name="defaultKey">The default key.</param>
         /// <returns></returns>
-        public ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+        public ISourceMapper<TSource, TDestination> BuildMapper(Action<TDestination> beforeMapping, Action<TDestination> afterMapping, string defaultKey = null)
         {
             var mapper = new SourceMapper<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
-            if (this.canBeUsedResolver)
-                this.observer.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper);
-
+            if (this.isObservable)
+            {
+                if (defaultKey == null)
+                    this.observer.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper);
+                else
+                    this.observer.RegisterMapper<ISourceMapper<TSource, TDestination>>(mapper, defaultKey);
+            }
             return mapper;
         }
 
         /// <summary>
         /// Builds the merger.
         /// </summary>
+        /// <param name="serviceKey">The default key.</param>
         /// <returns></returns>
-        public ISourceMerger<TSource, TDestination> BuildMerger()
+        public ISourceMerger<TSource, TDestination> BuildMerger(string serviceKey = null)
         {
-            return this.BuildMerger(null, null);
+            return this.BuildMerger(null, null, serviceKey);
         }
 
         /// <summary>
@@ -103,13 +109,18 @@ namespace DynamicMapResolver.Impl
         /// </summary>
         /// <param name="beforeMapping">The before mapping.</param>
         /// <param name="afterMapping">The after mapping.</param>
+        /// <param name="defaultKey">The default key.</param>
         /// <returns></returns>
-        public ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping, Action<TDestination> afterMapping)
+        public ISourceMerger<TSource, TDestination> BuildMerger(Action<TDestination> beforeMapping, Action<TDestination> afterMapping, string defaultKey = null)
         {
             var merger = new SourceMerger<TSource, TDestination>(this.propertyMappers, beforeMapping, afterMapping);
-            if (this.canBeUsedResolver)
-                this.observer.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger);
-
+            if (this.isObservable)
+            {
+                if (defaultKey == null)
+                    this.observer.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger);
+                else
+                    this.observer.RegisterMerger<ISourceMerger<TSource, TDestination>>(merger, defaultKey);
+            }
             return merger;
         }
 
@@ -146,28 +157,29 @@ namespace DynamicMapResolver.Impl
         /// <summary>
         /// Excludes the specified property name.
         /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyNames">Name of the property.</param>
         /// <returns></returns>
-        public ITransformerBuilder<TSource, TDestination> Exclude(string propertyName)
+        public ITransformerBuilder<TSource, TDestination> Exclude(params string[] propertyNames)
         {
-            if (!string.IsNullOrEmpty(propertyName))
-                this.propertyMappers.RemoveWhere(n => n.PropertyDestination.Equals(propertyName));
+            if (propertyNames == null || propertyNames.Length <= 0)
+                return this;
 
+            foreach (var current in propertyNames.Where(current => !string.IsNullOrEmpty(current)))
+            {
+                this.propertyMappers.RemoveWhere(n => n.PropertyDestination.Equals(current));
+            }
             return this;
         }
 
         /// <summary>
         /// / Excludes the specified property./
         /// </summary>
-        /// <param name="property">The property.</param>
+        /// <param name="properties">The property.</param>
         /// <returns></returns>
         /// / / /
-        public ITransformerBuilder<TSource, TDestination> Exclude(PropertyInfo property)
+        public ITransformerBuilder<TSource, TDestination> Exclude(params PropertyInfo[] properties)
         {
-            if (property == null)
-                return this;
-            
-            return this.Exclude(property.Name);
+            return properties == null ? this : this.Exclude(properties.Select(n => n.Name).ToArray());
         }
     }
 }

@@ -141,7 +141,6 @@ namespace DynamicMapResolver.Impl
     {
         private readonly Type sourceType;
         private readonly Type destinationType;
-        private bool ignoreExceptionOnMapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SourceTransformer"/> class.
@@ -193,11 +192,7 @@ namespace DynamicMapResolver.Impl
         /// <value>
         /// <c>true</c> if [ignore exception on mapping]; otherwise, <c>false</c>.
         /// </value>
-        public bool IgnoreExceptionOnMapping
-        {
-            get { return this.ignoreExceptionOnMapping; }
-            set { this.ignoreExceptionOnMapping = value; }
-        }
+        public bool IgnoreExceptionOnMapping { get; set; }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.

@@ -55,8 +55,9 @@ namespace DynamicMapResolver.Impl
             Type origServiceType = this.service.GetType();
             Type parServiceType = transformer.GetType();
 
-            return this.KeyEquals(keyService) &&
-                   (origServiceType.IsAssignableFrom(parServiceType) || parServiceType.IsAssignableFrom(origServiceType));
+            return this.KeyEquals(keyService)
+                && (origServiceType.IsAssignableFrom(parServiceType) || parServiceType.IsAssignableFrom(origServiceType))
+                ;
         }
 
         /// <summary>
@@ -117,7 +118,8 @@ namespace DynamicMapResolver.Impl
         /// </returns>
         public override string ToString()
         {
-            return string.Format("Key: {0}, ServiceType<{1}>", this.ServiceKey, service.GetType().Name);
+            //return string.Format("Key: {0}, ServiceType<{1}>", this.ServiceKey, service.GetType().Name);
+            return string.Format("Key: {0}, ServiceType: {1}", this.ServiceKey, service.GetType().FullName);
         }
     }
 
@@ -230,9 +232,9 @@ namespace DynamicMapResolver.Impl
         /// <returns></returns>
         public bool Match(object keyService, Type transformerType)
         {
-            return (this.serviceType.IsAssignableFrom(transformerType))
+            return (this.KeyEquals(keyService)
                    && this.serviceType == transformerType
-                   && this.KeyEquals(keyService)
+                   && this.serviceType.IsAssignableFrom(transformerType))
                 ;
         }
 

@@ -77,7 +77,7 @@
   <Class Name="DynamicMapResolver.Impl.SourceTransformer">
     <Position X="15.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAADAAAAAAAAAAAEgAABAAAAAAAAAIAAAAAACAAAAgg=</HashCode>
+      <HashCode>AAADAAAAAAAAAAAEgAAAAAAAAAAAAIAAAAAACAAAAgg=</HashCode>
       <FileName>Impl\SourceTransformer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -86,7 +86,7 @@
     <Position X="17" Y="5" Width="1.5" />
     <InheritanceLine Type="DynamicMapResolver.Impl.SourceTransformer" ManuallyRouted="true" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="3.645" />
+        <Point X="16" Y="3.481" />
         <Point X="16" Y="4.625" />
         <Point X="17.812" Y="4.625" />
         <Point X="17.812" Y="5" />
@@ -188,9 +188,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="DynamicMapResolver.Impl.TransformerBuilder&lt;TSource, TDestination&gt;">
-    <Position X="8.25" Y="15.5" Width="1.5" />
+    <Position X="8.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAIAAAAAAAAAAAACIAACAAAAEAAAAAAAABAAAAAAAA=</HashCode>
+      <HashCode>AIAIAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Impl\TransformerBuilder.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -259,7 +259,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="DynamicMapResolver.ITransformerBuilder&lt;TSource, TDestination&gt;">
-    <Position X="8.25" Y="13.25" Width="1.5" />
+    <Position X="8.25" Y="13.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITransformerBuilder.cs</FileName>

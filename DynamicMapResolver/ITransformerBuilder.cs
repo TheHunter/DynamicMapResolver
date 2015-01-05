@@ -34,15 +34,15 @@ namespace DynamicMapResolver
         /// <summary>
         /// Excludes the specified property name.
         /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyNames">Name of the property.</param>
         /// <returns></returns>
-        ITransformerBuilder<TSource, TDestination> Exclude(string propertyName);
+        ITransformerBuilder<TSource, TDestination> Exclude(params string[] propertyNames);
 
         /// <summary>
         /// Excludes the specified property.
         /// </summary>
-        /// <param name="property">The property.</param>
+        /// <param name="properties">The property.</param>
         /// <returns></returns>
-        ITransformerBuilder<TSource, TDestination> Exclude(PropertyInfo property);
+        ITransformerBuilder<TSource, TDestination> Exclude(params PropertyInfo[] properties);
     }
 }

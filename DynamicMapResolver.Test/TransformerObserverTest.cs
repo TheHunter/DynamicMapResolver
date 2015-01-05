@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper.Internal;
 using DynamicMapResolver.Impl;
 using DynamicMapResolver.Test.Pocos;
 using NUnit.Framework;
@@ -477,6 +478,35 @@ namespace DynamicMapResolver.Test
             Assert.IsNotNull(res1);
             Assert.AreEqual(res1.Naming, instance.Naming);
             Assert.AreEqual(res1.Code, instance.Code);
+        }
+
+        [Test]
+        public void RetreiveMapperFromObserver()
+        {
+            TransformerObserver observer = new TransformerObserver();
+            var builder = observer.MakeTransformerBuilder<IPersonHeader, PersonDetails>(BuilderType.DefaultMappers);
+            var mapper1 = builder.BuildMapper();
+            var mapper2 = builder.BuildMapper("keymapper");
+
+            builder.BuildMerger();
+            builder.BuildMerger("merger");
+            
+            Assert.IsNotNull(builder);
+            Assert.AreEqual(mapper1, mapper2);
+            Assert.AreNotSame(mapper1, mapper2);
+            
+            //IPersonHeader ps = new Person { Name = "name", Surname = "surname", AnnoNascita = 1980, Parent = null };
+
+            Assert.NotNull(observer.RetrieveMapper<ISourceMapper<IPersonHeader, PersonDetails>>());
+            Assert.Null(observer.RetrieveMapper<ISourceMapper<IPersonHeader, PersonDetails>>("mykey"));
+            Assert.NotNull(observer.RetrieveMapper<ISourceMapper<IPersonHeader, PersonDetails>>("keymapper"));
+            Assert.Null(observer.RetrieveMapper<ISourceMapper<Person, PersonDetails>>());
+
+
+            Assert.NotNull(observer.RetrieveMerger<ISourceMerger<IPersonHeader, PersonDetails>>());
+            Assert.NotNull(observer.RetrieveMerger<ISourceMerger<IPersonHeader, PersonDetails>>("merger"));
+            Assert.Null(observer.RetrieveMerger<ISourceMerger<IPersonHeader, PersonDetails>>("merger1"));
+            
         }
     }
 }
